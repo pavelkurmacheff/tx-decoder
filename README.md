@@ -1,225 +1,44 @@
-<p align="center">
-  <img src="https://app.1inch.io/assets/images/logo.svg" width="200" alt="1inch network" />
-</p>
+# 1inch RouterV4 transactions decoder
 
-# Utils library for EIP-2612: permit based on EIP-712 signed approvals
+### Swap:
+https://etherscan.io/tx/0x698156119b255c33347bf844a0245dafdc39e871f3825ae5c24cc0019be748ed
 
-This is the package of utilities for building signature and call data of EIP-2612 permits
+|#	|Name	               | Type	     | Data                                       |
+|---|----------------------|-------------|--------------------------------------------|
+|1	|caller	               | address	 | 0x220bdA5c8994804Ac96ebe4DF184d25e5c2196D4 |
+|2	|desc.srcToken	       | address	 | 0xdAC17F958D2ee523a2206206994597C13D831ec7 |
+|3	|desc.dstToken	       | address	 | 0x853d955aCEf822Db058eb8505911ED77F175b99e |
+|4	|desc.srcReceiver	   | address	 | 0x220bdA5c8994804Ac96ebe4DF184d25e5c2196D4 |
+|5	|desc.dstReceiver	   | address	 | 0x64741d0b9e376d75873C12e1B0cdccc26C3bCB04 |
+|6	|desc.amount	       | uint256	 | 114445791769                               |
+|7	|desc.minReturnAmount  | uint256	 | 113841200360986751251430                   |
+|8	|desc.flags	           | uint256	 | 4                                          |
+|9	|desc.permit	       | bytes	     | 0x                                         |
+|10	|data	               | bytes	     | 0x                                         |
 
-## Specification
 
-### https://eips.ethereum.org/EIPS/eip-2612
+### ClipperSwap:
+https://etherscan.io/tx/0xd0de097ca15040e588f8528162c01f5cad29fd7ea2168b2a503bc3633a4e8a6b
 
-## Test coverage
+|#	|Name	               | Type	     | Data                                       |
+|---|----------------------|-------------|--------------------------------------------|
+|1	|srcToken	           | address	 | 0x6B175474E89094C44Da98b954EedeAC495271d0F |
+|2	|dstToken	           | address	 | 0x0000000000000000000000000000000000000000 |
+|3	|amount	               | uint256	 | 2000000000000000000                        |
+|4	|minReturn	           | uint256	 | 424579385213342                            |
 
-| Statements                                                                     | Branches                                                                    | Functions                                                                     | Lines                                                                |
-| ------------------------------------------------------------------------------ | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| ![Statements](https://img.shields.io/badge/statements-99.13%25-brightgreen.svg) | ![Branches](https://img.shields.io/badge/branches-95.74%25-brightgreen.svg) | ![Functions](https://img.shields.io/badge/functions-93.55%25-brightgreen.svg) | ![Lines](https://img.shields.io/badge/lines-99.13%25-brightgreen.svg) |
 
-## Installation
+### ClipperSwapWithPermit:
+https://etherscan.io/tx/0x027dbf1121f509031eba135ef03a17f18bfa7195c035c73db4cfc94b55df522e
 
-### Node
+### Unoswap:
+https://etherscan.io/tx/0x179a4f63854d6e6f5d18ec1bf31d47c4debb6a7c32a094a815e4c0eeb25f4c2d
 
-```
-npm install @1inch/permit-signed-approvals-utils
-```
+### UnoswapWithPermit:
+https://etherscan.io/tx/0xe970c4f72e5d4a07d4fc52df338e75a082c3b4b835e40d7e4ea2df567b066de3
 
-### Yarn
+### UniswapV3Swap:
+https://etherscan.io/tx/0xc0302a2f43cf86c04cfa8c67025da08bbc53372cc313e87ba0d32febff2f517c
 
-```
-yarn add @1inch/permit-signed-approvals-utils
-```
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/1inch/limit-order-protocol-utils/blob/master/CONTRIBUTING.md)
-
-## Changelog
-
-See [CHANGELOG.md](https://github.com/1inch/limit-order-protocol-utils/blob/master/CHANGELOG.md)
-
----
-
-## About
-
-### Build permit signature
-
-```typescript
-import {
-    Eip2612PermitUtils,
-    Web3ProviderConnector,
-    PermitParams,
-} from '@1inch/permit-signed-approvals-utils';
-import Web3 from 'web3';
-
-const chainId = 1;
-const contractAddress = '0x11111112542d85b3ef69ae05771c2dccff4faa26';
-const tokenAddress = '0x111111111117dc0aa78b770fa6a738034120c302';
-const tokenName = '1INCH Token';
-const walletAddress = '0x2c9b2dbdba8a9c969ac24153f5c1c23cb0e63914';
-const privateKey =
-    '965e092fdfc08940d2bd05c7b5c7e1c51e283e92c7f52bbf1408973ae9a9acb7';
-
-const permitParams: PermitParams = {
-    owner: walletAddress,
-    spender: contractAddress,
-    value: '1000000000',
-    nonce: 0,
-    deadline: 192689033,
-};
-
-const web3 = new Web3('...');
-// You can create and use a custom provider connector (for example: ethers)
-// For server side, you can use: new PrivateKeyProviderConnector(privateKey, web3);
-const connector = new Web3ProviderConnector(web3);
-const eip2612PermitUtils = new Eip2612PermitUtils(connector);
-
-const signature = await eip2612PermitUtils.buildPermitSignature(
-    {
-        ...permitParams,
-        nonce: await eip2612PermitUtils.getTokenNonce(
-            tokenAddress,
-            walletAddress
-        ),
-    },
-    chainId,
-    tokenName,
-    tokenAddress
-);
-
-console.log('Permit signature', signature);
-```
-
-### Build permit call data
-
-```typescript
-import {
-    Eip2612PermitUtils,
-    Web3ProviderConnector,
-    PermitParams,
-} from '@1inch/permit-signed-approvals-utils';
-import Web3 from 'web3';
-
-const chainId = 1;
-const contractAddress = '0x11111112542d85b3ef69ae05771c2dccff4faa26';
-const tokenAddress = '0x111111111117dc0aa78b770fa6a738034120c302';
-const tokenName = '1INCH Token';
-const walletAddress = '0x2c9b2dbdba8a9c969ac24153f5c1c23cb0e63914';
-const privateKey =
-    '965e092fdfc08940d2bd05c7b5c7e1c51e283e92c7f52bbf1408973ae9a9acb7';
-
-const permitParams: PermitParams = {
-    owner: walletAddress,
-    spender: contractAddress,
-    value: '1000000000',
-    nonce: 0,
-    deadline: 192689033,
-};
-
-const web3 = new Web3('...');
-// You can create and use a custom provider connector (for example: ethers)
-// For server side, you can use: new PrivateKeyProviderConnector(privateKey, web3);
-const connector = new Web3ProviderConnector(web3);
-const eip2612PermitUtils = new Eip2612PermitUtils(connector);
-
-const callData = await eip2612PermitUtils.buildPermitCallData(
-    {
-        ...permitParams,
-        nonce: await eip2612PermitUtils.getTokenNonce(
-            tokenAddress,
-            walletAddress
-        ),
-    },
-    chainId,
-    tokenName,
-    tokenAddress
-);
-
-console.log('Permit call data', callData);
-```
-
-### Get nonce from a token contract
-
-```typescript
-import {
-    Eip2612PermitUtils,
-    Web3ProviderConnector,
-} from '@1inch/permit-signed-approvals-utils';
-import Web3 from 'web3';
-
-const tokenAddress = '0x111111111117dc0aa78b770fa6a738034120c302';
-const walletAddress = '0x2c9b2dbdba8a9c969ac24153f5c1c23cb0e63914';
-const privateKey =
-    '965e092fdfc08940d2bd05c7b5c7e1c51e283e92c7f52bbf1408973ae9a9acb7';
-
-const web3 = new Web3('...');
-// You can create and use a custom provider connector (for example: ethers)
-// For server side, you can use: new PrivateKeyProviderConnector(privateKey, web3);
-const connector = new Web3ProviderConnector(web3);
-const eip2612PermitUtils = new Eip2612PermitUtils(connector);
-
-const nonce = await eip2612PermitUtils.getTokenNonce(
-    tokenAddress,
-    walletAddress
-);
-
-console.log('Nonce', nonce);
-```
-
-### Recover permit owner from call data
-
-```typescript
-import {
-    Eip2612PermitUtils,
-    Web3ProviderConnector,
-} from '@1inch/permit-signed-approvals-utils';
-import Web3 from 'web3';
-
-const callData = '0x......0000';
-
-const chainId = 56;
-const tokenName = '1INCH';
-const tokenAddress = '0x111111111117dc0aa78b770fa6a738034120c302';
-const walletAddress = '0x2c9b2dbdba8a9c969ac24153f5c1c23cb0e63914';
-const privateKey =
-    '965e092fdfc08940d2bd05c7b5c7e1c51e283e92c7f52bbf1408973ae9a9acb7';
-
-const web3 = new Web3('...');
-// You can create and use a custom provider connector (for example: ethers)
-// For server side, you can use: new PrivateKeyProviderConnector(privateKey, web3);
-const connector = new Web3ProviderConnector(web3);
-const eip2612PermitUtils = new Eip2612PermitUtils(connector);
-
-const result = await eip2612PermitUtils.recoverPermitOwnerFromCallData({
-    chainId,
-    tokenName,
-    tokenAddress,
-    callData
-});
-
-// OR
-
-const syncResult = eip2612PermitUtils.syncRecoverPermitOwnerFromCallData({
-    chainId,
-    tokenName,
-    tokenAddress,
-    callData,
-    nonce: 1,
-});
-
-// OR (for DAI-like tokens)
-
-const daiLikeResult = await eip2612PermitUtils.recoverDaiLikePermitOwnerFromCallData({
-    chainId,
-    tokenName: 'DAI',
-    tokenAddress: '0x6b175474e89094c44da98b954eedeac495271d0f',
-    callData,
-    nonce: 1,
-});
-
-console.log('Result', result);
-console.log('SyncResult', syncResult);
-console.log('DaiLikeResult', daiLikeResult);
-```
+### UniswapV3SwapToWithPermit:
+https://etherscan.io/tx/0x1b251d13fd530ddf2d4125631c71ee07b56568c1a6cf55a8e53a29a599b81e92
