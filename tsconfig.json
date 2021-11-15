@@ -1,7 +1,10 @@
 {
     "compileOnSave": false,
     "include": ["src/**/*"],
-    "exclude": ["src/**/*.test.ts", "test/*"],
+    "exclude": [
+        "src/__tests__/**/*",
+        "node_modules"
+    ],
     "compilerOptions": {
         "baseUrl": "./",
         "module": "commonjs",

@@ -1,8 +1,33 @@
-# 1inch trade transactions and typed data
+# Builder of transaction data for confirmation
 
-## Permit typed data:
+**From:** 
+```json
+{
+    "from": "0x64741d0b9e376d75873c12e1b0cdccc26c3bcb04",
+    "to": "0x1111111254fb6c44bac0bed2854e76f90643097d",
+    "nonce": 194,
+    "gasPrice": "0x1b7b430f2c",
+    "gasLimit": "0x091d06",
+    "value": "0x00",
+    "data": "0x7c025200000000000000000000...00e26b9977"
+}
+```
 
-### `regular permit`:
+**Into:**  
+![](./assets/tx-confirm-preview.jpg)
+
+## Test coverage
+
+| Statements                                                                    | Branches                                                                    | Functions                                                                    | Lines                                                                    |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| ![Statements](https://img.shields.io/badge/statements-99.91%25-brightgreen.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-50%25-red.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-99.91%25-brightgreen.svg?style=flat) |
+
+
+## 1inch trade transactions and typed data
+
+### Permit typed data:
+
+#### `regular permit`:
 
 ```json
 {
@@ -65,7 +90,7 @@
 }
 ```
 
-### `DAI-like permit`:
+#### `DAI-like permit`:
 
 ```json
 {
@@ -130,9 +155,9 @@
 
 ---
 
-## Limit order typed data:
+### Limit order typed data:
 
-### `Limit order`:
+#### `Limit order`:
 
 ```json
 {
@@ -222,26 +247,26 @@
 
 ---
 
-## Approve:
+### Approve:
 
-### `approve`:
+#### `approve`:
 
 https://etherscan.io/tx/0xbd44b75afac45ef81af448c47b40d32ac705fe2d0354b39097f5ebfd62046ffe
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |_spender               | address     | 0x1111111254fb6c44bAC0beD2854e76F90643097d |
 |2    |_value                   | uint256     | 115792089237316195423570985008687907853269984665640564039457584007913129639935 |
 
 ---
 
-## Swap:
+### Swap:
 
-### `swap`:
+#### `swap`:
 
 https://etherscan.io/tx/0x698156119b255c33347bf844a0245dafdc39e871f3825ae5c24cc0019be748ed
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |caller                   | address     | 0x220bdA5c8994804Ac96ebe4DF184d25e5c2196D4 |
 |2    |desc.srcToken           | address     | 0xdAC17F958D2ee523a2206206994597C13D831ec7 |
@@ -254,22 +279,22 @@ https://etherscan.io/tx/0x698156119b255c33347bf844a0245dafdc39e871f3825ae5c24cc0
 |9    |desc.permit           | bytes         | 0x                                         |
 |10    |data                   | bytes         | 0x                                         |
 
-### `clipperSwap`:
+#### `clipperSwap`:
 
 https://etherscan.io/tx/0xd0de097ca15040e588f8528162c01f5cad29fd7ea2168b2a503bc3633a4e8a6b
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |srcToken               | address     | 0x6B175474E89094C44Da98b954EedeAC495271d0F |
 |2    |dstToken               | address     | 0x0000000000000000000000000000000000000000 |
 |3    |amount                   | uint256     | 2000000000000000000                        |
 |4    |minReturn               | uint256     | 424579385213342                            |
 
-### `clipperSwapWithPermit`:
+#### `clipperSwapWithPermit`:
 
 https://etherscan.io/tx/0x027dbf1121f509031eba135ef03a17f18bfa7195c035c73db4cfc94b55df522e
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |recipient               | address     | 0x3b608c5243732903152E38F1dAB1056A4A79b980 |
 |2    |srcToken               | address     | 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 |
@@ -278,22 +303,22 @@ https://etherscan.io/tx/0x027dbf1121f509031eba135ef03a17f18bfa7195c035c73db4cfc9
 |5    |minReturn               | uint256     | 424703358412792                            |
 |6    |permit                   | bytes         | 0x0000000000000000000000003b608c5243732903152e38f1dab1056a4a79b9800000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000618d1d77000000000000000000000000000000000000000000000000000000000000001b8576a8af192b84d1e122d82eeddeb2fd0b006381926590f471fd23247aeeeb09010cad06bbbf7aa344d311a13ed14419a913f2015c88600dbbd579b180bf6d36                            |
 
-### `unoswap`:
+#### `unoswap`:
 
 https://etherscan.io/tx/0x179a4f63854d6e6f5d18ec1bf31d47c4debb6a7c32a094a815e4c0eeb25f4c2d
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |srcToken               | address     | 0x111111111117dC0aa78b770fA6A738034120C302 |
 |2    |amount                   | uint256     | 1000000000000000000                        |
 |3    |minReturn               | uint256     | 927972006385351                            |
 |4    |pools                   | bytes32[]     | 0x40000000000000003b6d034086f518368e0d49d5916e2bd9eb162e9952b7b04d                            |
 
-### `unoswapWithPermit`:
+#### `unoswapWithPermit`:
 
 https://etherscan.io/tx/0xe970c4f72e5d4a07d4fc52df338e75a082c3b4b835e40d7e4ea2df567b066de3
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |srcToken               | address     | 0x19042021329FDdcFBea5f934FB5b2670C91F7D20 |
 |2    |amount                   | uint256     | 100000                        |
@@ -301,21 +326,21 @@ https://etherscan.io/tx/0xe970c4f72e5d4a07d4fc52df338e75a082c3b4b835e40d7e4ea2df
 |4    |pools                   | bytes32[]     | 0x40000000000000003b6d0340ec9eb7af42207a8da12a04ee4b2f2b4b9cb43bd5                            |
 |5    |permit                   | bytes         | 0x0000000000000000000000003b608c5243732903152e38f1dab1056a4a79b9800000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000618d1e72000000000000000000000000000000000000000000000000000000000000001bb71d754ebc94ea2fe86bd06f941b4607b58433d29a4bded6f42c9ea789e997cc161711ec3aa97cc6af741c0f3e804398198db0d50f701fe42889509a5e0d8fb9                            |
 
-### `uniswapV3Swap`:
+#### `uniswapV3Swap`:
 
 https://etherscan.io/tx/0xc0302a2f43cf86c04cfa8c67025da08bbc53372cc313e87ba0d32febff2f517c
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |amount                   | uint256     | 100000000000000000                        |
 |2    |minReturn               | uint256     | 237601593079374                            |
 |3    |pools                   | bytes32[]     | 14474011154664524427946373126746238925103584872995555959354853311969479154385                            |
 
-### `uniswapV3SwapToWithPermit`:
+#### `uniswapV3SwapToWithPermit`:
 
 https://etherscan.io/tx/0x1b251d13fd530ddf2d4125631c71ee07b56568c1a6cf55a8e53a29a599b81e92
 
-|#    |Name                   | Type         | Data                                       |
+|##    |Name                   | Type         | Data                                       |
 |---|----------------------|-------------|--------------------------------------------|
 |1    |recipient               | address     |    0x3b608c5243732903152E38F1dAB1056A4A79b980 |
 |2    |srcToken               | address     |    0x111111111117dC0aa78b770fA6A738034120C302 |

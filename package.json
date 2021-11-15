@@ -1,8 +1,9 @@
 {
-    "name": "@1inch/abi-decoder",
+    "name": "@1inch/tx-confirm-data-bulder",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "source": "src/index.ts",
+    "main": "dist/index.js",
     "scripts": {
         "prebuild": "rm -rf dist && yarn run test:coverage && yarn run make-badges",
         "build": "tsc --module commonjs",
@@ -65,5 +66,8 @@
         "*.{js,ts}": [
             "yarn run lint"
         ]
+    },
+    "dependencies": {
+        "ethers": "^5.5.1"
     }
 }

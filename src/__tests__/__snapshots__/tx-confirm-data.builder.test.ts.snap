@@ -1,0 +1,250 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Builder of transaction data for confirmation Approve transaction 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "localizable",
+      "value": Object {
+        "args": Array [
+          "BUSD",
+        ],
+        "format": "To continue, you need to allow 1inch smart contracts to use your %%0%%. This has to be done only once for each token.",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x4fabb145d64652a948d72533023f6e7a623c7c53.png",
+          "name": "Binance USD",
+          "symbol": "BUSD",
+        },
+        "type": "amount",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x4fabb145d64652a948d72533023f6e7a623c7c53.png",
+          "name": "Binance USD",
+          "symbol": "BUSD",
+        },
+        "value": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+]
+`;
+
+exports[`Builder of transaction data for confirmation Swap transaction: swap() 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "decimals": 6,
+          "logoURI": "https://tokens.1inch.io/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
+          "name": "Tether USD",
+          "symbol": "USDT",
+        },
+        "type": "from",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "-",
+        "token": Object {
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "decimals": 6,
+          "logoURI": "https://tokens.1inch.io/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
+          "name": "Tether USD",
+          "symbol": "USDT",
+        },
+        "value": Object {
+          "hex": "0x1aa5803219",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x853d955acef822db058eb8505911ed77f175b99e.png",
+          "name": "Frax",
+          "symbol": "FRAX",
+        },
+        "type": "to",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "+",
+        "token": Object {
+          "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x853d955acef822db058eb8505911ed77f175b99e.png",
+          "name": "Frax",
+          "symbol": "FRAX",
+        },
+        "value": "113841200360986751251430",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x64741d0b9e376d75873c12e1b0cdccc26c3bcb04",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Sell price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "1000000000000000000",
+        "destinationToken": Object {
+          "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x853d955acef822db058eb8505911ed77f175b99e.png",
+          "name": "Frax",
+          "symbol": "FRAX",
+        },
+        "sourceAmount": "1000000",
+        "sourceToken": Object {
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "decimals": 6,
+          "logoURI": "https://tokens.1inch.io/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
+          "name": "Tether USD",
+          "symbol": "USDT",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Buy price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "1000000",
+        "destinationToken": Object {
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "decimals": 6,
+          "logoURI": "https://tokens.1inch.io/0xdac17f958d2ee523a2206206994597c13d831ec7.png",
+          "name": "Tether USD",
+          "symbol": "USDT",
+        },
+        "sourceAmount": "1000000000000000000",
+        "sourceToken": Object {
+          "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x853d955acef822db058eb8505911ed77f175b99e.png",
+          "name": "Frax",
+          "symbol": "FRAX",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Minimum Received",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x853d955acef822db058eb8505911ed77f175b99e.png",
+          "name": "Frax",
+          "symbol": "FRAX",
+        },
+        "value": Object {
+          "hex": "0x181b5805bbc9ae4bb3e6",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+]
+`;
