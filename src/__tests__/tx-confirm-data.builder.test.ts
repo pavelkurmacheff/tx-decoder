@@ -91,4 +91,31 @@ describe('Builder of transaction data for confirmation', () => {
         expect(txType).toBe('swap');
         expect(items).toMatchSnapshot();
     });
+
+    // https://etherscan.io/tx/0x027dbf1121f509031eba135ef03a17f18bfa7195c035c73db4cfc94b55df522e
+    it('Swap transaction: clipperSwapWithPermit()', async () => {
+        const dstAmount = BigNumber.from('425128486899692').toHexString();
+        const txConfig: Transaction = {
+            nonce: 379,
+            gasPrice: '0x1ce84f82b4',
+            gasLimit: '0x04191b',
+            from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0x00',
+            data: '0xd6a92a5d0000000000000000000000003b608c5243732903152e38f1dab1056a4a79b980000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e848000000000000000000000000000000000000000000000000000018243f4d027f800000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000003b608c5243732903152e38f1dab1056a4a79b9800000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000618d1d77000000000000000000000000000000000000000000000000000000000000001b8576a8af192b84d1e122d82eeddeb2fd0b006381926590f471fd23247aeeeb09010cad06bbbf7aa344d311a13ed14419a913f2015c88600dbbd579b180bf6d36e26b9977'
+        };
+
+        rpcCallerMock.mockImplementation((method, params) => {
+            if (method === 'eth_call' && params[0].data === txConfig.data) {
+                return Promise.resolve(dstAmount);
+            }
+
+            return Promise.resolve('0x');
+        });
+
+        const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+
+        expect(txType).toBe('swap');
+        expect(items).toMatchSnapshot();
+    });
 });

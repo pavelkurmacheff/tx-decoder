@@ -253,6 +253,185 @@ Array [
 ]
 `;
 
+exports[`Builder of transaction data for confirmation Swap transaction: clipperSwapWithPermit() 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+          "name": "USD Coin",
+          "symbol": "USDC",
+        },
+        "type": "from",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "-",
+        "token": Object {
+          "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+          "name": "USD Coin",
+          "symbol": "USDC",
+        },
+        "value": Object {
+          "hex": "0x1e8480",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "type": "to",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "+",
+        "token": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "value": "425128486899692",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Sell price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "0.000212564243449846",
+        "destinationToken": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+          "name": "USD Coin",
+          "symbol": "USDC",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Buy price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "4704.4600906076075",
+        "destinationToken": Object {
+          "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.png",
+          "name": "USD Coin",
+          "symbol": "USDC",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Minimum Received",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "value": Object {
+          "hex": "0x018243f4d027f8",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+]
+`;
+
 exports[`Builder of transaction data for confirmation Swap transaction: swap() 1`] = `
 Array [
   Object {
