@@ -74,6 +74,185 @@ Array [
 ]
 `;
 
+exports[`Builder of transaction data for confirmation Swap transaction: clipperSwap() 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6b175474e89094c44da98b954eedeac495271d0f.png",
+          "name": "Dai Stablecoin",
+          "symbol": "DAI",
+        },
+        "type": "from",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "-",
+        "token": Object {
+          "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6b175474e89094c44da98b954eedeac495271d0f.png",
+          "name": "Dai Stablecoin",
+          "symbol": "DAI",
+        },
+        "value": Object {
+          "hex": "0x1bc16d674ec80000",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "type": "to",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "+",
+        "token": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "value": "459483882860783",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Sell price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "0.0002297419414303915",
+        "destinationToken": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6b175474e89094c44da98b954eedeac495271d0f.png",
+          "name": "Dai Stablecoin",
+          "symbol": "DAI",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Buy price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "4352.70980028253",
+        "destinationToken": Object {
+          "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6b175474e89094c44da98b954eedeac495271d0f.png",
+          "name": "Dai Stablecoin",
+          "symbol": "DAI",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Minimum Received",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
+        },
+        "value": Object {
+          "hex": "0x018227176f419e",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+]
+`;
+
 exports[`Builder of transaction data for confirmation Swap transaction: swap() 1`] = `
 Array [
   Object {
@@ -173,7 +352,7 @@ Array [
     "value": Object {
       "type": "rate",
       "value": Object {
-        "destinationAmount": "1.0017908723592432",
+        "destinationAmount": "0.9982123291311034",
         "destinationToken": Object {
           "address": "0x853d955acef822db058eb8505911ed77f175b99e",
           "decimals": 18,
@@ -202,7 +381,7 @@ Array [
     "value": Object {
       "type": "rate",
       "value": Object {
-        "destinationAmount": "0.9982123291311034",
+        "destinationAmount": "1.0017908723592432",
         "destinationToken": Object {
           "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
           "decimals": 6,

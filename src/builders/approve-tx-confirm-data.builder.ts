@@ -1,6 +1,7 @@
 import { Item } from '../model/tx-ui-items.model';
 import {BuilderParams} from '../model/common.model';
 import {BigNumber} from '@ethersproject/bignumber';
+import {findTokenByAddress} from './helpers/tokens.helper';
 
 export interface ApproveTxItemData {
     _value: BigNumber;
@@ -8,7 +9,7 @@ export interface ApproveTxItemData {
 
 export async function approveTxConfirmDataBuilder(params: BuilderParams<ApproveTxItemData>): Promise<Item[]> {
     const {resources, txConfig, data} = params;
-    const token = resources.tokens[txConfig.to.toLowerCase()];
+    const token = findTokenByAddress(resources, txConfig.to.toLowerCase());
 
     if (!token) {
         throw new Error('Token is not found for approveTxItemBuilder: ' + txConfig.to.toLowerCase());

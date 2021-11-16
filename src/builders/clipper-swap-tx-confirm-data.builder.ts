@@ -3,24 +3,22 @@ import {BuilderParams} from '../model/common.model';
 import {oneInchRouterV4Swap} from './helpers/1inch-router-v4-swap.helper';
 import {findTokenByAddress} from './helpers/tokens.helper';
 
-export interface SwapTxItemData {
-    desc: {
-        srcToken: string,
-        dstToken: string,
-        amount: string,
-        minReturnAmount: string,
-    }
+export interface ClipperSwapTxItemData {
+    srcToken: string;
+    dstToken: string;
+    amount: string;
+    minReturn: string;
 }
 
-export async function swapTxConfirmDataBuilder(params: BuilderParams<SwapTxItemData>): Promise<Item[]> {
+export async function clipperSwapTxConfirmDataBuilder(params: BuilderParams<ClipperSwapTxItemData>): Promise<Item[]> {
     const {resources, txConfig, data, rpcCaller} = params;
 
     const {
         srcToken: srcTokenAddress,
         dstToken: dstTokenAddress,
         amount: srcAmount,
-        minReturnAmount
-    } = data.desc;
+        minReturn: minReturnAmount
+    } = data;
 
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
     const dstToken = findTokenByAddress(resources, dstTokenAddress);
@@ -28,11 +26,11 @@ export async function swapTxConfirmDataBuilder(params: BuilderParams<SwapTxItemD
         .then(response => BigInt(response).toString(10));
 
     if (!srcToken) {
-        throw new Error('Src token is not found for swapTxConfirmDataBuilder: ' + data.desc.srcToken.toLowerCase());
+        throw new Error('Src token is not found for clipperSwapTxConfirmDataBuilder: ' + srcTokenAddress.toLowerCase());
     }
 
     if (!dstToken) {
-        throw new Error('Dst token is not found for swapTxConfirmDataBuilder: ' + data.desc.dstToken.toLowerCase());
+        throw new Error('Dst token is not found for clipperSwapTxConfirmDataBuilder: ' + dstTokenAddress.toLowerCase());
     }
 
     return oneInchRouterV4Swap({

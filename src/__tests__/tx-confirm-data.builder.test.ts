@@ -64,4 +64,31 @@ describe('Builder of transaction data for confirmation', () => {
         expect(txType).toBe('swap');
         expect(items).toMatchSnapshot();
     });
+
+    // https://etherscan.io/tx/0xd0de097ca15040e588f8528162c01f5cad29fd7ea2168b2a503bc3633a4e8a6b
+    it('Swap transaction: clipperSwap()', async () => {
+        const dstAmount = BigNumber.from('459483882860783').toHexString();
+        const txConfig: Transaction = {
+            nonce: 380,
+            gasPrice: '0x1eb1f3ba45',
+            gasLimit: '0x02c6a2',
+            from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0x00',
+            data: '0xb04311820000000000000000000000006b175474e89094c44da98b954eedeac495271d0f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000000000018227176f419ee26b9977'
+        };
+
+        rpcCallerMock.mockImplementation((method, params) => {
+            if (method === 'eth_call' && params[0].data === txConfig.data) {
+                return Promise.resolve(dstAmount);
+            }
+
+            return Promise.resolve('0x');
+        });
+
+        const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+
+        expect(txType).toBe('swap');
+        expect(items).toMatchSnapshot();
+    });
 });

@@ -4,6 +4,7 @@ import {JsonFragment} from '@ethersproject/abi';
 import {TxItemBuilder, TxType} from './model/tx-ui-items.model';
 import {approveTxConfirmDataBuilder} from './builders/approve-tx-confirm-data.builder';
 import {swapTxConfirmDataBuilder} from './builders/swap-tx-confirm-data.builder';
+import {clipperSwapTxConfirmDataBuilder} from './builders/clipper-swap-tx-confirm-data.builder';
 
 export const TX_CONFIRM_DATA_CONFIG: {[key: string]: {abi: JsonFragment[], type: TxType, builder: TxItemBuilder}} = {
     // approve
@@ -17,5 +18,11 @@ export const TX_CONFIRM_DATA_CONFIG: {[key: string]: {abi: JsonFragment[], type:
         type: 'swap',
         abi: oneInchRouterV4Abi,
         builder: swapTxConfirmDataBuilder
+    },
+    // Swap: clipperSwap()
+    '0xb0431182': {
+        type: 'swap',
+        abi: oneInchRouterV4Abi,
+        builder: clipperSwapTxConfirmDataBuilder
     },
 };
