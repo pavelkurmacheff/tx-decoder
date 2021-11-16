@@ -1,16 +1,13 @@
 import { Item } from '../model/tx-ui-items.model';
-import {BlockchainResources, Transaction} from '../model/common.model';
+import {BuilderParams} from '../model/common.model';
 import {BigNumber} from '@ethersproject/bignumber';
 
 export interface ApproveTxItemData {
     _value: BigNumber;
 }
 
-export function approveTxConfirmDataBuilder(
-    resources: BlockchainResources,
-    txConfig: Transaction,
-    data: ApproveTxItemData
-): Item[] {
+export async function approveTxConfirmDataBuilder(params: BuilderParams<ApproveTxItemData>): Promise<Item[]> {
+    const {resources, txConfig, data} = params;
     const token = resources.tokens[txConfig.to.toLowerCase()];
 
     if (!token) {

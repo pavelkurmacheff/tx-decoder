@@ -1,4 +1,4 @@
-import {BlockchainResources, Token, Transaction} from './common.model';
+import {BuilderParams, Token} from './common.model';
 
 /**** Keys ****/
 
@@ -141,5 +141,5 @@ export interface Item {
 export type TxType = 'swap' | 'approve';
 
 export interface TxItemBuilder {
-    (resources: BlockchainResources, txConfig: Transaction, data: any): Item[]
+    (params: BuilderParams<any>): Promise<Item[]>
 }

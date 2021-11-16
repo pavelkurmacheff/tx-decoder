@@ -133,7 +133,7 @@ Array [
           "name": "Frax",
           "symbol": "FRAX",
         },
-        "value": "113841200360986751251430",
+        "value": "114241200360986751251430",
       },
     },
   },
@@ -173,7 +173,7 @@ Array [
     "value": Object {
       "type": "rate",
       "value": Object {
-        "destinationAmount": "1000000000000000000",
+        "destinationAmount": "1.0017908723592432",
         "destinationToken": Object {
           "address": "0x853d955acef822db058eb8505911ed77f175b99e",
           "decimals": 18,
@@ -181,7 +181,7 @@ Array [
           "name": "Frax",
           "symbol": "FRAX",
         },
-        "sourceAmount": "1000000",
+        "sourceAmount": "1",
         "sourceToken": Object {
           "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
           "decimals": 6,
@@ -202,7 +202,7 @@ Array [
     "value": Object {
       "type": "rate",
       "value": Object {
-        "destinationAmount": "1000000",
+        "destinationAmount": "0.9982123291311034",
         "destinationToken": Object {
           "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
           "decimals": 6,
@@ -210,7 +210,7 @@ Array [
           "name": "Tether USD",
           "symbol": "USDT",
         },
-        "sourceAmount": "1000000000000000000",
+        "sourceAmount": "1",
         "sourceToken": Object {
           "address": "0x853d955acef822db058eb8505911ed77f175b99e",
           "decimals": 18,

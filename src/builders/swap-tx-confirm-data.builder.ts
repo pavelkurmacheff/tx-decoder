@@ -1,6 +1,6 @@
 import { Item } from '../model/tx-ui-items.model';
-import {BlockchainResources, Transaction} from '../model/common.model';
-import {parseUnits, formatUnits} from '@ethersproject/units';
+import {BuilderParams} from '../model/common.model';
+import {formatUnits} from '@ethersproject/units';
 
 export interface SwapTxItemData {
     desc: {
@@ -11,21 +11,20 @@ export interface SwapTxItemData {
     }
 }
 
-export function swapTxConfirmDataBuilder(
-    resources: BlockchainResources,
-    txConfig: Transaction,
-    data: SwapTxItemData
-): Item[] {
+export async function swapTxConfirmDataBuilder(params: BuilderParams<SwapTxItemData>): Promise<Item[]> {
+    const {resources, txConfig, data, rpcCaller} = params;
+
     const {
         srcToken: srcTokenAddress,
         dstToken: dstTokenAddress,
         amount: srcAmount,
         minReturnAmount
     } = data.desc;
+
     const srcToken = resources.tokens[srcTokenAddress.toLowerCase()];
     const dstToken = resources.tokens[dstTokenAddress.toLowerCase()];
-    const dstAmount = '113841200360986751251430'; // TODO
-
+    const dstAmount = await rpcCaller.call<string>('eth_call', [txConfig])
+        .then(response => BigInt(response).toString(10));
     const srcUnits = formatUnits(srcAmount, srcToken.decimals);
     const dstUnits = formatUnits(dstAmount, dstToken.decimals);
 
@@ -114,12 +113,9 @@ export function swapTxConfirmDataBuilder(
                 type: 'rate',
                 value: {
                     sourceToken: srcToken,
-                    sourceAmount: parseUnits('1', srcToken.decimals).toString(),
+                    sourceAmount: '1',
                     destinationToken: dstToken,
-                    destinationAmount: parseUnits(
-                        Math.round((+srcUnits) / (+dstUnits)).toString(),
-                        dstToken.decimals
-                    ).toString()
+                    destinationAmount: ((+srcUnits) / (+dstUnits)).toString()
                 }
             }
         },
@@ -135,12 +131,9 @@ export function swapTxConfirmDataBuilder(
                 type: 'rate',
                 value: {
                     sourceToken: dstToken,
-                    sourceAmount: parseUnits('1', dstToken.decimals).toString(),
+                    sourceAmount: '1',
                     destinationToken: srcToken,
-                    destinationAmount: parseUnits(
-                        Math.round((+dstUnits) / (+srcUnits)).toString(),
-                        srcToken.decimals
-                    ).toString()
+                    destinationAmount: ((+dstUnits) / (+srcUnits)).toString()
                 }
             }
         },

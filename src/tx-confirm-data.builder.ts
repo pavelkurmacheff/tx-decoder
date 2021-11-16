@@ -1,13 +1,16 @@
 import {Item, TxType} from './model/tx-ui-items.model';
-import {BlockchainResources, Transaction} from './model/common.model';
+import {BlockchainResources, BlockchainRpcCaller, Transaction} from './model/common.model';
 import {TX_CONFIRM_DATA_CONFIG} from './tx-confirm-data.config';
 import {Interface} from '@ethersproject/abi';
 
 export class TxConfirmDataBuilder {
-    constructor(private readonly resources: BlockchainResources) {
+    constructor(
+        private readonly resources: BlockchainResources,
+        private readonly rpcCaller: BlockchainRpcCaller,
+    ) {
     }
 
-    buildItemsForTx(txConfig: Transaction): {items: Item[], txType: TxType} {
+    async buildItemsForTx(txConfig: Transaction): Promise<{items: Item[], txType: TxType}> {
         const methodSelector = txConfig.data.slice(0, 10).toLowerCase();
         const methodInfo = TX_CONFIRM_DATA_CONFIG[methodSelector];
 
@@ -21,7 +24,12 @@ export class TxConfirmDataBuilder {
 
         return {
             txType: type,
-            items: builder(this.resources, txConfig, methodArguments as any)
+            items: await builder({
+                resources: this.resources,
+                rpcCaller: this.rpcCaller,
+                txConfig,
+                data: methodArguments as any
+            })
         };
     }
 }

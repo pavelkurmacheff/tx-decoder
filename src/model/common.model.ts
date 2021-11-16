@@ -19,3 +19,14 @@ export interface BlockchainResources {
     readonly tokens: {[key: string]: Token}, // https://tokens.1inch.io/v1.1/1
     readonly tokenPrices: {[key: string]: string}, // https://token-prices.1inch.io/v1.1/1
 }
+
+export interface BlockchainRpcCaller {
+    call<T>(method: string, params: any[]): Promise<T>;
+}
+
+export interface BuilderParams<T> {
+    resources: BlockchainResources,
+    rpcCaller: BlockchainRpcCaller,
+    txConfig: Transaction,
+    data: T
+}
