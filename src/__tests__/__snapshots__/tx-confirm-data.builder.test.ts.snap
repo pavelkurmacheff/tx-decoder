@@ -606,3 +606,720 @@ Array [
   },
 ]
 `;
+
+exports[`Builder of transaction data for confirmation Swap transaction: uniswapV3Swap() 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2.png",
+          "name": "SushiToken",
+          "symbol": "SUSHI",
+        },
+        "type": "from",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "-",
+        "token": Object {
+          "address": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2.png",
+          "name": "SushiToken",
+          "symbol": "SUSHI",
+        },
+        "value": Object {
+          "hex": "0x016345785d8a0000",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "type": "to",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "+",
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "value": "237839432511886",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Sell price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "0.00237839432511886",
+        "destinationToken": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2.png",
+          "name": "SushiToken",
+          "symbol": "SUSHI",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Buy price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "420.45172637637586",
+        "destinationToken": Object {
+          "address": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0x6b3595068778dd592e39a122f4f5a5cf09c90fe2.png",
+          "name": "SushiToken",
+          "symbol": "SUSHI",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Minimum Received",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "value": Object {
+          "hex": "0xd818ee8db64e",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Builder of transaction data for confirmation Swap transaction: uniswapV3SwapToWithPermit() 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+        "type": "from",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "-",
+        "token": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+        "value": Object {
+          "hex": "0x8a720b1faca5b698",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d.png",
+          "name": "LQTY",
+          "symbol": "LQTY",
+        },
+        "type": "to",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "+",
+        "token": Object {
+          "address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d.png",
+          "name": "LQTY",
+          "symbol": "LQTY",
+        },
+        "value": "3205160238574434958",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Sell price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "0.3212855556066434",
+        "destinationToken": Object {
+          "address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d.png",
+          "name": "LQTY",
+          "symbol": "LQTY",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Buy price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "3.1124959791977727",
+        "destinationToken": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d.png",
+          "name": "LQTY",
+          "symbol": "LQTY",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Minimum Received",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x6dea81c8171d0ba574754ef6f8b412f2ed88c54d.png",
+          "name": "LQTY",
+          "symbol": "LQTY",
+        },
+        "value": Object {
+          "hex": "0x2c58db06cc07b865",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Builder of transaction data for confirmation Swap transaction: unoswap() 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+        "type": "from",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "-",
+        "token": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+        "value": Object {
+          "hex": "0x0de0b6b3a7640000",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "type": "to",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "+",
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "value": "928900907292644",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Sell price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "0.000928900907292644",
+        "destinationToken": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Buy price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "1076.5410951256147",
+        "destinationToken": Object {
+          "address": "0x111111111117dc0aa78b770fa6a738034120c302",
+          "decimals": 18,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.io/0x111111111117dc0aa78b770fa6a738034120c302.png",
+          "name": "1INCH Token",
+          "symbol": "1INCH",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Minimum Received",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "value": Object {
+          "hex": "0x034bfc51cd56c7",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`Builder of transaction data for confirmation Swap transaction: unoswapWithPermit() 1`] = `
+Array [
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0x19042021329fddcfbea5f934fb5b2670c91f7d20",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.exchange/0x19042021329fddcfbea5f934fb5b2670c91f7d20.png",
+          "name": "Take My Muffin",
+          "symbol": "TMM",
+        },
+        "type": "from",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "-",
+        "token": Object {
+          "address": "0x19042021329fddcfbea5f934fb5b2670c91f7d20",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.exchange/0x19042021329fddcfbea5f934fb5b2670c91f7d20.png",
+          "name": "Take My Muffin",
+          "symbol": "TMM",
+        },
+        "value": Object {
+          "hex": "0x0186a0",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "token",
+      "value": Object {
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "type": "to",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "+",
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "value": "224395484185470",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "wallet",
+      "value": Object {
+        "type": "own",
+      },
+    },
+    "value": Object {
+      "type": "text",
+      "value": Object {
+        "text": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+        "type": "address",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "placeholder",
+    },
+    "value": Object {
+      "type": "placeholder",
+      "value": Object {
+        "type": "fee",
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Sell price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "0.0022439548418547",
+        "destinationToken": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0x19042021329fddcfbea5f934fb5b2670c91f7d20",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.exchange/0x19042021329fddcfbea5f934fb5b2670c91f7d20.png",
+          "name": "Take My Muffin",
+          "symbol": "TMM",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Buy price",
+      },
+    },
+    "value": Object {
+      "type": "rate",
+      "value": Object {
+        "destinationAmount": "445.6417666469029",
+        "destinationToken": Object {
+          "address": "0x19042021329fddcfbea5f934fb5b2670c91f7d20",
+          "decimals": 6,
+          "eip2612": true,
+          "logoURI": "https://tokens.1inch.exchange/0x19042021329fddcfbea5f934fb5b2670c91f7d20.png",
+          "name": "Take My Muffin",
+          "symbol": "TMM",
+        },
+        "sourceAmount": "1",
+        "sourceToken": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+      },
+    },
+  },
+  Object {
+    "key": Object {
+      "type": "title",
+      "value": Object {
+        "title": "Minimum Received",
+      },
+    },
+    "value": Object {
+      "type": "amount",
+      "value": Object {
+        "sign": "0",
+        "token": Object {
+          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "decimals": 18,
+          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
+          "name": "Wrapped Ether",
+          "symbol": "WETH",
+        },
+        "value": Object {
+          "hex": "0xcbe1e61c6764",
+          "type": "BigNumber",
+        },
+      },
+    },
+  },
+]
+`;

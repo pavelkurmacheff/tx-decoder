@@ -3,8 +3,9 @@ import {TxConfirmDataBuilder} from '../tx-confirm-data.builder';
 import {TOKENS_MOCK} from './mocks/tokens.mock';
 import {TOKEN_PRICES_MOCK} from './mocks/token-prices.mock';
 import {BigNumber} from '@ethersproject/bignumber';
+import {TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../common.const';
 
-describe('Builder of transaction data for confirmation', () => {
+describe('Transaction data for confirmation builder', () => {
     let txUiItemsBuilder: TxConfirmDataBuilder;
     let rpcCaller: BlockchainRpcCaller;
     let rpcCallerMock: jest.Mock;
@@ -108,6 +109,139 @@ describe('Builder of transaction data for confirmation', () => {
         rpcCallerMock.mockImplementation((method, params) => {
             if (method === 'eth_call' && params[0].data === txConfig.data) {
                 return Promise.resolve(dstAmount);
+            }
+
+            return Promise.resolve('0x');
+        });
+
+        const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+
+        expect(txType).toBe('swap');
+        expect(items).toMatchSnapshot();
+    });
+
+    // https://etherscan.io/tx/0x179a4f63854d6e6f5d18ec1bf31d47c4debb6a7c32a094a815e4c0eeb25f4c2d
+    it('Swap transaction: unoswap()', async () => {
+        const dstAmount = BigNumber.from('928900907292644').toHexString();
+        const txConfig: Transaction = {
+            nonce: 385,
+            gasPrice: '0x2620214ec7',
+            gasLimit: '0x02873c',
+            from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0x00',
+            data: '0x2e95b6c8000000000000000000000000111111111117dc0aa78b770fa6a738034120c3020000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000034bfc51cd56c70000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000140000000000000003b6d034086f518368e0d49d5916e2bd9eb162e9952b7b04de26b9977'
+        };
+
+        rpcCallerMock.mockImplementation((method, params) => {
+            if (method === 'eth_call' && params[0].data === txConfig.data) {
+                return Promise.resolve(dstAmount);
+            }
+
+            if (method === 'eth_call' && params[0].data === TOKEN1_POOL_SELECTOR) {
+                // WETH
+                return Promise.resolve('0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
+            }
+
+            return Promise.resolve('0x');
+        });
+
+        const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+
+        expect(txType).toBe('swap');
+        expect(items).toMatchSnapshot();
+    });
+
+    // https://etherscan.io/tx/0xe970c4f72e5d4a07d4fc52df338e75a082c3b4b835e40d7e4ea2df567b066de3
+    it('Swap transaction: unoswapWithPermit()', async () => {
+        const dstAmount = BigNumber.from('224395484185470').toHexString();
+        const txConfig: Transaction = {
+            nonce: 381,
+            gasPrice: '0x1db6178ec5',
+            gasLimit: '0x0343b4',
+            from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0x00',
+            data: '0xa1251d7500000000000000000000000019042021329fddcfbea5f934fb5b2670c91f7d2000000000000000000000000000000000000000000000000000000000000186a00000000000000000000000000000000000000000000000000000cbe1e61c676400000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000000000000000000000000000000000000000000140000000000000003b6d0340ec9eb7af42207a8da12a04ee4b2f2b4b9cb43bd500000000000000000000000000000000000000000000000000000000000000e00000000000000000000000003b608c5243732903152e38f1dab1056a4a79b9800000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000618d1e72000000000000000000000000000000000000000000000000000000000000001bb71d754ebc94ea2fe86bd06f941b4607b58433d29a4bded6f42c9ea789e997cc161711ec3aa97cc6af741c0f3e804398198db0d50f701fe42889509a5e0d8fb9e26b9977'
+        };
+
+        rpcCallerMock.mockImplementation((method, params) => {
+            if (method === 'eth_call' && params[0].data === txConfig.data) {
+                return Promise.resolve(dstAmount);
+            }
+
+            if (method === 'eth_call' && params[0].data === TOKEN1_POOL_SELECTOR) {
+                // WETH
+                return Promise.resolve('0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
+            }
+
+            return Promise.resolve('0x');
+        });
+
+        const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+
+        expect(txType).toBe('swap');
+        expect(items).toMatchSnapshot();
+    });
+
+    // https://etherscan.io/tx/0xc0302a2f43cf86c04cfa8c67025da08bbc53372cc313e87ba0d32febff2f517c
+    it('Swap transaction: uniswapV3Swap()', async () => {
+        const dstAmount = BigNumber.from('237839432511886').toHexString();
+        const txConfig: Transaction = {
+            nonce: 382,
+            gasPrice: '0x222511942d',
+            gasLimit: '0x02696f',
+            from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0x00',
+            data: '0xe449022e000000000000000000000000000000000000000000000000016345785d8a00000000000000000000000000000000000000000000000000000000d818ee8db64e0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000120000000000000000000000073a6a761fe483ba19debb8f56ac5bbf14c0cdad1e26b9977'
+        };
+
+        rpcCallerMock.mockImplementation((method, params) => {
+            if (method === 'eth_call' && params[0].data === txConfig.data) {
+                return Promise.resolve(dstAmount);
+            }
+
+            if (method === 'eth_call' && params[0].data === TOKEN0_POOL_SELECTOR) {
+                // SUSHI
+                return Promise.resolve('0x0000000000000000000000006b3595068778dd592e39a122f4f5a5cf09c90fe2');
+            }
+
+            if (method === 'eth_call' && params[0].data === TOKEN1_POOL_SELECTOR) {
+                // WETH
+                return Promise.resolve('0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
+            }
+
+            return Promise.resolve('0x');
+        });
+
+        const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+
+        expect(txType).toBe('swap');
+        expect(items).toMatchSnapshot();
+    });
+
+    // https://etherscan.io/tx/0x1b251d13fd530ddf2d4125631c71ee07b56568c1a6cf55a8e53a29a599b81e92
+    it('Swap transaction: uniswapV3SwapToWithPermit()', async () => {
+        const dstAmount = BigNumber.from('3205160238574434958').toHexString();
+        const txConfig: Transaction = {
+            nonce: 366,
+            gasPrice: '0x161000aa70',
+            gasLimit: '0x04734d',
+            from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0x00',
+            data: '0x2521b9300000000000000000000000003b608c5243732903152e38f1dab1056a4a79b980000000000000000000000000111111111117dc0aa78b770fa6a738034120c3020000000000000000000000000000000000000000000000008a720b1faca5b6980000000000000000000000000000000000000000000000002c58db06cc07b86500000000000000000000000000000000000000000000000000000000000000c000000000000000000000000000000000000000000000000000000000000001200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000d35efae4097d005720608eaf37e42a5936c94b44800000000000000000000000d1d5a4c0ea98971894772dcd6d2f1dc71083c44e00000000000000000000000000000000000000000000000000000000000000e00000000000000000000000003b608c5243732903152e38f1dab1056a4a79b9800000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000006187dd53000000000000000000000000000000000000000000000000000000000000001cdae2d3851069237b24b459c7c732ce95d1ed8519fa084ab44f167f356c1310134e9f3100eee9ec3d6b3631d82367ea69af53f5a626596da45c6c441749c376d6e26b9977'
+        };
+
+        rpcCallerMock.mockImplementation((method, params) => {
+            if (method === 'eth_call' && params[0].data === txConfig.data) {
+                return Promise.resolve(dstAmount);
+            }
+
+            if (method === 'eth_call' && params[0].data === TOKEN0_POOL_SELECTOR) {
+                // LQTY
+                return Promise.resolve('0x0000000000000000000000006dea81c8171d0ba574754ef6f8b412f2ed88c54d');
             }
 
             return Promise.resolve('0x');
