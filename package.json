@@ -19,15 +19,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/1inch/abi-decoder.git",
-        "directory": "@1inch/abi-decoder"
+        "url": "git+https://github.com/1inch/tx-confirm-data-bulder.git",
+        "directory": "@1inch/tx-confirm-data-bulder"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/1inch/abi-decoder/issues"
+        "url": "https://github.com/1inch/tx-confirm-data-bulder/issues"
     },
-    "homepage": "https://github.com/1inch/abi-decoder#readme",
+    "homepage": "https://github.com/1inch/tx-confirm-data-bulder#readme",
     "devDependencies": {
         "@babel/core": "^7.13.16",
         "@babel/preset-env": "^7.13.15",
