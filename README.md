@@ -23,6 +23,39 @@
 | ![Statements](https://img.shields.io/badge/statements-99.91%25-brightgreen.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-50%25-red.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-99.91%25-brightgreen.svg?style=flat) |
 
 
+## Quick start
+
+```typescript
+import {TxConfirmDataBuilder, Transaction} from '@1inch/tx-confirm-data-builder';
+
+/* Implement your solution to make RPC calls to blockchain */
+const rpcCaller = (method, params) => {
+    return window.ethereum.request({method, params});
+}
+
+const txUiItemsBuilder = new TxConfirmDataBuilder({
+    tokens: {...}, // Result of https://tokens.1inch.io/v1.1/1
+    tokenPrices: {...} // Result of https://token-prices.1inch.io/v1.1/1
+}, rpcCaller);
+
+const txConfig: Transaction = {
+    nonce: 383,
+    gasPrice: '0x1da4f97c6e',
+    gasLimit: '0x011150',
+    from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+    to: '0x4fabb145d64652a948d72533023f6e7a623c7c53',
+    value: '0x00',
+    data: '0x095ea7b30000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+};
+
+const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+
+console.log('Tx type: ', txType); // approve
+console.log('Items: ', items);
+```
+
+> **For more examples see [unit-tests](./src/__tests__/tx-confirm-data.builder.test.ts)**
+
 ## 1inch trade transactions and typed data
 
 ### Permit typed data:
