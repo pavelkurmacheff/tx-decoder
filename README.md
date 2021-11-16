@@ -1,6 +1,7 @@
 # Builder of transaction data for confirmation
 
-**From:** 
+**From:**
+
 ```json
 {
     "from": "0x64741d0b9e376d75873c12e1b0cdccc26c3bcb04",
@@ -22,7 +23,6 @@
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | ![Statements](https://img.shields.io/badge/statements-99.64%25-brightgreen.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-56.81%25-red.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-100%25-brightgreen.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-99.64%25-brightgreen.svg?style=flat) |
 
-
 ## Quick start
 
 ```typescript
@@ -30,12 +30,12 @@ import {TxConfirmDataBuilder, Transaction} from '@1inch/tx-confirm-data-builder'
 
 /* Implement your solution to make RPC calls to blockchain */
 const rpcCaller = (method, params) => {
-    return window.ethereum.request({method, params});
+    return window.ethereum.request({ method, params });
 }
 
 const txUiItemsBuilder = new TxConfirmDataBuilder({
-    tokens: {...}, // Result of https://tokens.1inch.io/v1.1/1
-    tokenPrices: {...} // Result of https://token-prices.1inch.io/v1.1/1
+    tokens: { ... }, // Result of https://tokens.1inch.io/v1.1/1
+    tokenPrices: { ... } // Result of https://token-prices.1inch.io/v1.1/1
 }, rpcCaller);
 
 const txConfig: Transaction = {
@@ -48,10 +48,86 @@ const txConfig: Transaction = {
     data: '0x095ea7b30000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
 };
 
-const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
+const { items, txType } = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
 console.log('Tx type: ', txType); // approve
 console.log('Items: ', items);
+```
+
+**Example of result:**
+
+```json
+[
+    {
+        "key": {
+            "type": "placeholder"
+        },
+        "value": {
+            "type": "localizable",
+            "value": {
+                "format": "To continue, you need to allow 1inch smart contracts to use your %%0%%. This has to be done only once for each token.",
+                "args": [
+                    "BUSD"
+                ]
+            }
+        }
+    },
+    {
+        "key": {
+            "type": "token",
+            "value": {
+                "type": "amount",
+                "token": {
+                    "symbol": "BUSD",
+                    "name": "Binance USD",
+                    "decimals": 18,
+                    "address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+                    "logoURI": "https://tokens.1inch.io/0x4fabb145d64652a948d72533023f6e7a623c7c53.png"
+                }
+            }
+        },
+        "value": {
+            "type": "amount",
+            "value": {
+                "token": {
+                    "symbol": "BUSD",
+                    "name": "Binance USD",
+                    "decimals": 18,
+                    "address": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+                    "logoURI": "https://tokens.1inch.io/0x4fabb145d64652a948d72533023f6e7a623c7c53.png"
+                },
+                "value": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "sign": "0"
+            }
+        }
+    },
+    {
+        "key": {
+            "type": "wallet",
+            "value": {
+                "type": "own"
+            }
+        },
+        "value": {
+            "type": "text",
+            "value": {
+                "type": "address",
+                "text": "0x3b608c5243732903152e38f1dab1056a4a79b980"
+            }
+        }
+    },
+    {
+        "key": {
+            "type": "placeholder"
+        },
+        "value": {
+            "type": "placeholder",
+            "value": {
+                "type": "fee"
+            }
+        }
+    }
+]
 ```
 
 > **For more examples see [unit-tests](./src/__tests__/tx-confirm-data.builder.test.ts)**

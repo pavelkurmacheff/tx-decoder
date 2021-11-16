@@ -1,0 +1,14 @@
+@startuml
+start
+:Create TxConfirmDataBuilder instance;
+note right: Specify: \n- tokens list (https://tokens.1inch.io/v1.1/1) \n- token prices list (https://token-prices.1inch.io/v1.1/1) \n- rpcCaller function;
+:Call await txUiItemsBuilder.buildItemsForTx(txConfig);
+note right: txConfig = {from: '0x...000', to: '0x...000', data: '0x...000'}
+:Resolve **transaction type** and **confirm data builder** \n by methid selector:\n TX_CONFIRM_DATA_CONFIG[txConfig.data.slice(0, 10)];
+note right: // approve\n'0x095ea7b3': { \n   type: 'approve',\n   abi: erc20Abi, \n   builder: approveTxConfirmDataBuilder\n};
+:Parse method arguments from **callData** using **ABI**;
+:Build **tx confirm data** using **builder**;
+note right: await builder({\n   resources,\n   rpcCaller,\n   txConfig,\n   data: methodArguments\n});
+:return **tx confirm data config**;
+end
+@enduml
