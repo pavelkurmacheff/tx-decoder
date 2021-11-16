@@ -132,6 +132,12 @@ console.log('Items: ', items);
 
 > **For more examples see [unit-tests](./src/__tests__/tx-confirm-data.builder.test.ts)**
 
+## Should be implemented by consumer
+
+1. RPC method `eth_call`
+2. List of tokens
+3. List of tokens prices
+
 ## 1inch trade transactions and typed data
 
 ### Permit typed data:
