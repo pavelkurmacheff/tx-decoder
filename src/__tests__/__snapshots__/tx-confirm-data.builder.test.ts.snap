@@ -646,11 +646,11 @@ Array [
       "type": "token",
       "value": Object {
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "type": "to",
       },
@@ -660,11 +660,11 @@ Array [
       "value": Object {
         "sign": "+",
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "value": "237839432511886",
       },
@@ -708,11 +708,11 @@ Array [
       "value": Object {
         "destinationAmount": "0.00237839432511886",
         "destinationToken": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "sourceAmount": "1",
         "sourceToken": Object {
@@ -745,11 +745,11 @@ Array [
         },
         "sourceAmount": "1",
         "sourceToken": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
       },
     },
@@ -766,11 +766,11 @@ Array [
       "value": Object {
         "sign": "0",
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "value": Object {
           "hex": "0xd818ee8db64e",
@@ -1007,11 +1007,11 @@ Array [
       "type": "token",
       "value": Object {
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "type": "to",
       },
@@ -1021,11 +1021,11 @@ Array [
       "value": Object {
         "sign": "+",
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "value": "928900907292644",
       },
@@ -1069,11 +1069,11 @@ Array [
       "value": Object {
         "destinationAmount": "0.000928900907292644",
         "destinationToken": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "sourceAmount": "1",
         "sourceToken": Object {
@@ -1108,11 +1108,11 @@ Array [
         },
         "sourceAmount": "1",
         "sourceToken": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
       },
     },
@@ -1129,11 +1129,11 @@ Array [
       "value": Object {
         "sign": "0",
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "value": Object {
           "hex": "0x034bfc51cd56c7",
@@ -1186,11 +1186,11 @@ Array [
       "type": "token",
       "value": Object {
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "type": "to",
       },
@@ -1200,11 +1200,11 @@ Array [
       "value": Object {
         "sign": "+",
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "value": "224395484185470",
       },
@@ -1248,11 +1248,11 @@ Array [
       "value": Object {
         "destinationAmount": "0.0022439548418547",
         "destinationToken": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "sourceAmount": "1",
         "sourceToken": Object {
@@ -1287,11 +1287,11 @@ Array [
         },
         "sourceAmount": "1",
         "sourceToken": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
       },
     },
@@ -1308,11 +1308,11 @@ Array [
       "value": Object {
         "sign": "0",
         "token": Object {
-          "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+          "address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
           "decimals": 18,
-          "logoURI": "https://tokens.1inch.io/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png",
-          "name": "Wrapped Ether",
-          "symbol": "WETH",
+          "logoURI": "https://tokens.1inch.io/0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee.png",
+          "name": "Ethereum",
+          "symbol": "ETH",
         },
         "value": Object {
           "hex": "0xcbe1e61c6764",

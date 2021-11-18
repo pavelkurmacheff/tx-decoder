@@ -2,7 +2,7 @@ import { Item } from '../model/tx-ui-items.model';
 import {BuilderParams} from '../model/common.model';
 import {oneInchRouterV4Swap} from './helpers/1inch-router-v4-swap.helper';
 import {findTokenByAddress} from './helpers/tokens.helper';
-import {getSecondTokenAddressOfPool} from './helpers/uni-pool.helper';
+import {getTokenAddressOfUniPool} from './helpers/uni-pool.helper';
 import {BigNumber} from '@ethersproject/bignumber';
 
 export interface UnoswapTxItemData {
@@ -24,8 +24,7 @@ export async function unoswapTxConfirmDataBuilder(
         pools
     } = data;
 
-    const dstTokenAddress = await getSecondTokenAddressOfPool(pools[0].toString(), rpcCaller);
-
+    const dstTokenAddress = await getTokenAddressOfUniPool(pools[pools.length - 1].toString(), rpcCaller);
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
     const dstToken = findTokenByAddress(resources, dstTokenAddress);
     const dstAmount = await rpcCaller.call<string>('eth_call', [txConfig])
