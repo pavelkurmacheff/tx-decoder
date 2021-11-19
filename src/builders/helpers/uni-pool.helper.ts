@@ -1,4 +1,4 @@
-import {TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../../common.const';
+import {NATIVE_TOKEN_ADDRESS, TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../../common.const';
 import {BlockchainRpcCaller} from '../../model/common.model';
 
 const REVERSE_AND_UNWRAP_FLAG = 'c0';
@@ -6,7 +6,6 @@ const REVERSE_AND_WRAP_FLAG = 'a0';
 const REVERSE_FLAG = '80';
 const UNWRAP_FLAG = '40';
 const WRAP_FLAG = '20';
-const NATIVE_TOKEN_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
 export function getDestTokenAddressOfUnoSwap(
     poolData: string,
