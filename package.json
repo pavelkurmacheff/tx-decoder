@@ -5,7 +5,7 @@
     "source": "src/index.ts",
     "main": "dist/index.js",
     "scripts": {
-        "prebuild": "rm -rf dist && yarn run test:coverage && yarn run make-badges",
+        "prebuild": "yarn run build-script && rm -rf dist && yarn run test:coverage && yarn run make-badges",
         "build": "tsc --module commonjs",
         "postbuild": "cp package.json dist && cp README.md dist",
         "build-script": "webpack --mode=production && rm -rf dist",
