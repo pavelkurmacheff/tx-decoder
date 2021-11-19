@@ -12,7 +12,9 @@ export interface SwapTxItemData {
     }
 }
 
-export async function swapTxConfirmDataBuilder(params: BuilderParams<SwapTxItemData>): Promise<Item[]> {
+export async function swapTxConfirmDataBuilder(
+    params: BuilderParams<SwapTxItemData>
+): Promise<Item[]> {
     const {resources, txConfig, data, rpcCaller} = params;
 
     const {
@@ -28,11 +30,11 @@ export async function swapTxConfirmDataBuilder(params: BuilderParams<SwapTxItemD
         .then(response => BigInt(response).toString(10));
 
     if (!srcToken) {
-        throw new Error('Src token is not found for swapTxConfirmDataBuilder: ' + data.desc.srcToken.toLowerCase());
+        throw new Error('Src token is not found for swapTxConfirmDataBuilder: ' + data.desc.srcToken);
     }
 
     if (!dstToken) {
-        throw new Error('Dst token is not found for swapTxConfirmDataBuilder: ' + data.desc.dstToken.toLowerCase());
+        throw new Error('Dst token is not found for swapTxConfirmDataBuilder: ' + data.desc.dstToken);
     }
 
     return oneInchRouterV4Swap({

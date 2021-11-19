@@ -21,7 +21,7 @@ export interface BlockchainResources {
 }
 
 export interface BlockchainRpcCaller {
-    call<T>(method: string, params: any[]): Promise<T>;
+    call<T>(method: string, params: unknown[]): Promise<T>;
 }
 
 export interface BuilderParams<T> {

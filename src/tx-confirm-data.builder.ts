@@ -28,7 +28,7 @@ export class TxConfirmDataBuilder {
                 resources: this.resources,
                 rpcCaller: this.rpcCaller,
                 txConfig,
-                data: methodArguments as any
+                data: methodArguments
             })
         };
     }

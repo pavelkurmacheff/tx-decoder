@@ -34,7 +34,7 @@ export function getDestTokenAddressOfUnoSwap(
     return requestPoolTokenAddress(poolAddress, isReverseFlag, rpcCaller);
 }
 
-export async function getTOkensOfUniswapV3Pools(
+export async function getTokensOfUniswapV3Pools(
     pools: string[],
     rpcCaller: BlockchainRpcCaller
 ): Promise<{srcTokenAddress: string, dstTokenAddress: string}> {

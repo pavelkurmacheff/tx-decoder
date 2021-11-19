@@ -30,11 +30,13 @@ export async function clipperSwapWithPermitTxConfirmDataBuilder(
         .then(response => BigInt(response).toString(10));
 
     if (!srcToken) {
-        throw new Error('Src token is not found for clipperSwapWithPermitTxConfirmDataBuilder: ' + srcTokenAddress.toLowerCase());
+        throw new Error('Src token is not found for clipperSwapWithPermitTxConfirmDataBuilder: '
+            + srcTokenAddress);
     }
 
     if (!dstToken) {
-        throw new Error('Dst token is not found for clipperSwapWithPermitTxConfirmDataBuilder: ' + dstTokenAddress.toLowerCase());
+        throw new Error('Dst token is not found for clipperSwapWithPermitTxConfirmDataBuilder: '
+            + dstTokenAddress);
     }
 
     return oneInchRouterV4Swap({

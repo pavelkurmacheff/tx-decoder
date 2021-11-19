@@ -4,3 +4,4 @@ coverage
 jest.config.ts
 .eslintrc.js
 test
+src/__tests__

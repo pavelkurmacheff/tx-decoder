@@ -12,7 +12,7 @@ module.exports = {
         'lines-between-class-members': 'error',
         'padding-line-between-statements': 'error',
         'no-unused-vars': 'off',
-        'max-len': ['error', {code: 100}],
+        'max-len': ['error', {code: 120}],
         'max-depth': ['error', 3],
         'max-lines-per-function': ['error', 25],
         'max-params': ['error', 6],
@@ -27,6 +27,12 @@ module.exports = {
             rules: {
                 'max-lines-per-function': ['error', 400],
                 'max-len': ['error', {code: 130}],
+            },
+        },
+        {
+            files: ['src/builders/*.ts', 'src/builders/**/*.ts'],
+            rules: {
+                'max-lines-per-function': ['error', 400],
             },
         },
     ],

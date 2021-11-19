@@ -10,7 +10,9 @@ export interface ClipperSwapTxItemData {
     minReturn: string;
 }
 
-export async function clipperSwapTxConfirmDataBuilder(params: BuilderParams<ClipperSwapTxItemData>): Promise<Item[]> {
+export async function clipperSwapTxConfirmDataBuilder(
+    params: BuilderParams<ClipperSwapTxItemData>
+): Promise<Item[]> {
     const {resources, txConfig, data, rpcCaller} = params;
 
     const {
@@ -26,11 +28,11 @@ export async function clipperSwapTxConfirmDataBuilder(params: BuilderParams<Clip
         .then(response => BigInt(response).toString(10));
 
     if (!srcToken) {
-        throw new Error('Src token is not found for clipperSwapTxConfirmDataBuilder: ' + srcTokenAddress.toLowerCase());
+        throw new Error('Src token is not found for clipperSwapTxConfirmDataBuilder: ' + srcTokenAddress);
     }
 
     if (!dstToken) {
-        throw new Error('Dst token is not found for clipperSwapTxConfirmDataBuilder: ' + dstTokenAddress.toLowerCase());
+        throw new Error('Dst token is not found for clipperSwapTxConfirmDataBuilder: ' + dstTokenAddress);
     }
 
     return oneInchRouterV4Swap({

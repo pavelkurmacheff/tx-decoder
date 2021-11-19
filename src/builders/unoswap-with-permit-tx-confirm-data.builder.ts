@@ -32,11 +32,11 @@ export async function unoswapWithPermitTxConfirmDataBuilder(
         .then(response => BigInt(response).toString(10));
 
     if (!srcToken) {
-        throw new Error('Src token is not found for unoswapWithPermitTxConfirmDataBuilder: ' + srcTokenAddress.toLowerCase());
+        throw new Error('Src token is not found for unoswapWithPermitTxConfirmDataBuilder: ' + srcTokenAddress);
     }
 
     if (!dstToken) {
-        throw new Error('Dst token is not found for unoswapWithPermitTxConfirmDataBuilder: ' + dstTokenAddress.toLowerCase());
+        throw new Error('Dst token is not found for unoswapWithPermitTxConfirmDataBuilder: ' + dstTokenAddress);
     }
 
     return oneInchRouterV4Swap({

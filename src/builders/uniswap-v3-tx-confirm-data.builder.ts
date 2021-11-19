@@ -3,7 +3,7 @@ import {BuilderParams} from '../model/common.model';
 import {oneInchRouterV4Swap} from './helpers/1inch-router-v4-swap.helper';
 import {findTokenByAddress} from './helpers/tokens.helper';
 import {
-    getTOkensOfUniswapV3Pools
+    getTokensOfUniswapV3Pools
 } from './helpers/uni-pool.helper';
 import {BigNumber} from '@ethersproject/bignumber';
 
@@ -27,7 +27,7 @@ export async function uniswapV3TxConfirmDataBuilder(
     const {
         srcTokenAddress,
         dstTokenAddress
-    } = await getTOkensOfUniswapV3Pools(pools.map(pool => pool.toString()), rpcCaller);
+    } = await getTokensOfUniswapV3Pools(pools.map(pool => pool.toString()), rpcCaller);
 
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
     const dstToken = findTokenByAddress(resources, dstTokenAddress);
@@ -35,11 +35,11 @@ export async function uniswapV3TxConfirmDataBuilder(
         .then(response => BigInt(response).toString(10));
 
     if (!srcToken) {
-        throw new Error('Src token is not found for uniswapV3TxConfirmDataBuilder: ' + srcTokenAddress.toLowerCase());
+        throw new Error('Src token is not found for uniswapV3TxConfirmDataBuilder: ' + srcTokenAddress);
     }
 
     if (!dstToken) {
-        throw new Error('Dst token is not found for uniswapV3TxConfirmDataBuilder: ' + dstTokenAddress.toLowerCase());
+        throw new Error('Dst token is not found for uniswapV3TxConfirmDataBuilder: ' + dstTokenAddress);
     }
 
     return oneInchRouterV4Swap({

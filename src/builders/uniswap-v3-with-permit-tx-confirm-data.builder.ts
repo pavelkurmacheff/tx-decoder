@@ -25,18 +25,21 @@ export async function uniswapV3WithPermitTxConfirmDataBuilder(
         pools
     } = data;
 
-    const dstTokenAddress = await getDestTokenAddressOfUnoSwap(pools[pools.length - 1].toString(), rpcCaller);
+    const dstTokenAddress = await getDestTokenAddressOfUnoSwap(
+        pools[pools.length - 1].toString(),
+        rpcCaller
+    );
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
     const dstToken = findTokenByAddress(resources, dstTokenAddress);
     const dstAmount = await rpcCaller.call<string>('eth_call', [txConfig])
         .then(response => BigInt(response).toString(10));
 
     if (!srcToken) {
-        throw new Error('Src token is not found for uniswapV3TxConfirmDataBuilder: ' + srcTokenAddress.toLowerCase());
+        throw new Error('Src token is not found for uniswapV3TxConfirmDataBuilder: ' + srcTokenAddress);
     }
 
     if (!dstToken) {
-        throw new Error('Dst token is not found for uniswapV3TxConfirmDataBuilder: ' + dstTokenAddress.toLowerCase());
+        throw new Error('Dst token is not found for uniswapV3TxConfirmDataBuilder: ' + dstTokenAddress);
     }
 
     return oneInchRouterV4Swap({

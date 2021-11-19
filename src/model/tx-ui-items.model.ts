@@ -141,5 +141,6 @@ export interface Item {
 export type TxType = 'swap' | 'approve';
 
 export interface TxItemBuilder {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (params: BuilderParams<any>): Promise<Item[]>
 }

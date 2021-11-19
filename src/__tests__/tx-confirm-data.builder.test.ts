@@ -36,7 +36,6 @@ describe('Transaction data for confirmation builder', () => {
         const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
         expect(txType).toBe('approve');
-        console.log(JSON.stringify(items));
         expect(items).toMatchSnapshot();
     });
 
