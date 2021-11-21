@@ -21,6 +21,20 @@ describe('Transaction data for confirmation builder', () => {
         }, rpcCaller);
     });
 
+    function isDestAmountEstimationCall(
+        method: string, params: any[],
+        {from, to, data, value}: Transaction
+    ): boolean {
+        const reqData = params[0];
+
+        return method === 'eth_call'
+            && Object.keys(reqData).length === 4
+            && reqData.from === from
+            && reqData.to === to
+            && reqData.data === data
+            && reqData.value === value;
+    }
+
     // https://etherscan.io/tx/0xbd44b75afac45ef81af448c47b40d32ac705fe2d0354b39097f5ebfd62046ffe
     it('Approve transaction', async () => {
         const txConfig: Transaction = {
@@ -53,7 +67,7 @@ describe('Transaction data for confirmation builder', () => {
         };
 
         rpcCallerMock.mockImplementation((method, params) => {
-            if (method === 'eth_call' && params[0].data === txConfig.data) {
+            if (isDestAmountEstimationCall(method, params, txConfig)) {
                 return Promise.resolve(dstAmount);
             }
 
@@ -80,7 +94,7 @@ describe('Transaction data for confirmation builder', () => {
         };
 
         rpcCallerMock.mockImplementation((method, params) => {
-            if (method === 'eth_call' && params[0].data === txConfig.data) {
+            if (isDestAmountEstimationCall(method, params, txConfig)) {
                 return Promise.resolve(dstAmount);
             }
 
@@ -107,7 +121,7 @@ describe('Transaction data for confirmation builder', () => {
         };
 
         rpcCallerMock.mockImplementation((method, params) => {
-            if (method === 'eth_call' && params[0].data === txConfig.data) {
+            if (isDestAmountEstimationCall(method, params, txConfig)) {
                 return Promise.resolve(dstAmount);
             }
 
@@ -134,7 +148,7 @@ describe('Transaction data for confirmation builder', () => {
         };
 
         rpcCallerMock.mockImplementation((method, params) => {
-            if (method === 'eth_call' && params[0].data === txConfig.data) {
+            if (isDestAmountEstimationCall(method, params, txConfig)) {
                 return Promise.resolve(dstAmount);
             }
 
@@ -166,7 +180,7 @@ describe('Transaction data for confirmation builder', () => {
         };
 
         rpcCallerMock.mockImplementation((method, params) => {
-            if (method === 'eth_call' && params[0].data === txConfig.data) {
+            if (isDestAmountEstimationCall(method, params, txConfig)) {
                 return Promise.resolve(dstAmount);
             }
 
@@ -196,18 +210,23 @@ describe('Transaction data for confirmation builder', () => {
             value: '0x00',
             data: '0xe449022e000000000000000000000000000000000000000000000000016345785d8a00000000000000000000000000000000000000000000000000000000d818ee8db64e0000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000120000000000000000000000073a6a761fe483ba19debb8f56ac5bbf14c0cdad1e26b9977'
         };
+        const expectedPoolAddress = '0x73a6a761fe483ba19debb8f56ac5bbf14c0cdad1';
 
         rpcCallerMock.mockImplementation((method, params) => {
-            if (method === 'eth_call' && params[0].data === txConfig.data) {
+            if (isDestAmountEstimationCall(method, params, txConfig)) {
                 return Promise.resolve(dstAmount);
             }
 
-            if (method === 'eth_call' && params[0].data === TOKEN0_POOL_SELECTOR) {
+            if (method === 'eth_call'
+                && params[0].to === expectedPoolAddress
+                && params[0].data === TOKEN0_POOL_SELECTOR) {
                 // SUSHI
                 return Promise.resolve('0x0000000000000000000000006b3595068778dd592e39a122f4f5a5cf09c90fe2');
             }
 
-            if (method === 'eth_call' && params[0].data === TOKEN1_POOL_SELECTOR) {
+            if (method === 'eth_call'
+                && params[0].to === expectedPoolAddress
+                && params[0].data === TOKEN1_POOL_SELECTOR) {
                 // WETH
                 return Promise.resolve('0x000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2');
             }
@@ -235,7 +254,7 @@ describe('Transaction data for confirmation builder', () => {
         };
 
         rpcCallerMock.mockImplementation((method, params) => {
-            if (method === 'eth_call' && params[0].data === txConfig.data) {
+            if (isDestAmountEstimationCall(method, params, txConfig)) {
                 return Promise.resolve(dstAmount);
             }
 

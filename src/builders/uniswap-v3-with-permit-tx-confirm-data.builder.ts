@@ -4,6 +4,7 @@ import {oneInchRouterV4Swap} from './helpers/1inch-router-v4-swap.helper';
 import {findTokenByAddress} from './helpers/tokens.helper';
 import {BigNumber} from '@ethersproject/bignumber';
 import {getDestTokenAddressOfUnoSwap} from './helpers/uni-pool.helper';
+import {getDestAmountViaEstimation} from './helpers/dest-amount.helper';
 
 export interface UniswapV3WithPermitTxItemData {
     recipient: string;
@@ -31,8 +32,7 @@ export async function uniswapV3WithPermitTxConfirmDataBuilder(
     );
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
     const dstToken = findTokenByAddress(resources, dstTokenAddress);
-    const dstAmount = await rpcCaller.call<string>('eth_call', [txConfig])
-        .then(response => BigInt(response).toString(10));
+    const dstAmount = await getDestAmountViaEstimation(params);
 
     if (!srcToken) {
         throw new Error('Src token is not found for uniswapV3TxConfirmDataBuilder: ' + srcTokenAddress);

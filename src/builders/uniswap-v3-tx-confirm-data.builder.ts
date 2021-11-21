@@ -6,6 +6,7 @@ import {
     getTokensOfUniswapV3Pools
 } from './helpers/uni-pool.helper';
 import {BigNumber} from '@ethersproject/bignumber';
+import {getDestAmountViaEstimation} from './helpers/dest-amount.helper';
 
 export interface UnoswapV3TxItemData {
     amount: string;
@@ -31,8 +32,7 @@ export async function uniswapV3TxConfirmDataBuilder(
 
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
     const dstToken = findTokenByAddress(resources, dstTokenAddress);
-    const dstAmount = await rpcCaller.call<string>('eth_call', [txConfig])
-        .then(response => BigInt(response).toString(10));
+    const dstAmount = await getDestAmountViaEstimation(params);
 
     if (!srcToken) {
         throw new Error('Src token is not found for uniswapV3TxConfirmDataBuilder: ' + srcTokenAddress);

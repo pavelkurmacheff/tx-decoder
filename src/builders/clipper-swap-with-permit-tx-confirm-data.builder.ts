@@ -2,6 +2,7 @@ import { Item } from '../model/tx-ui-items.model';
 import {BuilderParams} from '../model/common.model';
 import {oneInchRouterV4Swap} from './helpers/1inch-router-v4-swap.helper';
 import {findTokenByAddress} from './helpers/tokens.helper';
+import {getDestAmountViaEstimation} from './helpers/dest-amount.helper';
 
 export interface ClipperSwapWithPermitTxItemData {
     recipient: string;
@@ -15,7 +16,7 @@ export interface ClipperSwapWithPermitTxItemData {
 export async function clipperSwapWithPermitTxConfirmDataBuilder(
     params: BuilderParams<ClipperSwapWithPermitTxItemData>
 ): Promise<Item[]> {
-    const {resources, txConfig, data, rpcCaller} = params;
+    const {resources, txConfig, data} = params;
 
     const {
         srcToken: srcTokenAddress,
@@ -26,8 +27,7 @@ export async function clipperSwapWithPermitTxConfirmDataBuilder(
 
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
     const dstToken = findTokenByAddress(resources, dstTokenAddress);
-    const dstAmount = await rpcCaller.call<string>('eth_call', [txConfig])
-        .then(response => BigInt(response).toString(10));
+    const dstAmount = await getDestAmountViaEstimation(params);
 
     if (!srcToken) {
         throw new Error('Src token is not found for clipperSwapWithPermitTxConfirmDataBuilder: '

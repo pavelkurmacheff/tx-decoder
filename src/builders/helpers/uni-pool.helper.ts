@@ -80,5 +80,5 @@ function getPoolAddress(poolInfo: string): string {
 
     return hasOnlyAddress
         ? poolInfo
-        : '0x' + poolInfo.slice(24, 40);
+        : '0x' + poolInfo.slice(24);
 }
