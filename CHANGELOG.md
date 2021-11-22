@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.1...v1.1.2) (2021-11-22)
+
+
+### Bug Fixes
+
+* enforce typing for TxDecoder ([6c9e394](https://github.com/1inch/tx-confirm-data-bulder/commit/6c9e39421bdb7cf9f265a243d666118eeee7eb79))
+* fix getReturnAmountFromLogs ([0ec149e](https://github.com/1inch/tx-confirm-data-bulder/commit/0ec149e5eb2b4d046a854502c2d7b42e03235451))
+
 ### [1.1.1](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.0...v1.1.1) (2021-11-22)
 
 
