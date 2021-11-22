@@ -1,18 +1,10 @@
-import {Item} from '../../model/tx-ui-items.model';
+import {Transaction} from '../model/common.model';
+import {Item} from '../model/tx-ui-items.model';
 import {formatUnits} from '@ethersproject/units';
-import {Token} from '../../model/common.model';
+import {SwapTxDecoded} from '../model/swap-tx.model';
 
-export interface OneInchRouterV4SwapParams {
-    readonly srcToken: Token;
-    readonly srcAmount: string;
-    readonly dstToken: Token;
-    readonly dstAmount: string;
-    readonly from: string;
-    readonly minReturnAmount: string;
-}
-
-export function oneInchRouterV4Swap(params: OneInchRouterV4SwapParams): Item[] {
-    const {srcAmount, dstAmount, srcToken, dstToken, from, minReturnAmount} = params;
+export function swapTxConfirmTemplate(txConfig: Transaction, decoded: SwapTxDecoded): Item[] {
+    const {srcAmount, dstAmount, srcToken, dstToken, minReturnAmount} = decoded;
     const srcUnits = formatUnits(srcAmount, srcToken.decimals);
     const dstUnits = formatUnits(dstAmount, dstToken.decimals);
 
@@ -30,7 +22,7 @@ export function oneInchRouterV4Swap(params: OneInchRouterV4SwapParams): Item[] {
                 type: 'amount',
                 value: {
                     token: srcToken,
-                    value: srcAmount,
+                    value: srcAmount.toString(),
                     sign: '-'
                 }
             }
@@ -48,7 +40,7 @@ export function oneInchRouterV4Swap(params: OneInchRouterV4SwapParams): Item[] {
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: dstAmount,
+                    value: dstAmount.toString(),
                     sign: '+'
                 }
             }
@@ -65,7 +57,7 @@ export function oneInchRouterV4Swap(params: OneInchRouterV4SwapParams): Item[] {
                 type: 'text',
                 value: {
                     type: 'address',
-                    text: from.toLowerCase()
+                    text: txConfig.from.toLowerCase()
                 }
             }
         },
@@ -129,7 +121,7 @@ export function oneInchRouterV4Swap(params: OneInchRouterV4SwapParams): Item[] {
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: minReturnAmount,
+                    value: minReturnAmount.toString(),
                     sign: '0'
                 }
             }

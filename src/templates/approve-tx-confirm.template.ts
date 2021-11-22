@@ -1,23 +1,9 @@
-import { Item } from '../model/tx-ui-items.model';
-import {BuilderParams} from '../model/common.model';
-import {BigNumber} from '@ethersproject/bignumber';
-import {findTokenByAddress} from './helpers/tokens.helper';
-import {APPROVE_INFO_PLACEHOLDER} from './const/localizable.const';
+import {APPROVE_INFO_PLACEHOLDER} from '../const/localizable.const';
+import {Transaction} from '../model/common.model';
+import {Item} from '../model/tx-ui-items.model';
+import {ApproveTxDecoded} from '../decoders/approve-tx.decoder';
 
-export interface ApproveTxItemData {
-    _value: BigNumber;
-}
-
-export async function approveTxConfirmDataBuilder(
-    params: BuilderParams<ApproveTxItemData>
-): Promise<Item[]> {
-    const {resources, txConfig, data} = params;
-    const token = findTokenByAddress(resources, txConfig.to.toLowerCase());
-
-    if (!token) {
-        throw new Error('Token is not found for approveTxItemBuilder: ' + txConfig.to);
-    }
-
+export function approveTxConfirmTemplate(txConfig: Transaction, decoded: ApproveTxDecoded): Item[] {
     return [
         // ******** Info
         {
@@ -28,7 +14,7 @@ export async function approveTxConfirmDataBuilder(
                 type: 'localizable',
                 value: {
                     format: APPROVE_INFO_PLACEHOLDER,
-                    args: [token.symbol]
+                    args: [decoded.token.symbol]
                 }
             }
         },
@@ -38,14 +24,14 @@ export async function approveTxConfirmDataBuilder(
                 type: 'token',
                 value: {
                     type: 'amount',
-                    token
+                    token: decoded.token
                 }
             },
             value: {
                 type: 'amount',
                 value: {
-                    token,
-                    value: data._value.toString(),
+                    token: decoded.token,
+                    value: decoded.value.toString(),
                     sign: '0'
                 }
             }

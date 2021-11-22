@@ -1,4 +1,4 @@
-import {BuilderParams, Token} from './common.model';
+import {Token} from './common.model';
 
 /**** Keys ****/
 
@@ -139,8 +139,3 @@ export interface Item {
 }
 
 export type TxType = 'swap' | 'approve';
-
-export interface TxItemBuilder {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (params: BuilderParams<any>): Promise<Item[]>
-}

@@ -30,7 +30,7 @@ module.exports = {
             },
         },
         {
-            files: ['src/builders/*.ts', 'src/builders/**/*.ts'],
+            files: ['src/templates/*.ts', 'src/templates/**/*.ts'],
             rules: {
                 'max-lines-per-function': ['error', 400],
             },

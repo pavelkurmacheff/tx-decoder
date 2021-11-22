@@ -1,11 +1,13 @@
+import {BigNumber} from '@ethersproject/bignumber';
+
 export interface Transaction {
     from: string;
     to: string;
-    value: string;
     data: string;
-    gasPrice: string | number;
-    gasLimit: string | number;
-    nonce?: string | number;
+    value: BigNumber;
+    gasPrice: BigNumber;
+    gasLimit: BigNumber;
+    nonce?: number;
 }
 
 export interface Token {
@@ -24,9 +26,3 @@ export interface BlockchainRpcCaller {
     call<T>(method: string, params: unknown[]): Promise<T>;
 }
 
-export interface BuilderParams<T> {
-    resources: BlockchainResources,
-    rpcCaller: BlockchainRpcCaller,
-    txConfig: Transaction,
-    data: T
-}

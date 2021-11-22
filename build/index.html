@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1inch tx decoder</title>
+    <script src="./tx-confirm-data-builder.js"></script>
+    <style>
+        #txHashInput {
+            width: 500px;
+        }
+
+        #resultValue {
+            margin-top: 20px;
+            min-width: 650px;
+            min-height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <label>Tx hash:</label>
+        <input id="txHashInput"
+               type="text"
+               value="0x1b251d13fd530ddf2d4125631c71ee07b56568c1a6cf55a8e53a29a599b81e92"/>
+        <button id="decodeButton">Decode</button>
+    </div>
+    <div>
+        <textarea id="resultValue"></textarea>
+    </div>
+
+    <script type="module">
+        (function() {
+            const resultValue = document.getElementById('resultValue');
+            const decodeButton = document.getElementById('decodeButton');
+            const txHashInput = document.getElementById('txHashInput');
+
+            const rpcCaller = {
+                call(method, params) {
+                    console.log('RPC call: ', { method, params });
+                    return window.ethereum.request({ method, params });
+                }
+            };
+
+            window.ethereum.request({method: 'eth_requestAccounts'})
+                .then(accounts => {
+                    console.log('Wallet connected: ', accounts);
+                });
+
+            decodeButton.addEventListener('click', () => {
+                decodeTx(txHashInput.value);
+            });
+
+            function decodeTx(txHash) {
+                getTxDecoder().then(decoder => {
+                    return decoder.decodeTxByLogs(txHash);
+                }).then(result => {
+                    resultValue.value = JSON.stringify(result.data, null, 4);
+
+                    console.log(result);
+                });
+            }
+
+            function getTxDecoder() {
+                return Promise.all([
+                    fetch('https://tokens.1inch.io/v1.1/1').then(res => res.json()),
+                    fetch('https://token-prices.1inch.io/v1.1/1').then(res => res.json()),
+                ])
+                    .then(([tokens, tokensPrices]) => ({tokens, tokensPrices}))
+                    .then(initTxDecoder);
+            }
+
+            function initTxDecoder({tokens, tokensPrices}) {
+                return new oInch.OinchTxDecoder({
+                    tokens,
+                    tokensPrices
+                }, rpcCaller);
+            }
+        })();
+    </script>
+</body>
+</html>

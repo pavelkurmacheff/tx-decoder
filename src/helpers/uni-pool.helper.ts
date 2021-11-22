@@ -1,5 +1,5 @@
-import {NATIVE_TOKEN_ADDRESS, TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../../common.const';
-import {BlockchainRpcCaller} from '../../model/common.model';
+import {NATIVE_TOKEN_ADDRESS, TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../const/common.const';
+import {BlockchainRpcCaller} from '../model/common.model';
 
 const REVERSE_AND_UNWRAP_FLAG = 'c0';
 const REVERSE_AND_WRAP_FLAG = 'a0';
@@ -39,13 +39,11 @@ export async function getTokensOfUniswapV3Pools(
 ): Promise<{srcTokenAddress: string, dstTokenAddress: string}> {
     const firstPoolInfo = BigInt(pools[0]).toString(16);
     const firstPoolFlags = firstPoolInfo.slice(0, 2);
-
     const lastPoolInfo = BigInt(pools[pools.length - 1]).toString(16);
     const lastPoolFlags = lastPoolInfo.slice(0, 2);
 
     const isUnwrapFirstToken = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG].includes(firstPoolFlags);
     const isWrapLastToken = [REVERSE_AND_WRAP_FLAG, WRAP_FLAG].includes(lastPoolFlags);
-
     const isReverseFirstToken = firstPoolFlags === REVERSE_FLAG;
     const isReverseLastToken = lastPoolFlags === REVERSE_FLAG;
 
