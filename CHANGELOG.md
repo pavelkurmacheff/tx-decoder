@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.3](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.2...v1.1.3) (2021-11-22)
+
+
+### Bug Fixes
+
+* fix getReturnAmountFromLogs ([a16ed83](https://github.com/1inch/tx-confirm-data-bulder/commit/a16ed83731a348708068f87195dd5535ed70658f))
+
 ### [1.1.2](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.1...v1.1.2) (2021-11-22)
 
 
