@@ -15,7 +15,7 @@ export interface UniswapV3PermitTxItemData {
     pools: BigNumber[];
 }
 
-export class UniswapV3PermitTxDecoder implements TxDecoder {
+export class UniswapV3PermitTxDecoder implements TxDecoder<UniswapV3PermitTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly txData:UniswapV3PermitTxItemData) {

@@ -14,7 +14,7 @@ export interface SwapTxItemData {
     }
 }
 
-export class SwapTxDecoder implements TxDecoder {
+export class SwapTxDecoder implements TxDecoder<SwapTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly txData: SwapTxItemData) {

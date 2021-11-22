@@ -2,11 +2,11 @@ import {BlockchainResources, BlockchainRpcCaller, Transaction} from '../model/co
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
 import {DecodedTx} from '../model/decoded-tx.model';
 
-export interface TxDecoder {
+export interface TxDecoder<T> {
     readonly resources: BlockchainResources;
     readonly rpcCaller: BlockchainRpcCaller;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    readonly txData: any;
+    readonly txData: T;
 
     decodeByConfig(txConfig: Transaction): Promise<DecodedTx>;
 

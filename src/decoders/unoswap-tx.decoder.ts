@@ -14,7 +14,7 @@ export interface UnoswapTxItemData {
     pools: BigNumber[];
 }
 
-export class UnoswapTxDecoder implements TxDecoder {
+export class UnoswapTxDecoder implements TxDecoder<UnoswapTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly txData: UnoswapTxItemData) {

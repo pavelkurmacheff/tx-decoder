@@ -13,7 +13,7 @@ export interface ApproveTxDecoded {
     value: BigNumber;
 }
 
-export class ApproveTxDecoder implements TxDecoder {
+export class ApproveTxDecoder implements TxDecoder<ApproveTxData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly txData: ApproveTxData) {

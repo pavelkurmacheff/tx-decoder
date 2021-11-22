@@ -13,7 +13,7 @@ export interface UniswapV3TxItemData {
     pools: BigNumber[];
 }
 
-export class UniswapV3TxDecoder implements TxDecoder {
+export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly txData: UniswapV3TxItemData) {

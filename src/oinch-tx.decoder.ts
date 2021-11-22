@@ -51,7 +51,7 @@ export class OinchTxDecoder {
     }
 
     private getDecoderAndType(to: string, callData: string): {
-        decoder: TxDecoder,
+        decoder: TxDecoder<unknown>,
         config: ContractMethodsDecodeConfig
     } {
         const methodSelector = callData.slice(0, 10).toLowerCase();

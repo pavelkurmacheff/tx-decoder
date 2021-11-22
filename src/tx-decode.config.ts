@@ -12,21 +12,22 @@ import {UnoswapTxDecoder} from './decoders/unoswap-tx.decoder';
 import {UniswapV3TxDecoder} from './decoders/uniswap-v3-tx.decoder';
 import {UniswapV3PermitTxDecoder} from './decoders/uniswap-v3-permit-tx.decoder';
 import {TxConfirmTemplate} from './model/tx-template.model';
+import {BlockchainResources, BlockchainRpcCaller} from './model/common.model';
 
 interface TxDecodeConfig {
     [methodSelector: string]: ContractMethodsDecodeConfig;
 }
 
-interface Type<T> {
+interface TxDecoderType<T> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new (...args: any[]): T;
+    new (...args: [BlockchainResources, BlockchainRpcCaller, any]): T;
 }
 
 export interface ContractMethodsDecodeConfig {
     abi: JsonFragment[];
     type: TxType;
-    Decoder: Type<TxDecoder>,
-    template: TxConfirmTemplate
+    Decoder: TxDecoderType<TxDecoder<unknown>>;
+    template: TxConfirmTemplate;
 }
 
 export const TX_DECODE_CONFIG: TxDecodeConfig = {

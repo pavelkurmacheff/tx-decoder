@@ -12,7 +12,7 @@ export interface ClipperTxItemData {
     minReturn: string;
 }
 
-export class ClipperTxDecoder implements TxDecoder {
+export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly txData: ClipperTxItemData) {
