@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.0...v1.1.1) (2021-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* OinchTxDecoder with two modes - decode by logs and decode by estimation
+
+### Features
+
+* add byEstimation or byLogs options to demo page ([027e683](https://github.com/1inch/tx-confirm-data-bulder/commit/027e683a4d33ffd8eb48a1288bc5a46de8e46e9d))
+* OinchTxDecoder with two modes - decode by logs and decode by estimation ([597403d](https://github.com/1inch/tx-confirm-data-bulder/commit/597403d53219425978817740d1eeadf0f2862732))
+
 ## 1.1.0 (2021-11-22)
 
 
