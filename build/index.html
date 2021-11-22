@@ -10,29 +10,94 @@
         }
 
         #resultValue {
-            margin-top: 20px;
             min-width: 650px;
             min-height: 500px;
+        }
+
+        .result-box {
+            margin-top: 20px;
+        }
+
+        #tabs {
+            margin-bottom: 10px;
+        }
+
+        #tabs button {
+            border: 0;
+            cursor: pointer;
+        }
+
+        #tabs button.active {
+            border-bottom: 2px solid #000;
+        }
+
+        #tabsContent > div {
+            display: none;
+        }
+
+        #tabsContent > div.active {
+            display: block;
+        }
+
+        #txConfigInput {
+            min-width: 500px;
+            min-height: 300px;
         }
     </style>
 </head>
 <body>
-    <div>
-        <label>Tx hash:</label>
-        <input id="txHashInput"
-               type="text"
-               value="0x1b251d13fd530ddf2d4125631c71ee07b56568c1a6cf55a8e53a29a599b81e92"/>
-        <button id="decodeButton">Decode</button>
+    <div id="tabs">
+        <button id="byEstimationBtn">By estimation</button>
+        <button id="byLogsBtn" class="active">By logs</button>
     </div>
-    <div>
+    <div id="tabsContent">
+        <div id="estimationTab">
+            <div>
+                <label>Tx config:</label>
+                <br>
+                <textarea id="txConfigInput">
+{
+    "nonce": 383,
+    "gasPrice": "0x1da4f97c6e",
+    "gasLimit": "0x011150",
+    "from": "0x3b608c5243732903152e38f1dab1056a4a79b980",
+    "to": "0x4fabb145d64652a948d72533023f6e7a623c7c53",
+    "value": "0x00",
+    "data": "0x095ea7b30000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+}
+                </textarea>
+                <br>
+                <button id="decodeByTxButton">Decode</button>
+            </div>
+        </div>
+
+        <div id="logsTab" class="active">
+            <div>
+                <label>Tx hash:</label>
+                <input id="txHashInput"
+                       type="text"
+                       value="0x1b251d13fd530ddf2d4125631c71ee07b56568c1a6cf55a8e53a29a599b81e92"/>
+                <button id="decodeByLogsButton">Decode</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="result-box">
+        <div>Tx type: <span id="txType"></span></div>
         <textarea id="resultValue"></textarea>
     </div>
 
     <script type="module">
         (function() {
             const resultValue = document.getElementById('resultValue');
-            const decodeButton = document.getElementById('decodeButton');
+            const txType = document.getElementById('txType');
+            const decodeByLogsButton = document.getElementById('decodeByLogsButton');
+            const decodeByTxButton = document.getElementById('decodeByTxButton');
             const txHashInput = document.getElementById('txHashInput');
+            const byEstimationBtn = document.getElementById('byEstimationBtn');
+            const byLogsBtn = document.getElementById('byLogsBtn');
+            const estimationTab = document.getElementById('estimationTab');
+            const logsTab = document.getElementById('logsTab');
 
             const rpcCaller = {
                 call(method, params) {
@@ -46,19 +111,47 @@
                     console.log('Wallet connected: ', accounts);
                 });
 
-            decodeButton.addEventListener('click', () => {
-                decodeTx(txHashInput.value);
+            byEstimationBtn.addEventListener('click', () => {
+                byEstimationBtn.classList.add('active');
+                estimationTab.classList.add('active');
+
+                byLogsBtn.classList.remove('active');
+                logsTab.classList.remove('active');
+                resultValue.value = '';
+                txType.innerText = '';
             });
 
-            function decodeTx(txHash) {
+            byLogsBtn.addEventListener('click', () => {
+                byEstimationBtn.classList.remove('active');
+                estimationTab.classList.remove('active');
+
+                byLogsBtn.classList.add('active');
+                logsTab.classList.add('active');
+                resultValue.value = '';
+                txType.innerText = '';
+            });
+
+            decodeByTxButton.addEventListener('click', () => {
                 getTxDecoder().then(decoder => {
-                    return decoder.decodeTxByLogs(txHash);
+                    return decoder.decodeTxByEstimation(JSON.parse(txConfigInput.value));
                 }).then(result => {
                     resultValue.value = JSON.stringify(result.data, null, 4);
+                    txType.innerText = result.config.type;
 
                     console.log(result);
                 });
-            }
+            });
+
+            decodeByLogsButton.addEventListener('click', () => {
+                getTxDecoder().then(decoder => {
+                    return decoder.decodeTxByLogs(txHashInput.value);
+                }).then(result => {
+                    resultValue.value = JSON.stringify(result.data, null, 4);
+                    txType.innerText = result.config.type;
+
+                    console.log(result);
+                });
+            });
 
             function getTxDecoder() {
                 return Promise.all([
