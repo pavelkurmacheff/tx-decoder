@@ -154,10 +154,14 @@
             });
 
             function getTxDecoder() {
-                return Promise.all([
-                    fetch('https://tokens.1inch.io/v1.1/1').then(res => res.json()),
-                    fetch('https://token-prices.1inch.io/v1.1/1').then(res => res.json()),
-                ])
+                return window.ethereum.request({method: 'eth_chainId'})
+                    .then(chainIdRaw => {
+                        const chainId = +chainIdRaw;
+                        return Promise.all([
+                            fetch('https://tokens.1inch.io/v1.1/' + chainId).then(res => res.json()),
+                            fetch('https://token-prices.1inch.io/v1.1/' + chainId).then(res => res.json()),
+                        ]);
+                    })
                     .then(([tokens, tokensPrices]) => ({tokens, tokensPrices}))
                     .then(initTxDecoder);
             }
