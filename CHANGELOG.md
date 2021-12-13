@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.4](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.3...v1.1.4) (2021-12-13)
+
+
+### Bug Fixes
+
+* add second parameter to rpc call ([aaa2834](https://github.com/1inch/tx-confirm-data-bulder/commit/aaa283494e50789219992a59224fc76880a8cc53))
+
 ### [1.1.3](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.2...v1.1.3) (2021-11-22)
 
 
