@@ -8,7 +8,7 @@ export function getDestAmountViaEstimation(
 ): Promise<BigNumber> {
     const {from, to, value, data} = txConfig;
 
-    return rpcCaller.call<string>('eth_call', [{from, to, value, data}])
+    return rpcCaller.call<string>('eth_call', [{from, to, value, data}, 'latest'])
         .then(response => BigNumber.from(response));
 }
 

@@ -70,7 +70,7 @@ function requestPoolTokenAddress(
     return rpcCaller.call<string>('eth_call', [{
         to: poolAddress,
         data: methodSelector
-    }]).then(result => '0x' + result.slice(26));
+    }, 'latest']).then(result => '0x' + result.slice(26));
 }
 
 function getPoolAddress(poolInfo: string): string {
