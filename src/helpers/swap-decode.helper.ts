@@ -5,7 +5,7 @@ import {SwapTxDecoded, SwapTxDecodeInput} from '../model/swap-tx.model';
 
 export function decodeSwapTx(input: SwapTxDecodeInput, resources: BlockchainResources): SwapTxDecoded {
     const {
-        srcTokenAddress, dstTokenAddress, srcAmount, minReturnAmount, dstAmount
+        srcTokenAddress, dstTokenAddress, srcAmount, minReturnAmount, dstAmount, error
     } = input;
 
     const srcToken = findTokenByAddress(resources, srcTokenAddress);
@@ -22,6 +22,7 @@ export function decodeSwapTx(input: SwapTxDecodeInput, resources: BlockchainReso
     return {
         srcToken, dstToken, dstAmount,
         srcAmount: BigNumber.from(srcAmount),
-        minReturnAmount: BigNumber.from(minReturnAmount)
+        minReturnAmount: BigNumber.from(minReturnAmount),
+        error
     }
 }

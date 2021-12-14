@@ -5,11 +5,19 @@ import {BigNumber} from '@ethersproject/bignumber';
 export function getDestAmountViaEstimation(
     rpcCaller: BlockchainRpcCaller,
     txConfig: Transaction
-): Promise<BigNumber> {
+): Promise<{value: BigNumber, error?: Error}> {
     const {from, to, value, data} = txConfig;
 
-    return rpcCaller.call<string>('eth_call', [{from, to, value, data}, 'latest'])
-        .then(response => BigNumber.from(response));
+    return rpcCaller.call<string>('eth_call', [{from, to, value, data}, 'latest']).then(response => {
+        return {
+            value: BigNumber.from(response),
+        };
+    }).catch(error => {
+        return {
+            value: BigNumber.from(0),
+            error
+        };
+    });
 }
 
 export function getReturnAmountFromLogs(receipt: TransactionReceipt): BigNumber {

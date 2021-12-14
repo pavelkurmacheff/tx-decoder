@@ -19,7 +19,7 @@ export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
-        const dstAmount = await getDestAmountViaEstimation(this.rpcCaller, txConfig);
+        const {value: dstAmount, error} = await getDestAmountViaEstimation(this.rpcCaller, txConfig);
         const {
             srcToken: srcTokenAddress,
             dstToken: dstTokenAddress,
@@ -32,7 +32,8 @@ export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
             dstTokenAddress,
             srcAmount,
             minReturnAmount,
-            dstAmount
+            dstAmount,
+            error
         }, this.resources);
     }
 

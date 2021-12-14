@@ -20,7 +20,7 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
-        const dstAmount = await getDestAmountViaEstimation(this.rpcCaller, txConfig);
+        const {value: dstAmount, error} = await getDestAmountViaEstimation(this.rpcCaller, txConfig);
         const {
             amount: srcAmount,
             minReturn: minReturnAmount,
@@ -40,7 +40,8 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
             dstTokenAddress,
             srcAmount,
             minReturnAmount,
-            dstAmount
+            dstAmount,
+            error
         }, this.resources);
     }
 
