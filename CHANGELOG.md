@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.6](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.5...v1.1.6) (2021-12-14)
+
+
+### Features
+
+* don't become broken when estimation failed ([bb18a25](https://github.com/1inch/tx-confirm-data-bulder/commit/bb18a25c76527fb29b593daadc1ea6c28c2f5ce1))
+* use network from wallet on demo page ([3301073](https://github.com/1inch/tx-confirm-data-bulder/commit/3301073f4c61529ae0510b843795448666bab951))
+
 ### [1.1.5](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.4...v1.1.5) (2021-12-13)
 
 ### [1.1.4](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.3...v1.1.4) (2021-12-13)
