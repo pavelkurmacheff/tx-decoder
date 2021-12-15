@@ -1,5 +1,5 @@
 {
-    "name": "@1inch/tx-confirm-data-bulder",
+    "name": "@1inch/tx-decoder",
     "version": "1.1.7",
     "description": "",
     "source": "src/index.ts",
@@ -20,15 +20,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/1inch/tx-confirm-data-bulder.git",
-        "directory": "@1inch/tx-confirm-data-bulder"
+        "url": "git+https://github.com/1inch/tx-decoder.git",
+        "directory": "@1inch/tx-decoder"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/1inch/tx-confirm-data-bulder/issues"
+        "url": "https://github.com/1inch/tx-decoder/issues"
     },
-    "homepage": "https://github.com/1inch/tx-confirm-data-bulder#readme",
+    "homepage": "https://github.com/1inch/tx-decoder#readme",
     "devDependencies": {
         "@babel/core": "^7.13.16",
         "@babel/preset-env": "^7.13.15",
