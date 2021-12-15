@@ -9,6 +9,7 @@ export class TxConfirmDataBuilder {
     ) {
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async buildItemsForTx(txConfig: Transaction): Promise<{items: Item[], txType: TxType, dataArguments: any}> {
         const decoder = new OinchTxDecoder(this.resources, this.rpcCaller);
 
