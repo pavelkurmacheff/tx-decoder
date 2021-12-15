@@ -9,9 +9,11 @@ import {BigNumber} from '@ethersproject/bignumber';
 export type OinchTxDecodingResult = {
     config: ContractMethodsDecodeConfig;
     data: DecodedTx;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dataArguments: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function decodedResultToObject(result: Result): any {
     return Object.keys(result).reduce((acc, key) => {
         if (!/^\d+$/.test(key)) {
@@ -19,6 +21,7 @@ function decodedResultToObject(result: Result): any {
         }
 
         return acc;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }, {} as {[key: string]: any});
 }
 
@@ -63,6 +66,7 @@ export class OinchTxDecoder {
     }
 
     private getDecoderAndType(to: string, callData: string): {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         decoder: TxDecoder<any>,
         config: ContractMethodsDecodeConfig
     } {
