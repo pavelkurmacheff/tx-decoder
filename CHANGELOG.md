@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.7](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.6...v1.1.7) (2021-12-15)
+
+
+### Features
+
+* add raw arguments from callData to result ([c95d502](https://github.com/1inch/tx-confirm-data-bulder/commit/c95d5026129d77a28dad1f371781c04471985c8e))
+
 ### [1.1.6](https://github.com/1inch/tx-confirm-data-bulder/compare/v1.1.5...v1.1.6) (2021-12-14)
 
 
