@@ -9,14 +9,15 @@ export class TxConfirmDataBuilder {
     ) {
     }
 
-    async buildItemsForTx(txConfig: Transaction): Promise<{items: Item[], txType: TxType}> {
+    async buildItemsForTx(txConfig: Transaction): Promise<{items: Item[], txType: TxType, dataArguments: any}> {
         const decoder = new OinchTxDecoder(this.resources, this.rpcCaller);
 
-        const {data, config} = await decoder.decodeTxByEstimation(txConfig);
+        const {data, config, dataArguments} = await decoder.decodeTxByEstimation(txConfig);
 
         return {
             items: config.template(txConfig, data),
-            txType: config.type
+            txType: config.type,
+            dataArguments
         };
     }
 }

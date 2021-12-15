@@ -135,7 +135,10 @@
                 getTxDecoder().then(decoder => {
                     return decoder.decodeTxByEstimation(JSON.parse(txConfigInput.value));
                 }).then(result => {
-                    resultValue.value = JSON.stringify(result.data, null, 4);
+                    resultValue.value = JSON.stringify({
+                        data: result.data,
+                        dataArguments: result.dataArguments
+                    }, null, 4);
                     txType.innerText = result.config.type;
 
                     console.log(result);
@@ -146,7 +149,10 @@
                 getTxDecoder().then(decoder => {
                     return decoder.decodeTxByLogs(txHashInput.value);
                 }).then(result => {
-                    resultValue.value = JSON.stringify(result.data, null, 4);
+                    resultValue.value = JSON.stringify({
+                        data: result.data,
+                        dataArguments: result.dataArguments
+                    }, null, 4);
                     txType.innerText = result.config.type;
 
                     console.log(result);
