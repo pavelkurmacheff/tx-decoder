@@ -7,13 +7,14 @@ export function getDestAmountViaEstimation(
     txConfig: Transaction
 ): Promise<{ value: BigNumber, error?: Error }> {
     const { from, to, value, data } = txConfig;
+    const request = {
+        from, to, data,
+        value: ['0', '0x', '0x0', '0x00'].includes(value)
+            ? '0x0'
+            : BigNumber.from(value).toHexString(),
+    };
 
-    return rpcCaller.call<string>('eth_call', [{
-        from,
-        to,
-        value: BigNumber.from(value).toHexString(),
-        data
-    }, 'latest'])
+    return rpcCaller.call<string>('eth_call', [request, 'latest'])
         .then(response => {
             return {
                 value: BigNumber.from(response),
