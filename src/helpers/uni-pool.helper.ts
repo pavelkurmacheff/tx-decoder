@@ -17,17 +17,10 @@ export function getDestTokenAddressOfUnoSwap(
             ? poolData.toHexString()
             : poolData.toString()
     ).replace('0x', '');
+
     const poolFlags = poolInfo.slice(0, 2);
-
-    const isReverseFlag = [
-        REVERSE_AND_UNWRAP_FLAG,
-        REVERSE_FLAG
-    ].includes(poolFlags);
-
-    const isUnwrapFlag = [
-        REVERSE_AND_UNWRAP_FLAG,
-        UNWRAP_FLAG,
-    ].includes(poolFlags);
+    const isReverseFlag = [REVERSE_AND_UNWRAP_FLAG, REVERSE_FLAG].includes(poolFlags);
+    const isUnwrapFlag = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG].includes(poolFlags);
 
     if (isUnwrapFlag) {
         return Promise.resolve(NATIVE_TOKEN_ADDRESS);
