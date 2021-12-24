@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.9](https://github.com/1inch/tx-decoder/compare/v1.1.8...v1.1.9) (2021-12-24)
+
+
+### Bug Fixes
+
+* fix tx decoding by estimation ([d6e02db](https://github.com/1inch/tx-decoder/commit/d6e02db0665661795e2f5437a2b5eb028c3dffbb))
+
 ### [1.1.8](https://github.com/1inch/tx-decoder/compare/v1.1.7...v1.1.8) (2021-12-15)
 
 ### [1.1.7](https://github.com/1inch/tx-decoder/compare/v1.1.6...v1.1.7) (2021-12-15)
