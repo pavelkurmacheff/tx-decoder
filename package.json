@@ -1,6 +1,6 @@
 {
     "name": "@1inch/tx-decoder",
-    "version": "1.1.9",
+    "version": "1.1.10",
     "description": "",
     "source": "src/index.ts",
     "main": "dist/index.js",

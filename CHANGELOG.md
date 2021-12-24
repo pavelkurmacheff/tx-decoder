@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.10](https://github.com/1inch/tx-decoder/compare/v1.1.9...v1.1.10) (2021-12-24)
+
+
+### Bug Fixes
+
+* fix value for getDestAmountViaEstimation() ([150af8f](https://github.com/1inch/tx-decoder/commit/150af8fe01f1fa75e914982d0d49ac8e296e8179))
+
 ### [1.1.9](https://github.com/1inch/tx-decoder/compare/v1.1.8...v1.1.9) (2021-12-24)
 
 
