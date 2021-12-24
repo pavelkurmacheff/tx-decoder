@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.11](https://github.com/1inch/tx-decoder/compare/v1.1.10...v1.1.11) (2021-12-24)
+
+
+### Bug Fixes
+
+* fix getTokensOfUniswapV3Pools() ([d2d9035](https://github.com/1inch/tx-decoder/commit/d2d9035c0cde2a5849ed9768273ca5c6f7acfd31))
+
 ### [1.1.10](https://github.com/1inch/tx-decoder/compare/v1.1.9...v1.1.10) (2021-12-24)
 
 
