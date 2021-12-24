@@ -4,7 +4,7 @@ export interface Transaction {
     from: string;
     to: string;
     data: string;
-    value: BigNumber;
+    value: string;
     gasPrice: BigNumber;
     gasLimit: BigNumber;
     nonce?: number;

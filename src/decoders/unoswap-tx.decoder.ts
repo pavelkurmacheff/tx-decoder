@@ -30,7 +30,7 @@ export class UnoswapTxDecoder implements TxDecoder<UnoswapTxItemData> {
         } = this.txData;
 
         const dstTokenAddress = await getDestTokenAddressOfUnoSwap(
-            pools[pools.length - 1].toString(),
+            pools[pools.length - 1],
             this.rpcCaller
         );
 
@@ -55,7 +55,7 @@ export class UnoswapTxDecoder implements TxDecoder<UnoswapTxItemData> {
         } = this.txData;
 
         const dstTokenAddress = await getDestTokenAddressOfUnoSwap(
-            pools[pools.length - 1].toString(),
+            pools[pools.length - 1],
             this.rpcCaller
         );
 

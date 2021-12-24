@@ -41,7 +41,7 @@ export class OinchTxDecoder {
             to: to!,
             from,
             data: data || input,
-            value: BigNumber.from(value),
+            value: value.toString(),
             gasPrice: BigNumber.from(gasPrice!),
             gasLimit: BigNumber.from(gasLimit || gas),
             nonce: +nonce
@@ -56,6 +56,12 @@ export class OinchTxDecoder {
     }
 
     async decodeTxByEstimation(txConfig: Transaction): Promise<OinchTxDecodingResult> {
+        if (!txConfig.value || ['0', '0x', '0x00'].includes(txConfig.value)) {
+            txConfig.value = '0x0';
+        } else {
+            txConfig.value = txConfig.value.toString();
+        }
+
         const {decoder, config} = this.getDecoderAndType(txConfig.to, txConfig.data);
 
         return {
