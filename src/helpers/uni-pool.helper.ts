@@ -74,9 +74,9 @@ function requestPoolTokenAddress(
 }
 
 function getPoolAddress(poolInfo: string): string {
-    const hasOnlyAddress = poolInfo.length === 42;
+    const hasOnlyAddress = poolInfo.length === 40;
 
-    return hasOnlyAddress
+    return '0x' + (hasOnlyAddress
         ? poolInfo
-        : '0x' + poolInfo.slice(24);
+        : poolInfo.slice(24));
 }
