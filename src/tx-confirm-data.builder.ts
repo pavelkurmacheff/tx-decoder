@@ -9,10 +9,10 @@ export class TxConfirmDataBuilder {
     ) {
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async buildItemsForTx(txConfigOrHash: Transaction | string): Promise<{
         items: Item[],
         txType: TxType,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dataArguments: any
     }> {
         const decoder = new OinchTxDecoder(this.resources, this.rpcCaller);
