@@ -9,6 +9,7 @@ import {BigNumber} from '@ethersproject/bignumber';
 export type OinchTxDecodingResult = {
     config: ContractMethodsDecodeConfig;
     data: DecodedTx;
+    txConfig: Transaction;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     dataArguments: any;
 }
@@ -51,7 +52,8 @@ export class OinchTxDecoder {
         return {
             config,
             data: await decoder.decodeByLogs(receipt),
-            dataArguments: decodedResultToObject(decoder.txData)
+            dataArguments: decodedResultToObject(decoder.txData),
+            txConfig
         };
     }
 
@@ -67,7 +69,8 @@ export class OinchTxDecoder {
         return {
             config,
             data: await decoder.decodeByConfig(txConfig),
-            dataArguments: decodedResultToObject(decoder.txData)
+            dataArguments: decodedResultToObject(decoder.txData),
+            txConfig
         };
     }
 
