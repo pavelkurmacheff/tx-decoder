@@ -46,7 +46,7 @@ export class UniswapV3PermitTxDecoder implements TxDecoder<UniswapV3PermitTxItem
     }
 
     async decodeByLogs(receipt: TransactionReceipt): Promise<SwapTxDecoded> {
-        const dstAmount = await getReturnAmountFromLogs(receipt);
+        const dstAmount = getReturnAmountFromLogs(receipt);
 
         const {
             srcToken: srcTokenAddress,

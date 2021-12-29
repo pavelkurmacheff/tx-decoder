@@ -45,7 +45,7 @@ export class UnoswapTxDecoder implements TxDecoder<UnoswapTxItemData> {
     }
 
     async decodeByLogs(receipt: TransactionReceipt): Promise<SwapTxDecoded> {
-        const dstAmount = await getReturnAmountFromLogs(receipt);
+        const dstAmount = getReturnAmountFromLogs(receipt);
 
         const {
             srcToken: srcTokenAddress,

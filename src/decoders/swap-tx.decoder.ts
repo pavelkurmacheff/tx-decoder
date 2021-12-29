@@ -40,7 +40,7 @@ export class SwapTxDecoder implements TxDecoder<SwapTxItemData> {
     }
 
     async decodeByLogs(receipt: TransactionReceipt): Promise<SwapTxDecoded> {
-        const dstAmount = await getReturnAmountFromLogs(receipt);
+        const dstAmount = getReturnAmountFromLogs(receipt);
 
         const {
             srcToken: srcTokenAddress,
