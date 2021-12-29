@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { TuiButtonModule, TuiSvgModule, TuiTextfieldControllerModule, TuiTooltipModule } from '@taiga-ui/core';
-import { TuiInputModule, TuiTabsModule } from '@taiga-ui/kit';
+import { TuiFieldErrorModule, TuiInputModule, TuiTabsModule } from '@taiga-ui/kit';
 
 import { MinedTxComponent } from './mined-tx.component';
 import { MinedTxRoutingModule } from './mined-tx-routing.module';
@@ -22,6 +22,7 @@ import { MinedTxRoutingModule } from './mined-tx-routing.module';
         TuiButtonModule,
         TuiTooltipModule,
         TuiLetModule,
+        TuiFieldErrorModule,
     ],
     exports: [MinedTxComponent],
 })

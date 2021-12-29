@@ -2,8 +2,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TUI_SANITIZER,TuiDialogModule, TuiNotificationsModule, TuiRootModule } from '@taiga-ui/core';
-import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
+import { TuiDialogModule, TuiNotificationsModule, TuiRootModule } from '@taiga-ui/core';
+import { TUI_VALIDATION_ERRORS } from '@taiga-ui/kit';
 import { NgJsonEditorModule } from 'ang-jsoneditor';
 
 import { AppComponent } from './app.component';
@@ -25,7 +25,15 @@ import { DecoderContainerModule } from './decoder-container/decoder-container.mo
         HttpClientModule,
         NgJsonEditorModule,
     ],
-    providers: [{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer }],
+    providers: [
+        {
+            provide: TUI_VALIDATION_ERRORS,
+            useValue: {
+                required: 'This field is required',
+                isNotHex: 'Value is not hex',
+            },
+        },
+    ],
     bootstrap: [AppComponent],
 })
 export class AppModule { }

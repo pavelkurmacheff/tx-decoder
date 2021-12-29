@@ -8,6 +8,8 @@
         >
             0x...&nbsp;
         </tui-input>
+
+        <tui-field-error class="text-red" formControlName="txHash"></tui-field-error>
     </div>
 
     <ng-container *tuiLet="(isLoading$ | async) ?? false as isLoading">

@@ -5,6 +5,7 @@ import { TuiDestroyService } from '@taiga-ui/cdk';
 import { BehaviorSubject, finalize, takeUntil } from 'rxjs';
 
 import { DecoderService } from '../../decoder.service';
+import { isHex } from '../../validators';
 
 @Component({
     selector: 'app-mined-tx',
@@ -15,7 +16,7 @@ import { DecoderService } from '../../decoder.service';
 })
 export class MinedTxComponent {
     readonly form = this.fb.group({
-        txHash: ['', Validators.required],
+        txHash: ['', [Validators.required, isHex]],
     });
 
     readonly isLoading$ = new BehaviorSubject(false);

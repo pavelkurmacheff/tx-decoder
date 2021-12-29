@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { TuiDestroyService } from '@taiga-ui/cdk';
 import { takeUntil } from 'rxjs';
+import { isHex } from '../../../validators';
 
 
 @Component({
@@ -32,13 +33,13 @@ import { takeUntil } from 'rxjs';
 })
 export class TxFieldsComponent implements OnInit, ControlValueAccessor, Validator {
     readonly form = this.fb.group({
-        from: ['', Validators.required],
-        to: ['', Validators.required],
-        value: ['', Validators.required],
-        data: ['', Validators.required],
-        gasPrice: ['', Validators.required],
-        gasLimit: ['', Validators.required],
-        nonce: [''],
+        from: ['', [Validators.required, isHex]],
+        to: ['', [Validators.required, isHex]],
+        value: ['', [Validators.required, isHex]],
+        data: ['', [Validators.required, isHex]],
+        gasPrice: ['', [Validators.required, isHex]],
+        gasLimit: ['', [Validators.required, isHex]],
+        nonce: ['', isHex],
     });
 
     constructor(
