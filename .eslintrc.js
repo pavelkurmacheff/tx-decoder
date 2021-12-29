@@ -1,5 +1,6 @@
 module.exports = {
     root: true,
+    ignorePatterns: ['app-example/**/*'],
     parser: '@typescript-eslint/parser',
     plugins: ['@typescript-eslint', 'unused-imports'],
     extends: [
