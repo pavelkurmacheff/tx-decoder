@@ -1,0 +1,74 @@
+tui-hint-box {
+    max-width: 800px !important;
+    border-radius: 12px !important;
+    font-size: 13px;
+    padding: 16px !important;
+    color: var(--1inch-text-01);
+    background-color: var(--1inch-tooltip-bg) !important;
+    box-shadow: var(--1inch-tooltip-shadow);
+
+    .tooltip {
+        position: static;
+        opacity: 1;
+    }
+}
+
+tui-hints-host {
+    z-index: 10000;
+}
+
+tui-hint-box[ng-reflect-direction='top-left'] {
+    padding: 9px 8px !important;
+    border-radius: 8px !important;
+}
+
+tui-dialog {
+    border: 0 !important;
+    width: auto !important;
+    margin: auto !important;
+    align-items: center !important;
+
+    &:after {
+        box-shadow: none !important;
+    }
+
+    & > .wrapper > button.close {
+        display: none !important;
+    }
+
+    & > .content {
+        padding: 0 !important;
+    }
+}
+
+tui-root {
+    min-height: 100vh !important;
+
+    tui-portal-host > .content {
+        min-height: 100vh !important;
+    }
+}
+
+tui-dropdown-box {
+    background: var(--1inch-bg-02)!important;
+    border: 1px solid var(--1inch-border-02)!important;;
+    border-radius: 8px!important;;
+}
+
+tui-data-list {
+    [tuioption] {
+        border: 0 !important;
+        margin: 0 !important;
+        min-height: 0!important;
+        padding: 20px;
+
+        &:hover, &:focus {
+            background: var(--1inch-bg-01)!important;
+        }
+    }
+}
+
+.dialog {
+    background: var(--1inch-blur-bg-01) !important;
+    backdrop-filter: blur(3px) !important;
+}

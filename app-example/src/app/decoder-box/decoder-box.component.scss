@@ -1,0 +1,28 @@
+.decoder-tabs {
+    .tab-label-active {
+        color: var(--text-white);
+    }
+
+    padding-bottom: 16px;
+
+    ::ng-deep {
+        tui-underline {
+            box-shadow: none;
+        }
+    }
+}
+
+.decoder-tab {
+    display: inline-block;
+    margin-right: 40px;
+    color: var(--text-gray);
+    text-decoration: none;
+
+    ::ng-deep {
+        :hover {
+            color: var(--text-blue);
+        }
+    }
+}
+
+

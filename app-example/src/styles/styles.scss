@@ -1,0 +1,22 @@
+@import 'fonts';
+
+@import 'theme';
+@import 'taiga-ui';
+
+
+@import 'dark-theme';
+
+@import 'colors-dark-theme';
+
+::-moz-selection {
+    background: rgba(47, 138, 245, 0.4);
+}
+
+::selection {
+    background: rgba(47, 138, 245, 0.4);
+}
+
+html {
+    font-family: 'Roboto', monospace;
+}
+

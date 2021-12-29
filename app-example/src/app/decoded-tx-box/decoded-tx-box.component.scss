@@ -1,0 +1,65 @@
+.decoder-tabs {
+    padding-bottom: 16px;
+
+    ::ng-deep {
+        tui-underline {
+            box-shadow: none;
+        }
+    }
+}
+
+.decoder-tab {
+    display: inline-block;
+    margin-right: 40px;
+    color: var(--text-gray);
+    text-decoration: none;
+
+    &._active {
+        color: var(--text-white) !important;
+    }
+
+    ::ng-deep {
+        :hover {
+            color: var(--text-blue);
+        }
+    }
+}
+
+.tx-type {
+    color: var(--1inch-common-text-02);
+    margin-bottom: 8px;
+
+    .type {
+        text-transform: capitalize;
+        color: var(--1inch-common-text-01);
+    }
+}
+
+.decoder-btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    white-space: pre-line;
+    background: var(--1inch-common-btn-bg-01);
+    color: var(--text-white);
+    border-radius: 12px !important;
+    padding: 7px 32px !important;
+    min-height: 40px;
+    font-size: 16px;
+    line-height: 26px !important;
+
+    &.new-decoding {
+        margin-top: 8px;
+        background: var(--1inch-common-btn-bg-07);
+    }
+
+    &:hover {
+        background: var(--bg-accentBlue-hover);
+        color: var(--text-white);
+    }
+}
+
+.explorer-link {
+    text-decoration: none;
+}

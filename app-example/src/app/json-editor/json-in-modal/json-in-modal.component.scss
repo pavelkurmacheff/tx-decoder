@@ -1,0 +1,99 @@
+.modal-container {
+    background: var(--1inch-bg-02);
+    width: 500px;
+    min-height: 700px;
+    border-radius: 24px;
+    padding: 10px;
+}
+
+.json-editor {
+    display: block;
+    margin-bottom: 16px;
+
+    ::ng-deep {
+        .jsoneditor-mode-code {
+            border: none;
+        }
+
+        div.jsoneditor-outer {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        div.jsoneditor-menu {
+            display: none;
+        }
+
+        .ace_editor {
+            min-height: 650px;
+            border-radius: 10px;
+        }
+
+        .ace-jsoneditor .ace_cursor {
+            border-color: var(--1inch-common-text-01);
+        }
+
+        .ace_content, .ace_gutter-layer {
+            background: var(--1inch-bg-02);
+        }
+
+        .ace_folding-enabled > .ace_gutter-cell {
+            color: var(--1inch-common-text-01);
+        }
+
+        .ace_layer .ace_text-layer {
+            background: white;
+        }
+
+        .ace_selection {
+            opacity: 0.2;
+            background: var(--1inch-text-10) !important;
+        }
+
+        .ace_text-layer {
+            color: var(--1inch-common-text-01);
+        }
+
+        .ace_variable {
+            color: var(--1inch-common-text-09)
+        }
+
+        .ace_active-line {
+            opacity: 0.1;
+        }
+
+        .ace-jsoneditor .ace_string {
+            color: var(--1inch-common-text-07);
+        }
+    }
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.decoder-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: pre-line;
+    background: var(--1inch-common-btn-bg-01);
+    color: var(--text-white);
+    border-radius: 12px !important;
+    padding: 7px 10px !important;
+    min-height: 40px;
+    font-size: 16px;
+    line-height: 26px !important;
+
+    &.cancel {
+        margin-right: 8px;
+        background: var(--1inch-common-btn-bg-07);
+    }
+
+    &:hover {
+        background: var(--bg-accentBlue-hover);
+        color: var(--text-white);
+    }
+}

@@ -1,0 +1,8 @@
+<form class="modal-container" [formGroup]="form" (ngSubmit)="save()">
+    <json-editor formControlName="json" class="json-editor" [options]="jsonEditorOptions"></json-editor>
+
+    <div class="actions">
+        <button class="decoder-btn cancel" tuiButton (click)="close()" type="button">Cancel</button>
+        <button class="decoder-btn" tuiButton type="submit">Save</button>
+    </div>
+</form>

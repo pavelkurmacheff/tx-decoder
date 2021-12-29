@@ -1,0 +1,9 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 13px;
+    color: var(--1inch-common-text-02)
+}
