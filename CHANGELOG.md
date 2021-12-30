@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.13](https://github.com/1inch/tx-decoder/compare/v1.1.12...v1.1.13) (2021-12-30)
+
+
+### Features
+
+* add example app ([#2](https://github.com/1inch/tx-decoder/issues/2)) ([f889c0e](https://github.com/1inch/tx-decoder/commit/f889c0e860e7ed140d3de5d2d4aa3e259fe30efe))
+* add example app ([#3](https://github.com/1inch/tx-decoder/issues/3)) ([3654284](https://github.com/1inch/tx-decoder/commit/3654284832deb7b0f0200fa1ef991619c3097e11))
+
+
+### Bug Fixes
+
+* add logoURI to token interface ([6c3e543](https://github.com/1inch/tx-decoder/commit/6c3e54305acdd9049e34e9960ee08d0fc9196942))
+* fix uni pools decoding ([0bc8e91](https://github.com/1inch/tx-decoder/commit/0bc8e91b13fd318a2eccd230746d5e4313526c3b))
+
 ### [1.1.12](https://github.com/1inch/tx-decoder/compare/v1.1.11...v1.1.12) (2021-12-28)
 
 
