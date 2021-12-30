@@ -1,0 +1,24 @@
+<tui-tabs class="decoder-tabs" [(activeItemIndex)]="activeItemIndex">
+    <button tuiTab
+            class="decoder-tab">
+        Show parsed
+    </button>
+    <button tuiTab
+            class="decoder-tab">
+        Show JSON
+    </button>
+</tui-tabs>
+
+<div class="tx-type">
+    Tx method: <span class="type">{{ parsedTx?.uiBuildResult?.txType }}</span>
+</div>
+
+<ng-container *ngIf="activeItemIndex === 0; else jsonView">
+    <app-tx-view [txItems]="parsedTx?.uiBuildResult"></app-tx-view>
+</ng-container>
+
+<ng-template #jsonView>
+    <app-json-editor [value]="parsedTx?.decodedResult" [disabled]="true"></app-json-editor>
+</ng-template>
+
+<button type="button" class="decoder-btn new-decoding" tuiButton routerLink="/decoder">New decoding</button>

@@ -138,4 +138,11 @@ export interface Item {
     value?: Value;
 }
 
-export type TxType = 'swap' | 'approve';
+export type TxType = 'swap'
+    | 'clipperSwap'
+    | 'clipperSwapWithPermit'
+    | 'unoswap'
+    | 'unoswapWithPermit'
+    | 'uniswapV3Swap'
+    | 'uniswapV3SwapToWithPermit'
+    | 'approve';

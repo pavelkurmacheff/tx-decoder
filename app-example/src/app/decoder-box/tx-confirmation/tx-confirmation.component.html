@@ -1,0 +1,23 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="use-json">
+        <div class="json-title text-gray">
+            <tui-svg src="tuiIconCode"></tui-svg>
+            <span class="text-white">Paste JSON</span>
+        <tui-tooltip content="Paste JSON " direction="top-left"></tui-tooltip> </div>
+        <tui-toggle class="toggler" formControlName="pasteJson" size="l"></tui-toggle>
+    </div>
+
+    <ng-container *tuiLet="pasteJson | async as pasteJson">
+        <app-tx-fields *ngIf="!pasteJson; else pasteJSON" formControlName="txConfig"></app-tx-fields>
+
+        <ng-template #pasteJSON>
+            <app-json-editor formControlName="json"></app-json-editor>
+        </ng-template>
+    </ng-container>
+
+    <ng-container *tuiLet="(isLoading$ | async) ?? false as isLoading">
+        <button type="submit" class="decode-btn" tuiButton [disabled]="isLoading">
+            {{ isLoading ? 'Loading...' : 'Decode' }}
+        </button>
+    </ng-container>
+</form>

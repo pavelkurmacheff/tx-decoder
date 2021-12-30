@@ -1,0 +1,7 @@
+<span class="title">{{ item.value.type }}: </span>
+<ng-container *ngIf="item.value.type === 'address'">
+    <a [href]="item.value.text | addressLink | async">{{ item.value.text }}</a>
+</ng-container>
+<ng-container *ngIf="item.value.type !== 'address'">
+    {{ item.value.text }}
+</ng-container>

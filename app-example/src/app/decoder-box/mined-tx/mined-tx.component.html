@@ -1,0 +1,19 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="input-container">
+
+        <div class="hint">Tx hash <tui-tooltip content="Transaction hash" direction="top-left"></tui-tooltip></div>
+        <tui-input
+                class="input-control"
+                formControlName="txHash"
+        >
+        </tui-input>
+
+        <tui-field-error class="text-red" formControlName="txHash"></tui-field-error>
+    </div>
+
+    <ng-container *tuiLet="(isLoading$ | async) ?? false as isLoading">
+        <button type="submit" class="decode-btn" tuiButton [disabled]="isLoading">
+            {{ isLoading ? 'Loading...' : 'Decode' }}
+        </button>
+    </ng-container>
+</form>

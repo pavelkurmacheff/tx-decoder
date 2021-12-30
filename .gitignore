@@ -1,4 +1,6 @@
 ./dist
-./node_modules
+node_modules
+./app-example/node_modules
+./app-example/.angular
 .idea
 coverage

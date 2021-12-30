@@ -1,0 +1,69 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    background: var(--1inch-bg-01);
+    padding: 10px 12px 8px 12px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+
+    .hint {
+        display: flex;
+        align-items: center;
+        color: var(--text-gray);
+    }
+
+    .input-control {
+        min-height: 24px !important;
+        --tui-focus: transparent;
+        width: 100%;
+
+        ::ng-deep {
+            .input {
+                font-size: 18px;
+                min-height: 18px;
+                padding: 0 !important;
+                background: none;
+                border: none;
+                outline: none;
+                color: var(--1inch-text-03);
+            }
+
+            .content {
+                padding: 0;
+            }
+
+            .placeholder {
+                font-size: 18px !important;
+                color: var(--1inch-common-text-04) !important;
+            }
+
+            .placeholder_raised {
+                transform: unset;
+            }
+        }
+    }
+}
+
+.decode-btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    white-space: pre-line;
+    background: var(--blueAccent);
+    color: var(--text-white);
+    border-radius: 12px !important;
+    padding: 7px 32px !important;
+    min-height: 40px;
+    font-size: 16px;
+    line-height: 26px !important;
+
+    &:hover {
+        background: var(--bg-accentBlue-hover);
+        color: var(--text-white);
+    }
+
+    &._disabled {
+        background: var(--1inch-btn-bg-01);
+    }
+}

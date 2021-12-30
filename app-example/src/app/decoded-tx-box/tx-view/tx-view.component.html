@@ -1,0 +1,14 @@
+<ng-container *ngFor="let item of (txItems?.items ?? [])">
+    <ng-container [ngSwitch]="item.key.type">
+        <div class="element-container" *ngSwitchCase="'token'">
+            <span class="element-type">{{$any(item).key?.value?.type}}</span>
+            <app-token [item]="$any(item.value)">
+            </app-token>
+        </div>
+
+        <div class="element-container" *ngSwitchCase="'wallet'">
+            <app-text-item [item]="$any(item.value)"></app-text-item>
+        </div>
+
+    </ng-container>
+</ng-container>

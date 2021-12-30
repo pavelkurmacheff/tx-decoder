@@ -1,0 +1,62 @@
+@import "~jsoneditor/dist/jsoneditor.min.css";
+
+.json-editor {
+    display: block;
+    margin-bottom: 16px;
+
+    ::ng-deep {
+        .ace_editor {
+            min-height: 350px;
+        }
+    }
+}
+
+.use-json {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    .json-title {
+        display: flex;
+        align-items: center;
+    }
+
+    .toggler {
+        background: var(--1inch-bg-16);
+
+        &._checked {
+            background: var(--blueAccent);
+        }
+
+        ::ng-deep {
+            .circle {
+                background: var(--1inch-bg-17);
+            }
+        }
+    }
+}
+
+.decode-btn {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    white-space: pre-line;
+    background: var(--blueAccent);
+    color: var(--text-white);
+    border-radius: 12px !important;
+    padding: 7px 32px !important;
+    min-height: 40px;
+    font-size: 16px;
+    line-height: 26px !important;
+
+    &:hover {
+        background: var(--bg-accentBlue-hover);
+        color: var(--text-white);
+    }
+
+    &._disabled {
+        background: var(--1inch-btn-bg-01);
+    }
+}

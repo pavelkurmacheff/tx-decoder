@@ -47,42 +47,42 @@ export const TX_DECODE_CONFIG: TxDecodeConfig = {
     },
     // Swap: clipperSwap()
     '0xb0431182': {
-        type: 'swap',
+        type: 'clipperSwap',
         abi: oneInchRouterV4Abi,
         Decoder: ClipperTxDecoder,
         template: swapTxConfirmTemplate
     },
     // Swap: clipperSwapWithPermit()
     '0xd6a92a5d': {
-        type: 'swap',
+        type: 'clipperSwapWithPermit',
         abi: oneInchRouterV4Abi,
         Decoder: ClipperTxDecoder,
         template: swapTxConfirmTemplate
     },
     // Swap: unoswap()
     '0x2e95b6c8': {
-        type: 'swap',
+        type: 'unoswap',
         abi: oneInchRouterV4Abi,
         Decoder: UnoswapTxDecoder,
         template: swapTxConfirmTemplate
     },
     // Swap: unoswapWithPermit()
     '0xa1251d75': {
-        type: 'swap',
+        type: 'unoswapWithPermit',
         abi: oneInchRouterV4Abi,
         Decoder: UnoswapTxDecoder,
         template: swapTxConfirmTemplate
     },
     // Swap: uniswapV3Swap()
     '0xe449022e': {
-        type: 'swap',
+        type: 'uniswapV3Swap',
         abi: oneInchRouterV4Abi,
         Decoder: UniswapV3TxDecoder,
         template: swapTxConfirmTemplate
     },
     // Swap: uniswapV3SwapToWithPermit()
     '0x2521b930': {
-        type: 'swap',
+        type: 'uniswapV3SwapToWithPermit',
         abi: oneInchRouterV4Abi,
         Decoder: UniswapV3PermitTxDecoder,
         template: swapTxConfirmTemplate

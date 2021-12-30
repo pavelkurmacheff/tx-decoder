@@ -1,0 +1,75 @@
+:host {
+    position: relative;
+    display: block;
+
+    .open-full-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 3;
+        background: var(--1inch-btn-bg-01);
+        border-radius: 8px;
+        cursor: pointer;
+
+        .open-full {
+            color: var(--1inch-text-01);
+        }
+    }
+}
+
+.json-editor {
+    display: block;
+    margin-bottom: 16px;
+
+    ::ng-deep {
+        div.jsoneditor-outer {
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        div.jsoneditor-menu {
+            display: none;
+        }
+
+        .ace_editor {
+            min-height: 350px;
+        }
+
+        .ace-jsoneditor .ace_cursor {
+            border-color: var(--1inch-common-text-01);
+        }
+
+        .ace_content, .ace_gutter-layer {
+            background: var(--1inch-bg-02);
+        }
+
+        .ace_folding-enabled > .ace_gutter-cell {
+            color: var(--1inch-common-text-01);
+        }
+
+        .ace_layer .ace_text-layer {
+            background: white;
+        }
+
+        .ace_selection {
+            opacity: 0.2;
+            background: var(--1inch-text-10) !important;
+        }
+
+        .ace_text-layer {
+            color: var(--1inch-common-text-01);
+        }
+
+        .ace_variable {
+            color: var(--1inch-common-text-09)
+        }
+
+        .ace_active-line {
+            opacity: 0.1;
+        }
+
+        .ace-jsoneditor .ace_string {
+            color: var(--1inch-common-text-07);
+        }
+    }
+}

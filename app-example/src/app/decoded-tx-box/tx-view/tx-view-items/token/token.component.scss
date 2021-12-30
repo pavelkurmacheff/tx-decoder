@@ -1,0 +1,33 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.token {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .token-info {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    .token-img {
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+    }
+}
+
+.token-name {
+    margin-top: 5px;
+    color: var(--1inch-common-text-04);
+}
