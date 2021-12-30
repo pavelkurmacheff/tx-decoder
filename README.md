@@ -1,5 +1,8 @@
 # Builder of transaction data for confirmation screen
 
+## Try online
+https://1inch.github.io/tx-decoder/build
+
 **From:**
 
 ```json
@@ -15,7 +18,37 @@
 ```
 
 **Into:**  
-![](./assets/tx-confirm-preview.jpg)
+```json
+{
+  "data": {
+    "srcToken": {
+      "symbol": "ETH"
+      ...
+    },
+    "dstToken": {
+      "symbol": "ATRI"
+      ...
+    },
+    "dstAmount": {
+      "type": "BigNumber",
+      "hex": "0x015c6f"
+    },
+    "srcAmount": {
+      "type": "BigNumber",
+      "hex": "0x12dfb0cb5e880000"
+    },
+    "minReturnAmount": {
+      "type": "BigNumber",
+      "hex": "0x015ab1"
+    }
+  }
+}
+```
+
+## Install
+```
+yarn add @1inch/tx-decoder
+```
 
 ## Test coverage
 
@@ -26,7 +59,7 @@
 ## Quick start
 
 ```typescript
-import {TxConfirmDataBuilder, Transaction} from '@1inch/tx-confirm-data-builder';
+import {TxConfirmDataBuilder, Transaction} from '@1inch/tx-decoder';
 
 /* Implement your solution to make RPC calls to blockchain */
 const rpcCaller = (method, params) => {
