@@ -7,6 +7,9 @@ const REVERSE_AND_WRAP_FLAG = 'a0';
 const REVERSE_FLAG = '80';
 const UNWRAP_FLAG = '40';
 const WRAP_FLAG = '20';
+const REVERSE_FLAGS = [REVERSE_AND_UNWRAP_FLAG, REVERSE_AND_WRAP_FLAG, REVERSE_FLAG];
+const WRAP_FLAGS = [REVERSE_AND_WRAP_FLAG, WRAP_FLAG];
+const UNWRAP_FLAGS = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG];
 
 export function getDestTokenAddressOfUnoSwap(
     poolData: string | BigNumber,
@@ -40,10 +43,10 @@ export async function getTokensOfUniswapV3Pools(
     const lastPoolInfo = BigInt(pools[pools.length - 1]).toString(16);
     const lastPoolFlags = lastPoolInfo.slice(0, 2);
 
-    const isUnwrapFirstToken = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG].includes(firstPoolFlags);
-    const isWrapLastToken = [REVERSE_AND_WRAP_FLAG, WRAP_FLAG].includes(lastPoolFlags);
-    const isReverseFirstToken = firstPoolFlags === REVERSE_FLAG;
-    const isReverseLastToken = lastPoolFlags === REVERSE_FLAG;
+    const isUnwrapFirstToken = UNWRAP_FLAGS.includes(firstPoolFlags);
+    const isWrapLastToken = WRAP_FLAGS.includes(lastPoolFlags);
+    const isReverseFirstToken = REVERSE_FLAGS.includes(firstPoolFlags);
+    const isReverseLastToken = REVERSE_FLAGS.includes(lastPoolFlags);
 
     const srcTokenAddress = isUnwrapFirstToken
         ? NATIVE_TOKEN_ADDRESS
