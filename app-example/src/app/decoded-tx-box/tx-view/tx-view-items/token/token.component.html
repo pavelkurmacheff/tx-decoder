@@ -1,8 +1,8 @@
 <div class="token">
-    <div class="token-info">
+    <a class="token-info" [href]="item.value.token.address | tokenLink | async">
         <img class="token-img" [src]="item.value.token.logoURI">
         <span>{{ item.value.token.symbol }}</span>
-    </div>
+    </a>
 
     <div class="token-amount">
         <ng-container *ngIf="item.value.sign === '-'">

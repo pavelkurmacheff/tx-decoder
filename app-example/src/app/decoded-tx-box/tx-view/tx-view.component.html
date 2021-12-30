@@ -1,6 +1,7 @@
 <ng-container *ngFor="let item of (txItems?.items ?? [])">
     <ng-container [ngSwitch]="item.key.type">
         <div class="element-container" *ngSwitchCase="'token'">
+            <span class="element-type">{{$any(item).key?.value?.type}}</span>
             <app-token [item]="$any(item.value)">
             </app-token>
         </div>

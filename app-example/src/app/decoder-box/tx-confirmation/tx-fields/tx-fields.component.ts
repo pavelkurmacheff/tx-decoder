@@ -37,9 +37,6 @@ export class TxFieldsComponent implements OnInit, ControlValueAccessor, Validato
         to: ['', [Validators.required, isHex]],
         value: ['', [Validators.required, isHex]],
         data: ['', [Validators.required, isHex]],
-        gasPrice: ['', [Validators.required, isHex]],
-        gasLimit: ['', [Validators.required, isHex]],
-        nonce: ['', isHex],
     });
 
     constructor(

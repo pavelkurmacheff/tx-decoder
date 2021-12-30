@@ -102,7 +102,7 @@ describe('Transaction data for confirmation builder', () => {
 
         const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
-        expect(txType).toBe('swap');
+        expect(txType).toBe('clipperSwap');
         expect(items).toMatchSnapshot();
     });
 
@@ -129,7 +129,7 @@ describe('Transaction data for confirmation builder', () => {
 
         const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
-        expect(txType).toBe('swap');
+        expect(txType).toBe('clipperSwapWithPermit');
         expect(items).toMatchSnapshot();
     });
 
@@ -161,7 +161,7 @@ describe('Transaction data for confirmation builder', () => {
 
         const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
-        expect(txType).toBe('swap');
+        expect(txType).toBe('unoswap');
         expect(items).toMatchSnapshot();
     });
 
@@ -193,7 +193,7 @@ describe('Transaction data for confirmation builder', () => {
 
         const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
-        expect(txType).toBe('swap');
+        expect(txType).toBe('unoswapWithPermit');
         expect(items).toMatchSnapshot();
     });
 
@@ -235,7 +235,7 @@ describe('Transaction data for confirmation builder', () => {
 
         const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
-        expect(txType).toBe('swap');
+        expect(txType).toBe('uniswapV3Swap');
         expect(items).toMatchSnapshot();
     });
 
@@ -267,7 +267,7 @@ describe('Transaction data for confirmation builder', () => {
 
         const {items, txType} = await txUiItemsBuilder.buildItemsForTx(txConfig);
 
-        expect(txType).toBe('swap');
+        expect(txType).toBe('uniswapV3SwapToWithPermit');
         expect(items).toMatchSnapshot();
     });
 });

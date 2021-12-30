@@ -47,7 +47,7 @@ export class DecoderService {
                     tokenPrices,
                 }, this.rpcCaller);
 
-                const decoder =  new OinchTxDecoder({
+                const decoder = new OinchTxDecoder({
                     tokens,
                     tokenPrices,
                 }, this.rpcCaller);

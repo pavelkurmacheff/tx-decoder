@@ -13,7 +13,8 @@ export class TokenComponent {
     @Input() item!: ItemAmountValue;
 
     get amount(): string {
-        const amount = this.item.value.value ;
-        return formatUnits(amount, this.item.value.token.decimals).toString();
+        const amount = this.item.value.value;
+
+        return (+formatUnits(amount, this.item.value.token.decimals)).toFixed(6);
     }
 }
