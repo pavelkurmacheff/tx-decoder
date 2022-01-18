@@ -1,4 +1,4 @@
-import {BlockchainResources, BlockchainRpcCaller, Transaction} from '../model/common.model';
+import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../model/common.model';
 import {TxDecoder} from './base-tx.decoder';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
 import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../helpers/dest-amount.helper';
@@ -15,11 +15,12 @@ export interface ClipperTxItemData {
 export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
+                readonly decodeInfo: DecodeInfo,
                 readonly txData: ClipperTxItemData) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
-        const {value: dstAmount, error} = await getDestAmountViaEstimation(this.rpcCaller, txConfig);
+        const {value: dstAmount, error} = await getDestAmountViaEstimation(this, txConfig);
         const {
             srcToken: srcTokenAddress,
             dstToken: dstTokenAddress,

@@ -1,4 +1,4 @@
-import {BlockchainResources, BlockchainRpcCaller, Transaction} from './model/common.model';
+import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from './model/common.model';
 import {getTxByHash, getTxReceipt} from './helpers/tx-logs.helper';
 import {ContractMethodsDecodeConfig, TX_DECODE_CONFIG} from './tx-decode.config';
 import {Interface, Result} from '@ethersproject/abi';
@@ -85,8 +85,8 @@ export class OinchTxDecoder {
         if (!methodDecodeInfo) {
             throw new Error('Cannot find decoder for method: ' + methodSelector + ' in contract: ' + to);
         }
-
         const iface = new Interface(methodDecodeInfo.abi);
+        const decodeInfo: DecodeInfo = { iface, methodSelector };
         const txArguments = iface.decodeFunctionData(methodSelector, callData);
 
         return {
@@ -94,6 +94,7 @@ export class OinchTxDecoder {
             decoder: new methodDecodeInfo.Decoder(
                 this.resources,
                 this.rpcCaller,
+                decodeInfo,
                 txArguments
             )
         };

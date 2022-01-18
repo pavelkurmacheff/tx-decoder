@@ -1,4 +1,5 @@
 import {BigNumber} from '@ethersproject/bignumber';
+import {Interface} from '@ethersproject/abi';
 
 export interface Transaction {
     from: string;
@@ -27,3 +28,7 @@ export interface BlockchainRpcCaller {
     call<T>(method: string, params: unknown[]): Promise<T>;
 }
 
+export interface DecodeInfo {
+    iface: Interface;
+    methodSelector: string;
+}

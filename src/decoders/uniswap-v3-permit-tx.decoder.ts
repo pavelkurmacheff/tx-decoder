@@ -1,4 +1,4 @@
-import {BlockchainResources, BlockchainRpcCaller, Transaction} from '../model/common.model';
+import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../model/common.model';
 import {TxDecoder} from './base-tx.decoder';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
 import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../helpers/dest-amount.helper';
@@ -18,11 +18,12 @@ export interface UniswapV3PermitTxItemData {
 export class UniswapV3PermitTxDecoder implements TxDecoder<UniswapV3PermitTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
+                readonly decodeInfo: DecodeInfo,
                 readonly txData:UniswapV3PermitTxItemData) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
-        const {value: dstAmount, error} = await getDestAmountViaEstimation(this.rpcCaller, txConfig);
+        const {value: dstAmount, error} = await getDestAmountViaEstimation(this, txConfig);
         const {
             srcToken: srcTokenAddress,
             amount: srcAmount,
@@ -30,10 +31,7 @@ export class UniswapV3PermitTxDecoder implements TxDecoder<UniswapV3PermitTxItem
             pools
         } = this.txData;
 
-        const dstTokenAddress = await getDestTokenAddressOfUnoSwap(
-            pools[pools.length - 1],
-            this.rpcCaller
-        );
+        const dstTokenAddress = await getDestTokenAddressOfUnoSwap(pools[pools.length - 1], this.rpcCaller);
 
         return decodeSwapTx({
             srcTokenAddress,

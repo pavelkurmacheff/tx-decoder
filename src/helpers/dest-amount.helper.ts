@@ -1,9 +1,11 @@
-import {BlockchainRpcCaller, Transaction} from '../model/common.model';
+import {Transaction} from '../model/common.model';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
 import {BigNumber} from '@ethersproject/bignumber';
+import {TxDecoder} from '../decoders/base-tx.decoder';
 
 export function getDestAmountViaEstimation(
-    rpcCaller: BlockchainRpcCaller,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    {rpcCaller, decodeInfo}: TxDecoder<any>,
     txConfig: Transaction
 ): Promise<{ value: BigNumber, error?: Error }> {
     const { from, to, value, data } = txConfig;
@@ -17,13 +19,12 @@ export function getDestAmountViaEstimation(
     return rpcCaller.call<string>('eth_call', [request, 'latest'])
         .then(response => {
             return {
-                value: BigNumber.from(response),
+                value: BigNumber.from(
+                    decodeInfo.iface.decodeFunctionResult(decodeInfo.methodSelector, response)['returnAmount']
+                ),
             };
         }).catch(error => {
-            return {
-                value: BigNumber.from(0),
-                error
-            };
+            return { value: BigNumber.from(0), error };
         });
 }
 
