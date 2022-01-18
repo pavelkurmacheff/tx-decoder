@@ -54,7 +54,7 @@ yarn add @1inch/tx-decoder
 
 | Statements                                                                    | Branches                                                                    | Functions                                                                    | Lines                                                                    |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| ![Statements](https://img.shields.io/badge/statements-98.17%25-brightgreen.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-75%25-red.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-73.68%25-red.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-98.17%25-brightgreen.svg?style=flat) |
+| ![Statements](https://img.shields.io/badge/statements-98.2%25-brightgreen.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-75%25-red.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-73.68%25-red.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-98.2%25-brightgreen.svg?style=flat) |
 
 ## Quick start
 
