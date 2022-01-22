@@ -1,5 +1,49 @@
 # Builder of transaction data for confirmation screen
 
+## Supported transactions
+
+### Approve
+- [x] Approve ERC20
+
+### Swap
+- [x] 1inch V4 SwapWithPermit / Swap
+- [x] 1inch V4 UnoswapWithPermit / Unoswap
+- [x] 1inch V4 UniswapV3WithPermit / UniswapV3Swap
+- [x] 1inch V4 ClipperSwapWithPermit / ClipperSwap
+- [ ] Uniswap V2
+- [ ] Uniswap V3
+- [ ] Curve v2
+- [ ] Balancer V2
+
+### Deposit / Withdraw
+- [ ] 1inch Liquidity Porotocol Deposit / Withdraw
+- [ ] Uniswap V2 Deposit / Withdraw
+- [ ] Uniswap V3 Deposit / Withdraw
+- [ ] Curve V2 (all pools) Deposit / Withdraw
+- [ ] Balancer V2 Deposit / Withdraw
+- [ ] Compound Deposit / Withdraw
+- [ ] Maker DAO Deposit / Withdraw
+- [ ] AAVE Deposit / Withdraw
+- [ ] Dy/Dx Deposit / Withdraw
+
+### Governance:
+- [ ] 1inch Stake / Unstake
+- [ ] 1inch Vote + aggregation vote + discard vote
+- [ ] 1inch Vote migrate (notify)
+- [ ] ENS / Gitcoin staking
+
+### Reward
+- [ ] Claim 1inch
+- [ ] 1inch Governance reward
+- [ ] 1inch Referral reward
+- [ ] 1inch Staking reward
+
+
+### Limit order
+- [ ] 1inch Limit order cancel 
+- [ ] 1inch Limit order fill
+
+
 ## Try online
 https://1inch.github.io/tx-decoder/build
 
