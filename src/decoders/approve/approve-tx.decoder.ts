@@ -1,7 +1,7 @@
 import {BigNumber} from '@ethersproject/bignumber';
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Token, Transaction} from '../model/common.model';
-import {findTokenByAddress} from '../helpers/tokens.helper';
-import {TxDecoder} from './base-tx.decoder';
+import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Token, Transaction} from '../../model/common.model';
+import {findTokenByAddress} from '../../helpers/tokens.helper';
+import {TxDecoder} from '../base-tx.decoder';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
 
 export interface ApproveTxData {

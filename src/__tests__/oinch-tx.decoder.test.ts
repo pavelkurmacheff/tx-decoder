@@ -1,5 +1,8 @@
-import {OinchTxDecoder} from '../oinch-tx.decoder';
-import {BlockchainResources, BlockchainRpcCaller} from '../model/common.model';
+import { OinchTxDecoder } from '../oinch-tx.decoder';
+import { BlockchainResources, BlockchainRpcCaller, Transaction } from '../model/common.model';
+import { BigNumber } from '@ethersproject/bignumber';
+import { UniswapV3TxDecoder } from '../decoders/swap/uniswap/uniswap-v3-tx.decoder';
+
 const fetch = require('node-fetch');
 
 const nodeUrl = 'SET_YOUR_NODE_URL';
@@ -22,6 +25,7 @@ async function buildTxForSwap(swapParams: any): Promise<any> {
 
 describe.skip('OinchTxDecoder integration test', () => {
     let oinchTxDecoder: OinchTxDecoder;
+    let uniswapV3TxDecoder: UniswapV3TxDecoder;
     let resources: BlockchainResources;
 
     const rpcCaller: BlockchainRpcCaller = {
@@ -41,10 +45,16 @@ describe.skip('OinchTxDecoder integration test', () => {
                     id: Date.now()
                 })
             })
-                .then(res => {
+                .then(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            res => {
                     return res.json();
                 })
-                .then(res => {
+                .then(
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    res => {
                     return res.result as T;
                 });
         }
@@ -52,7 +62,11 @@ describe.skip('OinchTxDecoder integration test', () => {
 
     beforeAll(async () => {
         resources = await Promise.all([
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             fetch('https://tokens.1inch.io/v1.1/' + chainId).then(res => res.json()),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             fetch('https://token-prices.1inch.io/v1.1/' + chainId).then(res => res.json()),
         ]).then(([tokens, tokenPrices]) => {
             return {tokens, tokenPrices} as BlockchainResources;
@@ -61,6 +75,7 @@ describe.skip('OinchTxDecoder integration test', () => {
 
     beforeEach(() => {
         oinchTxDecoder = new OinchTxDecoder(resources, rpcCaller);
+        uniswapV3TxDecoder = new UniswapV3TxDecoder(resources, rpcCaller);
     });
 
     it('decodeTxByLogs()', async () => {
@@ -87,5 +102,19 @@ describe.skip('OinchTxDecoder integration test', () => {
         const result = await oinchTxDecoder.decodeTxByEstimation(swapTransaction);
 
         expect(result.data).toEqual({foo: 'bar'});
+    });
+
+    it('decodeTxByEstimation() univ3', async () => {
+        const tx: Transaction = {
+            data: '0x414bf389000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000000000000000000000000000000000000000000bb8000000000000000000000000db9a26cd9e6c2a2acd8896670e6a71d5052094150000000000000000000000000000000000000000000000000000000061ec6544000000000000000000000000000000000000000000000000d00f0790180f200000000000000000000000000000000000000000000000000000000007d788a4a20000000000000000000000000000000000000000000000000000000000000000',
+            from: '0xDB9A26cd9e6C2A2ACd8896670e6a71d505209415',
+            gasLimit: BigNumber.from('199998'),
+            gasPrice: BigNumber.from('182223989819'),
+            to: "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+            value: '14992210000000000000'
+        };
+        const result = await uniswapV3TxDecoder.decodeByConfig(tx);
+
+        expect(result).toBeDefined()
     });
 });

@@ -1,32 +1,39 @@
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../model/common.model';
-import {TxDecoder} from './base-tx.decoder';
+import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../../../model/common.model';
+import {TxDecoder} from '../../base-tx.decoder';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
-import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../helpers/dest-amount.helper';
-import {decodeSwapTx} from '../helpers/swap-decode.helper';
-import {SwapTxDecoded} from '../model/swap-tx.model';
+import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../../../helpers/dest-amount.helper';
+import {decodeSwapTx} from '../../../helpers/swap-decode.helper';
+import {BigNumber} from '@ethersproject/bignumber';
+import {getDestTokenAddressOfUnoSwap} from '../../../helpers/uni-pool.helper';
+import {SwapTxDecoded} from '../../../model/swap-tx.model';
 
-export interface ClipperTxItemData {
+export interface UnoswapTxItemData {
     srcToken: string;
-    dstToken: string;
     amount: string;
     minReturn: string;
+    pools: BigNumber[];
 }
 
-export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
+export class UnoswapTxDecoder implements TxDecoder<UnoswapTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData: ClipperTxItemData) {
+                readonly txData: UnoswapTxItemData) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
         const {value: dstAmount, error} = await getDestAmountViaEstimation(this, txConfig);
         const {
             srcToken: srcTokenAddress,
-            dstToken: dstTokenAddress,
             amount: srcAmount,
-            minReturn: minReturnAmount
+            minReturn: minReturnAmount,
+            pools
         } = this.txData;
+
+        const dstTokenAddress = await getDestTokenAddressOfUnoSwap(
+            pools[pools.length - 1],
+            this.rpcCaller
+        );
 
         return decodeSwapTx({
             srcTokenAddress,
@@ -43,10 +50,15 @@ export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
 
         const {
             srcToken: srcTokenAddress,
-            dstToken: dstTokenAddress,
             amount: srcAmount,
-            minReturn: minReturnAmount
+            minReturn: minReturnAmount,
+            pools
         } = this.txData;
+
+        const dstTokenAddress = await getDestTokenAddressOfUnoSwap(
+            pools[pools.length - 1],
+            this.rpcCaller
+        );
 
         return decodeSwapTx({
             srcTokenAddress,

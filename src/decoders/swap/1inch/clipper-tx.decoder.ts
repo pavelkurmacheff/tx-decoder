@@ -1,24 +1,22 @@
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../model/common.model';
-import {TxDecoder} from './base-tx.decoder';
+import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../../../model/common.model';
+import {TxDecoder} from '../../base-tx.decoder';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
-import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../helpers/dest-amount.helper';
-import {decodeSwapTx} from '../helpers/swap-decode.helper';
-import {SwapTxDecoded} from '../model/swap-tx.model';
+import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../../../helpers/dest-amount.helper';
+import {decodeSwapTx} from '../../../helpers/swap-decode.helper';
+import {SwapTxDecoded} from '../../../model/swap-tx.model';
 
-export interface SwapTxItemData {
-    desc: {
-        srcToken: string,
-        dstToken: string,
-        amount: string,
-        minReturnAmount: string,
-    }
+export interface ClipperTxItemData {
+    srcToken: string;
+    dstToken: string;
+    amount: string;
+    minReturn: string;
 }
 
-export class SwapTxDecoder implements TxDecoder<SwapTxItemData> {
+export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData: SwapTxItemData) {
+                readonly txData: ClipperTxItemData) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
@@ -27,8 +25,8 @@ export class SwapTxDecoder implements TxDecoder<SwapTxItemData> {
             srcToken: srcTokenAddress,
             dstToken: dstTokenAddress,
             amount: srcAmount,
-            minReturnAmount
-        } = this.txData.desc;
+            minReturn: minReturnAmount
+        } = this.txData;
 
         return decodeSwapTx({
             srcTokenAddress,
@@ -47,8 +45,8 @@ export class SwapTxDecoder implements TxDecoder<SwapTxItemData> {
             srcToken: srcTokenAddress,
             dstToken: dstTokenAddress,
             amount: srcAmount,
-            minReturnAmount
-        } = this.txData.desc;
+            minReturn: minReturnAmount
+        } = this.txData;
 
         return decodeSwapTx({
             srcTokenAddress,

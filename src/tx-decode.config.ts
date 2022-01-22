@@ -2,15 +2,15 @@ import erc20Abi from './abi/ERC20ABI.json';
 import oneInchRouterV4Abi from './abi/ONEINCH_ROUTER_V4.json';
 import {JsonFragment} from '@ethersproject/abi';
 import {TxType} from './model/tx-ui-items.model';
-import {ApproveTxDecoder} from './decoders/approve-tx.decoder';
+import {ApproveTxDecoder} from './decoders/approve/approve-tx.decoder';
 import {TxDecoder} from './decoders/base-tx.decoder';
 import {approveTxConfirmTemplate} from './templates/approve-tx-confirm.template';
-import {SwapTxDecoder} from './decoders/swap-tx.decoder';
+import {SwapTxDecoder} from './decoders/swap/1inch/swap-tx.decoder';
 import {swapTxConfirmTemplate} from './templates/swap-tx-confirm.template';
-import {ClipperTxDecoder} from './decoders/clipper-tx.decoder';
-import {UnoswapTxDecoder} from './decoders/unoswap-tx.decoder';
-import {UniswapV3TxDecoder} from './decoders/uniswap-v3-tx.decoder';
-import {UniswapV3PermitTxDecoder} from './decoders/uniswap-v3-permit-tx.decoder';
+import {ClipperTxDecoder} from './decoders/swap/1inch/clipper-tx.decoder';
+import {UnoswapTxDecoder} from './decoders/swap/1inch/unoswap-tx.decoder';
+import {OneInchUniswapV3TxDecoder} from './decoders/swap/1inch/one-inch-uniswap-v3-tx.decoder';
+import {OneInchUniswapV3PermitTxDecoder} from './decoders/swap/1inch/one-inch-uniswap-v3-permit-tx.decoder';
 import {TxConfirmTemplate} from './model/tx-template.model';
 import {BlockchainResources, BlockchainRpcCaller, DecodeInfo} from './model/common.model';
 
@@ -77,14 +77,14 @@ export const TX_DECODE_CONFIG: TxDecodeConfig = {
     '0xe449022e': {
         type: 'uniswapV3Swap',
         abi: oneInchRouterV4Abi,
-        Decoder: UniswapV3TxDecoder,
+        Decoder: OneInchUniswapV3TxDecoder,
         template: swapTxConfirmTemplate
     },
     // Swap: uniswapV3SwapToWithPermit()
     '0x2521b930': {
         type: 'uniswapV3SwapToWithPermit',
         abi: oneInchRouterV4Abi,
-        Decoder: UniswapV3PermitTxDecoder,
+        Decoder: OneInchUniswapV3PermitTxDecoder,
         template: swapTxConfirmTemplate
     },
 };

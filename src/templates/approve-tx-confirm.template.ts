@@ -1,7 +1,7 @@
 import {APPROVE_INFO_PLACEHOLDER} from '../const/localizable.const';
 import {Transaction} from '../model/common.model';
 import {Item} from '../model/tx-ui-items.model';
-import {ApproveTxDecoded} from '../decoders/approve-tx.decoder';
+import {ApproveTxDecoded} from '../decoders/approve/approve-tx.decoder';
 
 export function approveTxConfirmTemplate(txConfig: Transaction, decoded: ApproveTxDecoded): Item[] {
     return [

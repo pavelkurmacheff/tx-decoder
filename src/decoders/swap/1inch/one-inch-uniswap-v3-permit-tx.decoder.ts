@@ -1,37 +1,37 @@
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../model/common.model';
-import {TxDecoder} from './base-tx.decoder';
+import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../../../model/common.model';
+import {TxDecoder} from '../../base-tx.decoder';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
-import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../helpers/dest-amount.helper';
-import {decodeSwapTx} from '../helpers/swap-decode.helper';
+import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../../../helpers/dest-amount.helper';
+import {decodeSwapTx} from '../../../helpers/swap-decode.helper';
 import {BigNumber} from '@ethersproject/bignumber';
-import {getTokensOfUniswapV3Pools} from '../helpers/uni-pool.helper';
-import {SwapTxDecoded} from '../model/swap-tx.model';
+import {getDestTokenAddressOfUnoSwap} from '../../../helpers/uni-pool.helper';
+import {SwapTxDecoded} from '../../../model/swap-tx.model';
 
-export interface UniswapV3TxItemData {
+export interface UniswapV3PermitTxItemData {
+    recipient: string;
+    srcToken: string;
     amount: string;
     minReturn: string;
     pools: BigNumber[];
 }
 
-export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
+export class OneInchUniswapV3PermitTxDecoder implements TxDecoder<UniswapV3PermitTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData: UniswapV3TxItemData) {
+                readonly txData:UniswapV3PermitTxItemData) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
         const {value: dstAmount, error} = await getDestAmountViaEstimation(this, txConfig);
         const {
+            srcToken: srcTokenAddress,
             amount: srcAmount,
             minReturn: minReturnAmount,
             pools
         } = this.txData;
 
-        const { srcTokenAddress, dstTokenAddress } = await getTokensOfUniswapV3Pools(
-            pools.map(pool => pool.toString()),
-            this.rpcCaller
-        );
+        const dstTokenAddress = await getDestTokenAddressOfUnoSwap(pools[pools.length - 1], this.rpcCaller);
 
         return decodeSwapTx({
             srcTokenAddress,
@@ -47,16 +47,14 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
         const dstAmount = getReturnAmountFromLogs(receipt);
 
         const {
+            srcToken: srcTokenAddress,
             amount: srcAmount,
             minReturn: minReturnAmount,
             pools
         } = this.txData;
 
-        const {
-            srcTokenAddress,
-            dstTokenAddress
-        } = await getTokensOfUniswapV3Pools(
-            pools.map(pool => pool.toString()),
+        const dstTokenAddress = await getDestTokenAddressOfUnoSwap(
+            pools[pools.length - 1],
             this.rpcCaller
         );
 
