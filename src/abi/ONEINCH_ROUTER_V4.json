@@ -587,16 +587,6 @@
                 "internalType": "uint256",
                 "name": "returnAmount",
                 "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "spentAmount",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "gasLeft",
-                "type": "uint256"
             }
         ],
         "stateMutability": "payable",
