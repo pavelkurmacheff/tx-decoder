@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/1inch/tx-decoder/compare/v1.2.0...v1.2.1) (2022-02-10)
+
+
+### Bug Fixes
+
+* fix 1inch contract ABI ([d19d4da](https://github.com/1inch/tx-decoder/commit/d19d4dad60b9dd3eaeef0bb5f6871d2cbbd1e8c1))
+
 ## [1.2.0](https://github.com/1inch/tx-decoder/compare/v1.1.13...v1.2.0) (2022-01-18)
 
 
