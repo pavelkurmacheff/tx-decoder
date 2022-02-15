@@ -3,6 +3,7 @@ import { TxDecoder } from '../../base-tx.decoder';
 import { BigNumber } from '@ethersproject/bignumber';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import UniswapRouterV2BI from '../../../abi/UNI3_ROUTER_V2.json';
 
 // todo: what is that? why is it here?
 export interface UniswapV3TxItemData {
@@ -19,14 +20,26 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
+    abiDecoder: unknown;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     readonly txData: UniswapV3TxItemData;
 
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller) {
     }
 
+    // eslint-disable-next-line max-lines-per-function
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
+        this.abiDecoder = require('abi-decoder');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.abiDecoder.addABI(UniswapRouterV2BI);
+        const result = getTxTypeByCallData(txConfig.data, this.abiDecoder);
+
         console.log(txConfig);
+        console.log(result);
         // console.log(callResult);
         return {
             dstAmount: BigNumber.from('0'),
@@ -114,7 +127,7 @@ export interface MulticallParam {
 
 export interface DecoderResult {
     name: string;
-    params: any;
+    params: unknown;
 }
 
 export interface methodDetails {
@@ -142,18 +155,21 @@ export const uniswapV3MethodsMap = {
     },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getTxTypeByCallData(
     calldata: string,
-    abiDecoder: any,
+    abiDecoder: unknown,
 ): methodDetails | null {
     try {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         const result: DecoderResult = abiDecoder.decodeMethod(calldata);
         if (result.name === 'multicall') {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             return parseMulticall(result.params);
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         return findSupportedCallParams(result.params[0].value);
     } catch (e) {
         return null;

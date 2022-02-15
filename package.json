@@ -30,6 +30,7 @@
     },
     "homepage": "https://github.com/1inch/tx-decoder#readme",
     "devDependencies": {
+        "abi-decoder": "krboktv/abi-decoder.git#9aa1c5f2bf0b4d01056a62d40982eda5ec7dada6",
         "@babel/core": "^7.13.16",
         "@babel/preset-env": "^7.13.15",
         "@babel/preset-typescript": "^7.13.0",
