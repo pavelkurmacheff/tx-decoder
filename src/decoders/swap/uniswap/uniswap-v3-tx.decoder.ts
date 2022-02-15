@@ -104,7 +104,6 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
 export enum uniswapTxType {
     exactIn = 'exactIn',
     exactOut = 'exactOut',
-    unkown = 'unkown',
 }
 
 export interface MulticallParam {
@@ -143,6 +142,7 @@ export const uniswapV3MethodsMap = {
     },
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getTxTypeByCallData(
     calldata: string,
     abiDecoder: any,
