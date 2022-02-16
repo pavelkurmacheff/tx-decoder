@@ -166,7 +166,7 @@ function getTxTypeByCallData(
         if (result.name === 'multicall') {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            return parseMulticall(result.params);
+            return parseMulticall(result.params, abiDecoder);
         }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -176,20 +176,27 @@ function getTxTypeByCallData(
     }
 }
 
-export function parseMulticall(params: MulticallParam[]): methodDetails | null {
-    const dataInput = params.find((param) => param.name === 'data');
-    if (!dataInput) {
+export function parseMulticall(params: MulticallParam[], abiDecoder: unknown): DecoderResult[] | null {
+    try {
+        const dataInput = params.find((param) => param.name === 'data');
+        if (!dataInput) {
+            return null;
+        }
+        if (dataInput.type === 'bytes[]') {
+            const result: DecoderResult[] = [];
+            for (const v of dataInput.value) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                const r: DecoderResult = abiDecoder.decodeMethod(v);
+                result.push(r);
+            }
+            return result;
+        }
+        return null;
+    } catch (e) {
         return null;
     }
-    if (dataInput.type === 'bytes[]') {
-        for (const v of dataInput.value) {
-            const result = findSupportedCallParams(v);
-            if (result) {
-                return result;
-            }
-        }
-    }
-    return findSupportedCallParams(dataInput.value);
+
 }
 
 function findSupportedCallParams(data: string): methodDetails | null {
