@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { DecoderResult, MulticallParam, SwapTx, UnwrapTx } from './types';
+import { DecoderResult, MulticallParam, SwapTx, TxType, UnwrapTx } from './types';
 
 export function getTxTypeByCallData(
     calldata: string,
@@ -50,6 +50,8 @@ export function normalizeDecoderResult(data: DecoderResult): SwapTx | UnwrapTx |
             return normalizeSwapExactTokensForTokens(data);
         case 'unwrapWETH9':
             return normailzeUnwrapWETH9(data);
+        case 'exactInputSingle':
+            return normalizeExactInputSingle(data);
     }
     return undefined;
 }
@@ -59,6 +61,7 @@ export function normalizeSwapExactTokensForTokens(data: DecoderResult): SwapTx |
         && data.params[2].value.length == 2) {
         return {
             name: data.name,
+            type: TxType.SWAP,
             params: {
                 srcAmount: BigNumber.from(data.params[0].value),
                 minReturnAmount: BigNumber.from(data.params[1].value),
@@ -74,6 +77,7 @@ export function normailzeUnwrapWETH9(data: DecoderResult): UnwrapTx | undefined 
     if (data.params && data.params.length > 1) {
         return {
             name: data.name,
+            type: TxType.UNWRAP,
             params: {
                 minReturnAmount: BigNumber.from(data.params[0].value),
                 recipient: data.params[1].value as string,
@@ -83,5 +87,20 @@ export function normailzeUnwrapWETH9(data: DecoderResult): UnwrapTx | undefined 
     return undefined;
 }
 
+export function normalizeExactInputSingle(data: DecoderResult): SwapTx | undefined {
+    if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
+        return {
+            name: data.name,
+            type: TxType.SWAP,
+            params: {
+                srcTokenAddress: data.params[0].value[0],
+                dstTokenAddress: data.params[0].value[1],
+                srcAmount: BigNumber.from(data.params[0].value[4]),
+                minReturnAmount: BigNumber.from(data.params[0].value[5]),
+            },
+        };
+    }
+    return undefined;
+}
 
 
