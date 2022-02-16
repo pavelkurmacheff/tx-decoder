@@ -4,6 +4,9 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import UniswapRouterV2BI from '../../../abi/UNI3_ROUTER_V2.json';
+import ERC20ABI from '../../../abi/ERC20ABI.json';
+import { getTxTypeByCallData } from './normalization';
+
 
 // todo: what is that? why is it here?
 export interface UniswapV3TxItemData {
@@ -28,16 +31,18 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
 
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller) {
-    }
-
-    // eslint-disable-next-line max-lines-per-function
-    async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
         this.abiDecoder = require('abi-decoder');
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         this.abiDecoder.addABI(UniswapRouterV2BI);
-        const result = getTxTypeByCallData(txConfig.data, this.abiDecoder);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.abiDecoder.addABI(ERC20ABI);
+    }
 
+    // eslint-disable-next-line max-lines-per-function
+    async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
+        const result = getTxTypeByCallData(txConfig.data, this.abiDecoder);
         console.log(txConfig);
         console.log(result);
         // console.log(callResult);
@@ -86,122 +91,9 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
         }
     }
 
-
-    // const dstAmount = getReturnAmountFromLogs(receipt);
-    //
-    // const {
-    //     amount: srcAmount,
-    //     minReturn: minReturnAmount,
-    //     pools
-    // } = this.txData;
-    //
-    // const {
-    //     srcTokenAddress,
-    //     dstTokenAddress
-    // } = await getTokensOfUniswapV3Pools(
-    //     pools.map(pool => pool.toString()),
-    //     this.rpcCaller
-    // );
-    //
-    // return decodeSwapTx({
-    //     srcTokenAddress,
-    //     dstTokenAddress,
-    //     srcAmount,
-    //     minReturnAmount,
-    //     dstAmount
-    // }, this.resources);
-    // }
 }
 
 
-export enum uniswapTxType {
-    exactIn = 'exactIn',
-    exactOut = 'exactOut',
-}
 
-export interface MulticallParam {
-    name: string;
-    value: string;
-    type: string;
-}
 
-export interface DecoderResult {
-    name: string;
-    params: unknown;
-}
 
-export interface methodDetails {
-    name: string;
-    type: uniswapTxType;
-}
-
-export const uniswapV3MethodsMap = {
-    '0x472b43f3': {
-        name: 'swapExactTokensForTokens',
-        type: 'exactIn',
-    },
-    '0x42712a67': {
-        name: 'swapTokensForExactTokens',
-
-        type: 'exactOut',
-    },
-    '0x04e45aaf': {
-        name: 'exactInputSingle',
-        type: 'exactIn',
-    },
-    '0x5023b4df': {
-        name: 'exactOutputSingle',
-        type: 'exactOut',
-    },
-};
-
-function getTxTypeByCallData(
-    calldata: string,
-    abiDecoder: unknown,
-): methodDetails | null {
-    try {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const result: DecoderResult = abiDecoder.decodeMethod(calldata);
-        if (result.name === 'multicall') {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return parseMulticall(result.params, abiDecoder);
-        }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        return findSupportedCallParams(result.params[0].value);
-    } catch (e) {
-        return null;
-    }
-}
-
-export function parseMulticall(params: MulticallParam[], abiDecoder: unknown): DecoderResult[] | null {
-    try {
-        const dataInput = params.find((param) => param.name === 'data');
-        if (!dataInput) {
-            return null;
-        }
-        if (dataInput.type === 'bytes[]') {
-            const result: DecoderResult[] = [];
-            for (const v of dataInput.value) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                const r: DecoderResult = abiDecoder.decodeMethod(v);
-                result.push(r);
-            }
-            return result;
-        }
-        return null;
-    } catch (e) {
-        return null;
-    }
-
-}
-
-function findSupportedCallParams(data: string): methodDetails | null {
-    const method = data.length >= 10 ? data.slice(0, 10) : '';
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return uniswapV3MethodsMap[method] ? uniswapV3MethodsMap[method] : null;
-}
