@@ -1,5 +1,6 @@
 import erc20Abi from './abi/ERC20ABI.json';
 import oneInchRouterV4Abi from './abi/ONEINCH_ROUTER_V4.json';
+import uniRouterV2ABI from './abi/UNI3_ROUTER_V2.json';
 import {JsonFragment} from '@ethersproject/abi';
 import {TxType} from './model/tx-ui-items.model';
 import {ApproveTxDecoder} from './decoders/approve/approve-tx.decoder';
@@ -13,6 +14,7 @@ import {OneInchUniswapV3TxDecoder} from './decoders/swap/1inch/one-inch-uniswap-
 import {OneInchUniswapV3PermitTxDecoder} from './decoders/swap/1inch/one-inch-uniswap-v3-permit-tx.decoder';
 import {TxConfirmTemplate} from './model/tx-template.model';
 import {BlockchainResources, BlockchainRpcCaller, DecodeInfo} from './model/common.model';
+import { UniswapV3TxDecoder } from './decoders/swap/uniswap/uniswap-v3-tx.decoder';
 
 interface TxDecodeConfig {
     [methodSelector: string]: ContractMethodsDecodeConfig;
@@ -85,6 +87,12 @@ export const TX_DECODE_CONFIG: TxDecodeConfig = {
         type: 'uniswapV3SwapToWithPermit',
         abi: oneInchRouterV4Abi,
         Decoder: OneInchUniswapV3PermitTxDecoder,
+        template: swapTxConfirmTemplate
+    },
+    '0x5ae401dc': {
+        type: 'multicall',
+        abi: uniRouterV2ABI,
+        Decoder: UniswapV3TxDecoder,
         template: swapTxConfirmTemplate
     },
 };
