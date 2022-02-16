@@ -28,6 +28,27 @@ export function getDestAmountViaEstimation(
         });
 }
 
+export function estimateWithResult(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    {rpcCaller}: TxDecoder<any>,
+    txConfig: Transaction
+): Promise<{ data: unknown, error?: Error }> {
+    const { from, to, value, data } = txConfig;
+    const request = {
+        from, to, data,
+        value: ['0', '0x', '0x0', '0x00'].includes(value)
+            ? '0x0'
+            : BigNumber.from(value).toHexString(),
+    };
+
+    return rpcCaller.call<string>('eth_call', [request, 'latest'])
+        .then(response => {
+            return {data: response};
+        }).catch(error => {
+            return {data: '', error };
+        });
+}
+
 export function getReturnAmountFromLogs(receipt: TransactionReceipt): BigNumber {
     const walletAddress = receipt.from.toLowerCase();
     const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
