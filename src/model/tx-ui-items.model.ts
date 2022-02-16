@@ -145,4 +145,5 @@ export type TxType = 'swap'
     | 'unoswapWithPermit'
     | 'uniswapV3Swap'
     | 'uniswapV3SwapToWithPermit'
+    | 'multicall'
     | 'approve';
