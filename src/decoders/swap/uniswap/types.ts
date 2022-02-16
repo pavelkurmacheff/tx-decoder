@@ -1,5 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber';
 
+
 export interface MulticallParam {
     name: string;
     value: string;
@@ -27,13 +28,20 @@ export interface SwapData {
 export interface SwapTx {
     params: SwapData;
     name: string;
+    type: TxType;
 }
 
 
 export interface UnwrapTx {
     name: string;
+    type: TxType;
     params: {
         minReturnAmount: BigNumber;
         recipient: string;
     };
+}
+
+export enum TxType {
+    SWAP = 'SWAP',
+    UNWRAP = 'UNWRAP',
 }
