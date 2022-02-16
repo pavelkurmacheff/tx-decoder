@@ -3,12 +3,18 @@ import {Token} from './common.model';
 
 export interface SwapTxDecoded {
     readonly srcToken: Token;
-    readonly srcAmount: BigNumber;
+    readonly srcAmount?: BigNumber;
     readonly dstToken: Token;
-    readonly dstAmount: BigNumber;
-    readonly minReturnAmount: BigNumber;
+    readonly dstAmount?: BigNumber;
+    readonly minReturnAmount?: BigNumber;
     readonly error?: Error;
 }
+
+export interface MultipleTxsDecoded {
+    readonly txs: SwapTxDecoded[];
+    readonly error?: Error;
+}
+
 
 export interface SwapTxDecodeInput {
     srcTokenAddress: string;
