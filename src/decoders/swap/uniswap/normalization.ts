@@ -1,5 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber';
 import { DecoderResult, MulticallParam, SwapTx, TxType, UnwrapTx } from './types';
+import { SwapTxDecoded } from '../../../model/swap-tx.model';
+import { findTokenByAddress } from '../../../helpers/tokens.helper';
+import { BlockchainResources } from '../../../model/common.model';
 
 export function getTxTypeByCallData(
     calldata: string,
@@ -103,4 +106,19 @@ export function normalizeExactInputSingle(data: DecoderResult): SwapTx | undefin
     return undefined;
 }
 
+export function buildSwapTxDecoded(resources: BlockchainResources, tx: SwapTx, dstAmountRaw: string): SwapTxDecoded | null {
+    const dstToken = findTokenByAddress(resources, tx.params.dstTokenAddress);
+    const srcToken = findTokenByAddress(resources, tx.params.srcTokenAddress);
+    if (!srcToken || !dstToken) {
+        throw new Error('Tokens not found');
+    }
+    return {
+        dstAmount: BigNumber.from('0x' + dstAmountRaw),
+        dstToken,
+        minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
+        srcAmount: BigNumber.from(tx.params.srcAmount),
+        srcToken,
+    }
+
+}
 
