@@ -18,12 +18,23 @@ export interface DecoderParams {
     type: string;
 }
 
+export enum TxType {
+    SWAP = 'SWAP',
+    UNWRAP = 'UNWRAP',
+    PERMIT = 'PERMIT',
+}
+
+
 export interface SwapData {
     srcTokenAddress: string;
     dstTokenAddress: string;
-    srcAmount: BigNumber;
-    minReturnAmount: BigNumber;
+    srcAmount?: BigNumber;
+    dstAmount?: BigNumber;
+    minReturnAmount?: BigNumber;
+    amountInMaximum?: BigNumber;
 }
+
+
 
 export interface SwapTx {
     params: SwapData;
@@ -41,7 +52,15 @@ export interface UnwrapTx {
     };
 }
 
-export enum TxType {
-    SWAP = 'SWAP',
-    UNWRAP = 'UNWRAP',
+
+
+
+export interface PermitTx {
+    params: {
+        token: string;
+        nonce: BigNumber;
+        expiry: BigNumber;
+    };
+    name: string;
+    type: TxType;
 }
