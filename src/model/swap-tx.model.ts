@@ -10,8 +10,15 @@ export interface SwapTxDecoded {
     readonly error?: Error;
 }
 
+export interface UnwrapTxDecoded {
+    readonly token: Token;
+    readonly amount?: BigNumber;
+    readonly error?: Error;
+}
+
+
 export interface MultipleTxsDecoded {
-    readonly txs: SwapTxDecoded[];
+    readonly txs: (SwapTxDecoded | UnwrapTxDecoded)[];
     readonly error?: Error;
 }
 
