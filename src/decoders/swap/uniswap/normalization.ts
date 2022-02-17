@@ -1,13 +1,13 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { DecoderResult, MulticallParam, SwapTx, TxType, UnwrapTx } from './types';
-import { SwapTxDecoded } from '../../../model/swap-tx.model';
+import { DecoderResult, MulticallParam, PermitTx, SwapTx, TxType, UnwrapTx } from './types';
+import { SwapTxDecoded, UnwrapTxDecoded } from '../../../model/swap-tx.model';
 import { findTokenByAddress } from '../../../helpers/tokens.helper';
 import { BlockchainResources } from '../../../model/common.model';
 
 export function getTxTypeByCallData(
     calldata: string,
     abiDecoder: unknown,
-): (SwapTx | UnwrapTx | undefined)[] {
+): (SwapTx | UnwrapTx | PermitTx | undefined)[] {
     try {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -16,7 +16,7 @@ export function getTxTypeByCallData(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             const multicallData = parseMulticall(result.params, abiDecoder);
-            return  multicallData.map(normalizeDecoderResult);
+            return multicallData.map(normalizeDecoderResult);
         }
         return [];
     } catch (e) {
@@ -47,14 +47,18 @@ export function parseMulticall(params: MulticallParam[], abiDecoder: unknown): D
 }
 
 
-export function normalizeDecoderResult(data: DecoderResult): SwapTx | UnwrapTx | undefined {
+export function normalizeDecoderResult(data: DecoderResult): SwapTx | PermitTx | UnwrapTx | undefined {
     switch (data.name) {
         case 'swapExactTokensForTokens':
             return normalizeSwapExactTokensForTokens(data);
         case 'unwrapWETH9':
             return normailzeUnwrapWETH9(data);
+        case 'selfPermitAllowed':
+            return normalizeSelfPermitAllowed(data);
         case 'exactInputSingle':
             return normalizeExactInputSingle(data);
+        case 'exactOutputSingle':
+            return normalizeExactOutputSingle(data);
     }
     return undefined;
 }
@@ -106,19 +110,79 @@ export function normalizeExactInputSingle(data: DecoderResult): SwapTx | undefin
     return undefined;
 }
 
-export function buildSwapTxDecoded(resources: BlockchainResources, tx: SwapTx, dstAmountRaw: string): SwapTxDecoded | null {
-    const dstToken = findTokenByAddress(resources, tx.params.dstTokenAddress);
-    const srcToken = findTokenByAddress(resources, tx.params.srcTokenAddress);
-    if (!srcToken || !dstToken) {
-        throw new Error('Tokens not found');
+export function normalizeExactOutputSingle(data: DecoderResult): SwapTx | undefined {
+    if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
+        return {
+            name: data.name,
+            type: TxType.SWAP,
+            params: {
+                srcTokenAddress: data.params[0].value[0],
+                dstTokenAddress: data.params[0].value[1],
+                dstAmount: BigNumber.from(data.params[0].value[4]),
+                amountInMaximum: BigNumber.from(data.params[0].value[5]),
+            },
+        };
     }
-    return {
-        dstAmount: BigNumber.from('0x' + dstAmountRaw),
-        dstToken,
-        minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
-        srcAmount: BigNumber.from(tx.params.srcAmount),
-        srcToken,
+    return undefined;
+}
+
+export function normalizeSelfPermitAllowed(data: DecoderResult): PermitTx | undefined {
+    try {
+        return {
+            name: 'selfPermitAllowed',
+            type: TxType.PERMIT,
+            params: {
+                token: data.params[0].value as string,
+                nonce: BigNumber.from(data.params[1].value),
+                expiry: BigNumber.from(data.params[2].value),
+            }
+        };
+    } catch (e) {
+        return undefined;
     }
 
 }
 
+export function buildSwapTxDecoded(
+    resources: BlockchainResources,
+    tx: SwapTx,
+    dstAmountRaw: string
+): SwapTxDecoded | null {
+    try {
+        const dstToken = findTokenByAddress(resources, tx.params.dstTokenAddress);
+        const srcToken = findTokenByAddress(resources, tx.params.srcTokenAddress);
+        if (!srcToken || !dstToken) {
+            return null;
+        }
+        return {
+            dstAmount: BigNumber.from('0x' + dstAmountRaw),
+            dstToken,
+            minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
+            srcAmount: BigNumber.from(tx.params.srcAmount),
+            srcToken,
+        }
+    } catch (e) {
+        return null;
+    }
+}
+
+export function buildUnwrapTxDecoded(
+    resources: BlockchainResources,
+    tx: UnwrapTx,
+    dstAmountRaw: string,
+    dstTokenAddress: string,
+): UnwrapTxDecoded | null {
+    try {
+        const token = findTokenByAddress(resources, dstTokenAddress);
+        if (!token) {
+            return null;
+        }
+        return {
+            amount: BigNumber.from('0x' + dstAmountRaw),
+            minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
+            token,
+        }
+    } catch (e) {
+        return null;
+    }
+}
