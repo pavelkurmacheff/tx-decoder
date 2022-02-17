@@ -13,6 +13,7 @@ export interface SwapTxDecoded {
 export interface UnwrapTxDecoded {
     readonly token: Token;
     readonly amount?: BigNumber;
+    readonly minReturnAmount?: BigNumber;
     readonly error?: Error;
 }
 
