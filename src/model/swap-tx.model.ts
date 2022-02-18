@@ -7,6 +7,7 @@ export interface SwapTxDecoded {
     readonly dstToken: Token;
     readonly dstAmount?: BigNumber;
     readonly minReturnAmount?: BigNumber;
+    readonly amountInMaximum?: BigNumber;
     readonly error?: Error;
 }
 
