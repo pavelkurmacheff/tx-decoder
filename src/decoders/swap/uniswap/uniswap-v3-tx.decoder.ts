@@ -1,14 +1,16 @@
 import { BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction } from '../../../model/common.model';
 import { TxDecoder } from '../../base-tx.decoder';
 import { BigNumber } from '@ethersproject/bignumber';
-import { MultipleTxsDecoded, SwapTxDecoded } from '../../../model/swap-tx.model';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import UniswapRouterV2BI from '../../../abi/UNI3_ROUTER_V2.json';
 import ERC20ABI from '../../../abi/ERC20ABI.json';
-import { buildSwapTxDecoded, buildUnwrapTxDecoded, getEstimatedValue, getTxTypeByCallData } from './normalization';
 import { estimateWithResult } from '../../../helpers/dest-amount.helper';
 import { Interface } from '@ethersproject/abi';
 import { SwapTx, TxType, UnwrapTx } from './types';
+import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
+import { getEstimatedValue, getTxTypeByCallData } from './normalization';
+import { buildSwapTxDecoded, buildUnwrapTxDecoded } from './model-builder';
+import { SwapTxDecoded } from '../../../model/swap-tx.model';
 
 
 // todo: what is that? why is it here?
