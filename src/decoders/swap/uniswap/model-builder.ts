@@ -14,7 +14,7 @@ export function buildResult(
     estimatedResult: string
 ): MultipleTxsDecoded {
     const txs: (SwapTxDecoded | UnwrapTxDecoded | ApproveTxDecoded)[] = [];
-    data.forEach(tx => {
+    data.forEach((tx, index) => {
         if (!tx) {
             return;
         }
@@ -27,7 +27,10 @@ export function buildResult(
                 txDecoded = buildSwapTxDecoded(resources, tx as SwapTx, estimatedResult);
                 break;
             case TxType.UNWRAP:
-                txDecoded = buildUnwrapTxDecoded(resources, tx as UnwrapTx, estimatedResult, '');
+                if (index > 0) {
+                    const dstTokenAddress = (data[index - 1] as SwapTx).params.dstTokenAddress;
+                    txDecoded = buildUnwrapTxDecoded(resources, tx as UnwrapTx, estimatedResult, dstTokenAddress);
+                }
                 break;
             case TxType.PERMIT:
                 txDecoded = buildApproveTxDecoded(resources,  tx as PermitTx, estimatedResult);
