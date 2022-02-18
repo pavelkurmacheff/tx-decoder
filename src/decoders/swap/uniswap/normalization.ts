@@ -48,6 +48,8 @@ export function parseMulticall(params: MulticallParam[], abiDecoder: unknown): D
 
 export function normalizeDecoderResult(data: DecoderResult): SwapTx | PermitTx | UnwrapTx | undefined {
     switch (data.name) {
+        case 'swapTokensForExactTokens':
+            return normalizeSwapTokensForExactTokens(data);
         case 'swapExactTokensForTokens':
             return normalizeSwapExactTokensForTokens(data);
         case 'unwrapWETH9':
@@ -71,6 +73,23 @@ export function normalizeSwapExactTokensForTokens(data: DecoderResult): SwapTx |
             params: {
                 srcAmount: BigNumber.from(data.params[0].value),
                 minReturnAmount: BigNumber.from(data.params[1].value),
+                srcTokenAddress: data.params[2].value[0],
+                dstTokenAddress: data.params[2].value[1],
+            },
+        };
+    }
+    return undefined;
+}
+
+export function normalizeSwapTokensForExactTokens(data: DecoderResult): SwapTx | undefined {
+    if (data.params && data.params.length > 3
+        && data.params[2].value.length == 2) {
+        return {
+            name: data.name,
+            type: TxType.SWAP_OUTPUT,
+            params: {
+                dstAmount: BigNumber.from(data.params[0].value),
+                amountInMaximum: BigNumber.from(data.params[1].value),
                 srcTokenAddress: data.params[2].value[0],
                 dstTokenAddress: data.params[2].value[1],
             },
