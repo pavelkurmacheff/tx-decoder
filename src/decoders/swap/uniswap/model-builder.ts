@@ -13,8 +13,6 @@ export function buildResult(
     data: (SwapTx | UnwrapTx | PermitTx | undefined)[],
     estimatedResult: string
 ): MultipleTxsDecoded {
-
-
     const txs: (SwapTxDecoded | UnwrapTxDecoded | ApproveTxDecoded)[] = [];
     data.forEach(tx => {
         if (!tx) {
