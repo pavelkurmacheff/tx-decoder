@@ -1,4 +1,4 @@
-import { BlockchainResources } from '../../../model/common.model';
+import { BlockchainResources, Transaction } from '../../../model/common.model';
 import { PermitTx, SwapTx, TxType, UnwrapTx } from './types';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
 import { findTokenByAddress } from '../../../helpers/tokens.helper';
@@ -10,6 +10,7 @@ import { ethers } from 'ethers';
 
 export function buildResult(
     resources: BlockchainResources,
+    txConfig: Transaction,
     data: (SwapTx | UnwrapTx | PermitTx | undefined)[],
     estimatedResult: string
 ): MultipleTxsDecoded {
@@ -22,7 +23,7 @@ export function buildResult(
         switch (tx.type) {
             case TxType.SWAP_INPUT:
             case TxType.SWAP_OUTPUT:
-                txDecoded = buildSwapTxDecoded(resources, tx as SwapTx, estimatedResult);
+                txDecoded = buildSwapTxDecoded(resources,txConfig, tx as SwapTx, estimatedResult);
                 break;
             case TxType.UNWRAP:
                 if (index > 0) {
@@ -47,16 +48,23 @@ export function buildResult(
 
 export function buildSwapTxDecoded(
     resources: BlockchainResources,
+    txConfig: Transaction,
     tx: SwapTx,
     estimatedValue: string
 ): SwapTxDecoded | undefined {
     try {
         const dstToken = findTokenByAddress(resources, tx.params.dstTokenAddress);
-        const srcToken = findTokenByAddress(resources, tx.params.srcTokenAddress);
+        let srcToken = findTokenByAddress(resources, tx.params.srcTokenAddress);
         if (!srcToken || !dstToken) {
             return undefined;
         }
+
         if (tx.type === TxType.SWAP_INPUT) {
+            // check that user originally send native currency instead of wrapped token
+            if (tx.params.srcAmount && txConfig.value === tx.params.srcAmount.toString()) {
+                const nativeToken = findTokenByAddress(resources, '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE');
+                srcToken = nativeToken ? nativeToken : srcToken;
+            }
             return {
                 dstAmount: BigNumber.from('0x' + estimatedValue),
                 dstToken,
@@ -66,10 +74,16 @@ export function buildSwapTxDecoded(
             }
         }
         if (tx.type === TxType.SWAP_OUTPUT) {
+            // check that user originally send native currency instead of wrapped token
+            if (BigNumber.from(txConfig.value).gte(ethers.constants.Zero)) {
+                const nativeToken = findTokenByAddress(resources, '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE');
+                srcToken = nativeToken ? nativeToken : srcToken;
+            }
+            const srcAmount = BigNumber.from('0x' + estimatedValue);
             return {
                 dstToken,
                 srcToken,
-                srcAmount: BigNumber.from('0x' + estimatedValue),
+                srcAmount,
                 amountInMaximum: BigNumber.from(tx.params.amountInMaximum),
                 dstAmount: BigNumber.from(tx.params.dstAmount),
             }
