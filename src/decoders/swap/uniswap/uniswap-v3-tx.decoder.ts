@@ -5,10 +5,9 @@ import { MultipleTxsDecoded, SwapTxDecoded } from '../../../model/swap-tx.model'
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import UniswapRouterV2BI from '../../../abi/UNI3_ROUTER_V2.json';
 import ERC20ABI from '../../../abi/ERC20ABI.json';
-import { buildSwapTxDecoded, buildUnwrapTxDecoded, getTxTypeByCallData } from './normalization';
+import { buildSwapTxDecoded, buildUnwrapTxDecoded, getEstimatedValue, getTxTypeByCallData } from './normalization';
 import { estimateWithResult } from '../../../helpers/dest-amount.helper';
 import { Interface } from '@ethersproject/abi';
-import { normalizeEstimation } from './estimation';
 import { SwapTx, TxType, UnwrapTx } from './types';
 
 
@@ -50,23 +49,24 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
         this.abiDecoder.addABI(ERC20ABI);
     }
 
-    // eslint-disable-next-line max-lines-per-function
     async decodeByConfig(txConfig: Transaction): Promise<MultipleTxsDecoded> {
         const data = getTxTypeByCallData(txConfig.data, this.abiDecoder);
 
         const estimated = await estimateWithResult(this, txConfig);
+        const estimatedResult = getEstimatedValue(estimated);
 
-        let dstAmountRaw;
-        if (estimated) {
-            const estimatedResult = normalizeEstimation(estimated.error ? undefined : estimated.data);
-            if (estimatedResult) {
-                dstAmountRaw = estimatedResult;
+        const result: MultipleTxsDecoded = {txs: []};
+        const swapInTx: SwapTx = data.find(item => item?.type === TxType.SWAP_INPUT) as SwapTx;
+        if (swapInTx) {
+            const tx = buildSwapTxDecoded(this.resources, swapInTx, estimatedResult ? estimatedResult : '0');
+            if (tx) {
+                result.txs.push(tx);
             }
         }
-        const result: MultipleTxsDecoded = {txs: []};
-        const swapTx: SwapTx = data.find(item => item?.type === TxType.SWAP) as SwapTx;
-        if (swapTx) {
-            const tx = buildSwapTxDecoded(this.resources, swapTx, dstAmountRaw ? dstAmountRaw : '0');
+
+        const swapOutTx: SwapTx = data.find(item => item?.type === TxType.SWAP_OUTPUT) as SwapTx;
+        if (swapOutTx) {
+            const tx = buildSwapTxDecoded(this.resources, swapOutTx, estimatedResult ? estimatedResult : '0');
             if (tx) {
                 result.txs.push(tx);
             }
@@ -77,8 +77,8 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
             const tx = buildUnwrapTxDecoded(
                 this.resources,
                 unwrapTx,
-                dstAmountRaw ? dstAmountRaw : '0',
-                swapTx.params.dstTokenAddress
+                estimatedResult ? estimatedResult : '0',
+                swapOutTx ? swapOutTx.params.dstTokenAddress: '',
             );
             if (tx) {
                 result.txs.push(tx);
