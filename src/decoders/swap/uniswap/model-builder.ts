@@ -1,9 +1,10 @@
 import { BlockchainResources } from '../../../model/common.model';
-import { SwapTx, TxType, UnwrapTx } from './types';
+import { PermitTx, SwapTx, TxType, UnwrapTx } from './types';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
 import { findTokenByAddress } from '../../../helpers/tokens.helper';
 import { BigNumber } from '@ethersproject/bignumber';
 import { UnwrapTxDecoded } from '../../../model/unwrap-tx.model';
+import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
 
 export function buildSwapTxDecoded(
     resources: BlockchainResources,
@@ -61,4 +62,39 @@ export function buildUnwrapTxDecoded(
     } catch (e) {
         return null;
     }
+}
+
+
+export function buildResult(resources: BlockchainResources, data: (SwapTx | UnwrapTx | PermitTx | undefined)[], estimatedResult: string | undefined): MultipleTxsDecoded {
+    const result: MultipleTxsDecoded = {txs: []};
+
+    const swapInTx: SwapTx = data.find(item => item?.type === TxType.SWAP_INPUT) as SwapTx;
+    if (swapInTx) {
+        const tx = buildSwapTxDecoded(resources, swapInTx, estimatedResult ? estimatedResult : '0');
+        if (tx) {
+            result.txs.push(tx);
+        }
+    }
+
+    const swapOutTx: SwapTx = data.find(item => item?.type === TxType.SWAP_OUTPUT) as SwapTx;
+    if (swapOutTx) {
+        const tx = buildSwapTxDecoded(resources, swapOutTx, estimatedResult ? estimatedResult : '0');
+        if (tx) {
+            result.txs.push(tx);
+        }
+    }
+
+    const unwrapTx: UnwrapTx = data.find(item => item?.type === TxType.UNWRAP) as UnwrapTx;
+    if (unwrapTx) {
+        const tx = buildUnwrapTxDecoded(
+            resources,
+            unwrapTx,
+            estimatedResult ? estimatedResult : '0',
+            swapOutTx ? swapOutTx.params.dstTokenAddress: '',
+        );
+        if (tx) {
+            result.txs.push(tx);
+        }
+    }
+    return result;
 }
