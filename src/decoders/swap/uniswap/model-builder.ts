@@ -65,7 +65,10 @@ export function buildUnwrapTxDecoded(
 }
 
 
-export function buildResult(resources: BlockchainResources, data: (SwapTx | UnwrapTx | PermitTx | undefined)[], estimatedResult: string | undefined): MultipleTxsDecoded {
+export function buildResult(resources: BlockchainResources,
+                            data: (SwapTx | UnwrapTx | PermitTx | undefined)[],
+                            estimatedResult: string | undefined
+): MultipleTxsDecoded {
     const result: MultipleTxsDecoded = {txs: []};
 
     const swapInTx: SwapTx = data.find(item => item?.type === TxType.SWAP_INPUT) as SwapTx;

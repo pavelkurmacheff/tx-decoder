@@ -57,7 +57,7 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
         const estimatedResult = getEstimatedValue(estimated);
 
         const result: MultipleTxsDecoded = buildResult(this.resources, data, estimatedResult);
-        
+
         return result;
     }
 
