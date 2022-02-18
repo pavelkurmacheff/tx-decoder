@@ -21,8 +21,6 @@ export function buildResult(
         let txDecoded: SwapTxDecoded | UnwrapTxDecoded | ApproveTxDecoded | undefined;
         switch (tx.type) {
             case TxType.SWAP_INPUT:
-                txDecoded = buildSwapTxDecoded(resources, tx as SwapTx, estimatedResult);
-                break;
             case TxType.SWAP_OUTPUT:
                 txDecoded = buildSwapTxDecoded(resources, tx as SwapTx, estimatedResult);
                 break;
