@@ -20,10 +20,6 @@ export interface UniswapV3TxItemData {
 }
 
 export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    // todo: what is that? why is it here?
-
     readonly decodeInfo: DecodeInfo = {
         methodSelector: '0x5ae401dc',
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -50,9 +46,8 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
         this.abiDecoder.addABI(ERC20ABI);
     }
 
-    async decodeByConfig(txConfig: Transaction): Promise<MultipleTxsDecoded | SwapTxDecoded> {
+    async decodeByConfig(txConfig: Transaction): Promise<MultipleTxsDecoded> {
         const data = getTxTypeByCallData(txConfig.data, this.abiDecoder);
-
         const estimated = await estimateWithResult(this, txConfig);
         const estimatedResult = getEstimatedValue(estimated);
 
