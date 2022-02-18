@@ -51,7 +51,7 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
         const estimated = await estimateWithResult(this, txConfig);
         const estimatedResult = getEstimatedValue(estimated);
 
-        return buildResult(this.resources, data, estimatedResult ? estimatedResult : '0');
+        return buildResult(this.resources, txConfig, data, estimatedResult ? estimatedResult : '0');
     }
 
 
