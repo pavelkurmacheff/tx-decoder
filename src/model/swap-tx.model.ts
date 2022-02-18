@@ -11,10 +11,6 @@ export interface SwapTxDecoded {
     readonly error?: Error;
 }
 
-
-
-
-
 export interface SwapTxDecodeInput {
     srcTokenAddress: string;
     dstTokenAddress: string;
