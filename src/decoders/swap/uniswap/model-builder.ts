@@ -6,7 +6,8 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { UnwrapTxDecoded } from '../../../model/unwrap-tx.model';
 import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
 import { ApproveTxDecoded } from '../../../model/approve-tx.model';
-
+import { INFINITY } from '../../../helpers/hardcoded';
+import { ethers } from 'ethers';
 
 export function buildResult(
     resources: BlockchainResources,
@@ -33,7 +34,7 @@ export function buildResult(
                 }
                 break;
             case TxType.PERMIT:
-                txDecoded = buildApproveTxDecoded(resources,  tx as PermitTx, estimatedResult);
+                txDecoded = buildApproveTxDecoded(resources,  tx as PermitTx);
                 break;
             default:
                 break;
@@ -46,7 +47,6 @@ export function buildResult(
 
     return {txs};
 }
-
 
 export function buildSwapTxDecoded(
     resources: BlockchainResources,
@@ -108,7 +108,6 @@ export function buildUnwrapTxDecoded(
 export function buildApproveTxDecoded(
     resources: BlockchainResources,
     tx: PermitTx,
-    amount: string,
 ): ApproveTxDecoded | undefined {
     try {
         const token = findTokenByAddress(resources, tx.params.token);
@@ -116,8 +115,9 @@ export function buildApproveTxDecoded(
             return undefined;
         }
         return {
-            value: BigNumber.from('0x' + amount),
+            value: ethers.constants.MaxUint256,
             token,
+            time: tx.params.expiry.toNumber(),
         }
     } catch (e) {
         return undefined;
