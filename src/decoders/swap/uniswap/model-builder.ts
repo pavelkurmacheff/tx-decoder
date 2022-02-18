@@ -5,6 +5,44 @@ import { findTokenByAddress } from '../../../helpers/tokens.helper';
 import { BigNumber } from '@ethersproject/bignumber';
 import { UnwrapTxDecoded } from '../../../model/unwrap-tx.model';
 import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
+import { ApproveTxDecoded } from '../../../model/approve-tx.model';
+
+
+export function buildResult(
+    resources: BlockchainResources,
+    data: (SwapTx | UnwrapTx | PermitTx | undefined)[],
+    estimatedResult: string
+): MultipleTxsDecoded {
+
+
+    const txs: (SwapTxDecoded | UnwrapTxDecoded | ApproveTxDecoded)[] = [];
+    data.forEach(tx => {
+        if (!tx) {
+            return;
+        }
+        let txDecoded: SwapTxDecoded | UnwrapTxDecoded | ApproveTxDecoded | undefined;
+        switch (tx.type) {
+            case TxType.SWAP_INPUT:
+                txDecoded = buildSwapTxDecoded(resources, tx as SwapTx, estimatedResult);
+                break;
+            case TxType.SWAP_OUTPUT:
+                txDecoded = buildSwapTxDecoded(resources, tx as SwapTx, estimatedResult);
+                break;
+            case TxType.UNWRAP:
+                txDecoded = buildUnwrapTxDecoded(resources, tx as UnwrapTx, estimatedResult, '');
+                break;
+            default:
+                break;
+        }
+        if (txDecoded) {
+            txs.push(txDecoded);
+        }
+        return;
+    })
+
+    return {txs};
+}
+
 
 export function buildSwapTxDecoded(
     resources: BlockchainResources,
@@ -48,11 +86,11 @@ export function buildUnwrapTxDecoded(
     tx: UnwrapTx,
     dstAmountRaw: string,
     dstTokenAddress: string,
-): UnwrapTxDecoded | null {
+): UnwrapTxDecoded | undefined {
     try {
         const token = findTokenByAddress(resources, dstTokenAddress);
         if (!token) {
-            return null;
+            return undefined;
         }
         return {
             amount: BigNumber.from('0x' + dstAmountRaw),
@@ -60,44 +98,7 @@ export function buildUnwrapTxDecoded(
             token,
         }
     } catch (e) {
-        return null;
+        return undefined;
     }
 }
 
-
-export function buildResult(resources: BlockchainResources,
-                            data: (SwapTx | UnwrapTx | PermitTx | undefined)[],
-                            estimatedResult: string | undefined
-): MultipleTxsDecoded {
-    const result: MultipleTxsDecoded = {txs: []};
-
-    const swapInTx: SwapTx = data.find(item => item?.type === TxType.SWAP_INPUT) as SwapTx;
-    if (swapInTx) {
-        const tx = buildSwapTxDecoded(resources, swapInTx, estimatedResult ? estimatedResult : '0');
-        if (tx) {
-            result.txs.push(tx);
-        }
-    }
-
-    const swapOutTx: SwapTx = data.find(item => item?.type === TxType.SWAP_OUTPUT) as SwapTx;
-    if (swapOutTx) {
-        const tx = buildSwapTxDecoded(resources, swapOutTx, estimatedResult ? estimatedResult : '0');
-        if (tx) {
-            result.txs.push(tx);
-        }
-    }
-
-    const unwrapTx: UnwrapTx = data.find(item => item?.type === TxType.UNWRAP) as UnwrapTx;
-    if (unwrapTx) {
-        const tx = buildUnwrapTxDecoded(
-            resources,
-            unwrapTx,
-            estimatedResult ? estimatedResult : '0',
-            swapOutTx ? swapOutTx.params.dstTokenAddress: '',
-        );
-        if (tx) {
-            result.txs.push(tx);
-        }
-    }
-    return result;
-}
