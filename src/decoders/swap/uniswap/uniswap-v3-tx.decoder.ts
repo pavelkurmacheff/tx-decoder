@@ -50,7 +50,7 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
         this.abiDecoder.addABI(ERC20ABI);
     }
 
-    async decodeByConfig(txConfig: Transaction): Promise<MultipleTxsDecoded> {
+    async decodeByConfig(txConfig: Transaction): Promise<MultipleTxsDecoded | SwapTxDecoded> {
         const data = getTxTypeByCallData(txConfig.data, this.abiDecoder);
 
         const estimated = await estimateWithResult(this, txConfig);
