@@ -6,7 +6,6 @@ import { BigNumber } from '@ethersproject/bignumber';
 import { UnwrapTxDecoded } from '../../../model/unwrap-tx.model';
 import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
 import { ApproveTxDecoded } from '../../../model/approve-tx.model';
-import { INFINITY } from '../../../helpers/hardcoded';
 import { ethers } from 'ethers';
 
 export function buildResult(
