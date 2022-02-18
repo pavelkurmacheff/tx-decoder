@@ -31,6 +31,9 @@ export function buildResult(
             case TxType.UNWRAP:
                 txDecoded = buildUnwrapTxDecoded(resources, tx as UnwrapTx, estimatedResult, '');
                 break;
+            case TxType.PERMIT:
+                txDecoded = buildApproveTxDecoded(resources,  tx as PermitTx, estimatedResult);
+                break;
             default:
                 break;
         }
@@ -71,7 +74,6 @@ export function buildSwapTxDecoded(
                 srcAmount: BigNumber.from('0x' + estimatedValue),
                 amountInMaximum: BigNumber.from(tx.params.amountInMaximum),
                 dstAmount: BigNumber.from(tx.params.dstAmount),
-
             }
         }
 
@@ -95,6 +97,25 @@ export function buildUnwrapTxDecoded(
         return {
             amount: BigNumber.from('0x' + dstAmountRaw),
             minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
+            token,
+        }
+    } catch (e) {
+        return undefined;
+    }
+}
+
+export function buildApproveTxDecoded(
+    resources: BlockchainResources,
+    tx: PermitTx,
+    amount: string,
+): ApproveTxDecoded | undefined {
+    try {
+        const token = findTokenByAddress(resources, tx.params.token);
+        if (!token) {
+            return undefined;
+        }
+        return {
+            value: BigNumber.from('0x' + amount),
             token,
         }
     } catch (e) {
