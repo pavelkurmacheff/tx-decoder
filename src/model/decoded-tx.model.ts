@@ -1,6 +1,9 @@
-import {ApproveTxDecoded} from '../decoders/approve/approve-tx.decoder';
-import { MultipleTxsDecoded, SwapTxDecoded } from './swap-tx.model';
+import { ApproveTxDecoded } from '../decoders/approve/approve-tx.decoder';
+import { SwapTxDecoded } from './swap-tx.model';
+import { MultipleTxsDecoded } from './multiple-tx.model';
+import { UnwrapTxDecoded } from './unwrap-tx.model';
 
 export type DecodedTx = ApproveTxDecoded
     | SwapTxDecoded
-    |MultipleTxsDecoded;
+    | UnwrapTxDecoded
+    | MultipleTxsDecoded;
