@@ -52,14 +52,14 @@ export function normalizeDecoderResult(data: DecoderResult): SwapTx | PermitTx |
             return normalizeSwapTokensForExactTokens(data);
         case 'swapExactTokensForTokens':
             return normalizeSwapExactTokensForTokens(data);
-        case 'unwrapWETH9':
-            return normailzeUnwrapWETH9(data);
-        case 'selfPermitAllowed':
-            return normalizeSelfPermitAllowed(data);
         case 'exactInputSingle':
             return normalizeExactInputSingle(data);
         case 'exactOutputSingle':
             return normalizeExactOutputSingle(data);
+        case 'unwrapWETH9':
+            return normailzeUnwrapWETH9(data);
+        case 'selfPermitAllowed':
+            return normalizeSelfPermitAllowed(data);
     }
     return undefined;
 }
