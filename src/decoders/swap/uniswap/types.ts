@@ -19,7 +19,8 @@ export interface DecoderParams {
 }
 
 export enum TxType {
-    SWAP = 'SWAP',
+    SWAP_INPUT = 'SWAP_EXACT_INPUT',
+    SWAP_OUTPUT = 'SWAP_EXACT_OUTPUT',
     UNWRAP = 'UNWRAP',
     PERMIT = 'PERMIT',
 }
