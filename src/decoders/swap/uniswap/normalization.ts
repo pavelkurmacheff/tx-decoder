@@ -3,6 +3,7 @@ import { DecoderResult, MulticallParam, PermitTx, SwapTx, TxType, UnwrapTx } fro
 import { SwapTxDecoded, UnwrapTxDecoded } from '../../../model/swap-tx.model';
 import { findTokenByAddress } from '../../../helpers/tokens.helper';
 import { BlockchainResources } from '../../../model/common.model';
+import { normalizeEstimation } from './estimation';
 
 export function getTxTypeByCallData(
     calldata: string,
@@ -68,7 +69,7 @@ export function normalizeSwapExactTokensForTokens(data: DecoderResult): SwapTx |
         && data.params[2].value.length == 2) {
         return {
             name: data.name,
-            type: TxType.SWAP,
+            type: TxType.SWAP_INPUT,
             params: {
                 srcAmount: BigNumber.from(data.params[0].value),
                 minReturnAmount: BigNumber.from(data.params[1].value),
@@ -98,7 +99,7 @@ export function normalizeExactInputSingle(data: DecoderResult): SwapTx | undefin
     if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
         return {
             name: data.name,
-            type: TxType.SWAP,
+            type: TxType.SWAP_INPUT,
             params: {
                 srcTokenAddress: data.params[0].value[0],
                 dstTokenAddress: data.params[0].value[1],
@@ -114,7 +115,7 @@ export function normalizeExactOutputSingle(data: DecoderResult): SwapTx | undefi
     if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
         return {
             name: data.name,
-            type: TxType.SWAP,
+            type: TxType.SWAP_OUTPUT,
             params: {
                 srcTokenAddress: data.params[0].value[0],
                 dstTokenAddress: data.params[0].value[1],
@@ -146,23 +147,37 @@ export function normalizeSelfPermitAllowed(data: DecoderResult): PermitTx | unde
 export function buildSwapTxDecoded(
     resources: BlockchainResources,
     tx: SwapTx,
-    dstAmountRaw: string
-): SwapTxDecoded | null {
+    estimatedValue: string
+): SwapTxDecoded | undefined {
     try {
         const dstToken = findTokenByAddress(resources, tx.params.dstTokenAddress);
         const srcToken = findTokenByAddress(resources, tx.params.srcTokenAddress);
         if (!srcToken || !dstToken) {
-            return null;
+            return undefined;
         }
-        return {
-            dstAmount: BigNumber.from('0x' + dstAmountRaw),
-            dstToken,
-            minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
-            srcAmount: BigNumber.from(tx.params.srcAmount),
-            srcToken,
+        if (tx.type === TxType.SWAP_INPUT) {
+            return {
+                dstAmount: BigNumber.from('0x' + estimatedValue),
+                dstToken,
+                minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
+                srcAmount: BigNumber.from(tx.params.srcAmount),
+                srcToken,
+            }
         }
+        if (tx.type === TxType.SWAP_OUTPUT) {
+            return {
+                dstToken,
+                srcToken,
+                srcAmount: BigNumber.from('0x' + estimatedValue),
+                amountInMaximum: BigNumber.from(tx.params.amountInMaximum),
+                dstAmount: BigNumber.from(tx.params.dstAmount),
+
+            }
+        }
+
+       return undefined
     } catch (e) {
-        return null;
+        return undefined;
     }
 }
 
@@ -185,4 +200,9 @@ export function buildUnwrapTxDecoded(
     } catch (e) {
         return null;
     }
+}
+
+export function getEstimatedValue(estimated: { data: unknown, error?: Error }): string | undefined {
+    const result = normalizeEstimation(estimated.error ? undefined : estimated.data);
+    return result ? result : undefined;
 }
