@@ -40,7 +40,6 @@ export function buildResult(
         if (txDecoded) {
             txs.push(txDecoded);
         }
-        return;
     })
 
     return {txs};
