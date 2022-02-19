@@ -1,15 +1,40 @@
 import { BlockchainResources, BlockchainRpcCaller, Transaction } from '../model/common.model';
 import { BigNumber } from '@ethersproject/bignumber';
 import { UniswapV3TxDecoder } from '../decoders/swap/uniswap/uniswap-v3-tx.decoder';
+import { getTxTypeByCallData } from '../decoders/swap/uniswap/normalization';
 
 const fetch = require('node-fetch');
 
 const nodeUrl = 'https://web3-node-private.1inch.exchange/';
 const chainId = 1;
 
+const getTxTypeByCallDataTestData = [
+    {
+        name: 'getTxTypeByCallData() ETH -> 1INCH',
+        data: '0x5ae401dc00000000000000000000000000000000000000000000000000000000620f9fac000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000000e442712a67000000000000000000000000000000000000000000000001e5b8fa8fe2ac00000000000000000000000000000000000000000000000000000062bb20e4b8a7d10000000000000000000000000000000000000000000000000000000000000080000000000000000000000000d8fa3fc359a464bfdd3c7339a10b227732bb1ad90000000000000000000000000000000000000000000000000000000000000002000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2000000000000000000000000111111111117dc0aa78b770fa6a738034120c30200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000412210e8a00000000000000000000000000000000000000000000000000000000',
+        wanted:  [
+            {
+                'name': 'swapTokensForExactTokens',
+                'type': 'SWAP_EXACT_OUTPUT',
+                'params': {
+                    'dstAmount': {
+                        'type': 'BigNumber',
+                        'hex': '0x01e5b8fa8fe2ac0000'
+                    },
+                    'amountInMaximum': {
+                        'type': 'BigNumber',
+                        'hex': '0x62bb20e4b8a7d1'
+                    },
+                    'srcTokenAddress': '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+                    'dstTokenAddress': '0x111111111117dc0aa78b770fa6a738034120c302'
+                }
+            }
+        ],
+    }
+]
 
 
-describe('OinchTxDecoder integration test', () => {
+describe('UniswapV3TxDecoder test', () => {
     let uniswapV3TxDecoder: UniswapV3TxDecoder;
     let resources: BlockchainResources;
 
@@ -74,11 +99,20 @@ describe('OinchTxDecoder integration test', () => {
             from: '0xd8fa3FC359A464BFDd3C7339A10B227732Bb1Ad9',
             gasLimit: BigNumber.from('0x2c137'),
             gasPrice: BigNumber.from('0x163F29F8A1'),
-            to: "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
+            to: '0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45',
             value: '30000000000000000'
         };
         const result = await uniswapV3TxDecoder.decodeByConfig(tx);
 
         expect(result).toBeDefined()
     });
+
+    getTxTypeByCallDataTestData.forEach(({name, data, wanted}) => {
+        it(name, () => {
+            const result = getTxTypeByCallData(data, uniswapV3TxDecoder.abiDecoder);
+            expect(JSON.stringify(result)).toBe(JSON.stringify(wanted));
+        }, 50000);
+    });
+
 });
+
