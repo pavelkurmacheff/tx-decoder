@@ -6,7 +6,7 @@ import { normalizeEstimation } from './estimation';
 export function getTxTypeByCallData(
     calldata: string,
     abiDecoder: unknown,
-): (SwapTx | UnwrapTx | PermitTx | undefined)[] {
+): (SwapTx | UnwrapTx | PermitTx)[] {
     try {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -14,8 +14,7 @@ export function getTxTypeByCallData(
         if (result.name === 'multicall') {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
-            const multicallData = parseMulticall(result.params, abiDecoder);
-            return multicallData.map(normalizeDecoderResult);
+            return parseMulticall(result.params, abiDecoder).map(normalizeDecoderResult).filter(data => !!data);
         }
         return [];
     } catch (e) {
