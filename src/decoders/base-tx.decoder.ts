@@ -9,6 +9,7 @@ export interface TxDecoder<T> {
     readonly decodeInfo: DecodeInfo;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readonly txData: T;
+
     readonly chainId: NetworkEnum;
 
     decodeByConfig(txConfig: Transaction): Promise<DecodedTx>;
