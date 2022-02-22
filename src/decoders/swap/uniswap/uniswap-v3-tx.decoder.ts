@@ -10,17 +10,13 @@ import { getEstimatedValue, getTxTypeByCallData } from './normalization';
 import { buildResult } from './model-builder';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
 import { NetworkEnum } from '../../../const/common.const';
-import { UniswapV3PermitTxItemData } from '../1inch/one-inch-uniswap-v3-permit-tx.decoder';
-
 
 // todo: what is that? why is it here?
-export interface UniswapV3TxItemData {
-    amount: string;
-    minReturn: string;
-    pools: BigNumber[];
+export interface UniV3Data {
+    data: string;
 }
 
-export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
+export class UniswapV3TxDecoder implements TxDecoder<UniV3Data> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     abiDecoder: unknown;
@@ -29,7 +25,7 @@ export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData: UniswapV3PermitTxItemData,
+                readonly txData: UniV3Data,
                 readonly chainId: NetworkEnum) {
         this.abiDecoder = require('abi-decoder');
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
