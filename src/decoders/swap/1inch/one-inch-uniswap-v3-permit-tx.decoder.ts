@@ -1,11 +1,12 @@
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../../../model/common.model';
-import {TxDecoder} from '../../base-tx.decoder';
-import {TransactionReceipt} from '@ethersproject/abstract-provider';
-import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../../../helpers/dest-amount.helper';
-import {decodeSwapTx} from '../../../helpers/swap-decode.helper';
-import {BigNumber} from '@ethersproject/bignumber';
-import {getDestTokenAddressOfUnoSwap} from '../../../helpers/uni-pool.helper';
-import {SwapTxDecoded} from '../../../model/swap-tx.model';
+import { BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction } from '../../../model/common.model';
+import { TxDecoder } from '../../base-tx.decoder';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
+import { getDestAmountViaEstimation, getReturnAmountFromLogs } from '../../../helpers/dest-amount.helper';
+import { decodeSwapTx } from '../../../helpers/swap-decode.helper';
+import { BigNumber } from '@ethersproject/bignumber';
+import { getDestTokenAddressOfUnoSwap } from '../../../helpers/uni-pool.helper';
+import { SwapTxDecoded } from '../../../model/swap-tx.model';
+import { NetworkEnum } from '../../../const/common.const';
 
 export interface UniswapV3PermitTxItemData {
     recipient: string;
@@ -19,7 +20,8 @@ export class OneInchUniswapV3PermitTxDecoder implements TxDecoder<UniswapV3Permi
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData:UniswapV3PermitTxItemData) {
+                readonly txData: UniswapV3PermitTxItemData,
+                readonly chainId: NetworkEnum) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
