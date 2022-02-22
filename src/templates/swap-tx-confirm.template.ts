@@ -5,7 +5,12 @@ import {SwapTxDecoded} from '../model/swap-tx.model';
 
 export function swapTxConfirmTemplate(txConfig: Transaction, decoded: SwapTxDecoded): Item[] {
     const {srcAmount, dstAmount, srcToken, dstToken, minReturnAmount} = decoded;
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const srcUnits = formatUnits(srcAmount, srcToken.decimals);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const dstUnits = formatUnits(dstAmount, dstToken.decimals);
 
     return [
@@ -22,7 +27,7 @@ export function swapTxConfirmTemplate(txConfig: Transaction, decoded: SwapTxDeco
                 type: 'amount',
                 value: {
                     token: srcToken,
-                    value: srcAmount.toString(),
+                    value: srcAmount? srcAmount.toString(): '0',
                     sign: '-'
                 }
             }
@@ -40,7 +45,7 @@ export function swapTxConfirmTemplate(txConfig: Transaction, decoded: SwapTxDeco
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: dstAmount.toString(),
+                    value: dstAmount? dstAmount.toString(): '0',
                     sign: '+'
                 }
             }
@@ -121,7 +126,7 @@ export function swapTxConfirmTemplate(txConfig: Transaction, decoded: SwapTxDeco
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: minReturnAmount.toString(),
+                    value: minReturnAmount? minReturnAmount.toString(): '0',
                     sign: '0'
                 }
             }
