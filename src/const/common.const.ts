@@ -1,3 +1,5 @@
+import { Token } from '../model/common.model';
+
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const NATIVE_TOKEN_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
 
@@ -18,7 +20,7 @@ export enum NetworkEnum {
 export const TOKEN0_POOL_SELECTOR = '0x0dfe1681';
 export const TOKEN1_POOL_SELECTOR = '0xd21220a7';
 
-export const ChainTokenByNetwork = {
+export const ChainTokenByNetwork: { [key: number]: Token } = {
     1: {
         symbol: 'ETH',
         name: 'Ethereum',
