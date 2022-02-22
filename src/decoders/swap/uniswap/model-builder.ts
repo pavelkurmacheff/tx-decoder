@@ -1,12 +1,13 @@
 import { BlockchainResources, Transaction } from '../../../model/common.model';
 import { PermitTx, SwapTx, TxType, UnwrapTx } from './types';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
-import { findTokenByAddress } from '../../../helpers/tokens.helper';
 import { BigNumber } from '@ethersproject/bignumber';
 import { UnwrapTxDecoded } from '../../../model/unwrap-tx.model';
 import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
 import { ApproveTxDecoded } from '../../../model/approve-tx.model';
 import { ethers } from 'ethers';
+import { NATIVE_TOKEN_ADDRESS } from '../../../const/common.const';
+import { findTokenByAddress } from '../../../helpers/ tokens/tokens.helper';
 
 export function buildResult(
     resources: BlockchainResources,
@@ -61,7 +62,7 @@ export function buildSwapTxDecoded(
         if (tx.type === TxType.SWAP_INPUT) {
             // check that user originally send native currency instead of wrapped token
             if (tx.params.srcAmount && txConfig.value === tx.params.srcAmount.toString()) {
-                const nativeToken = findTokenByAddress(resources, '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE');
+                const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
                 srcToken = nativeToken ? nativeToken : srcToken;
             }
             return {
@@ -75,7 +76,7 @@ export function buildSwapTxDecoded(
         if (tx.type === TxType.SWAP_OUTPUT) {
             // check that user originally send native currency instead of wrapped token
             if (BigNumber.from(txConfig.value).gte(ethers.constants.Zero)) {
-                const nativeToken = findTokenByAddress(resources, '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE');
+                const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
                 srcToken = nativeToken ? nativeToken : srcToken;
             }
             const srcAmount = BigNumber.from('0x' + estimatedValue);
