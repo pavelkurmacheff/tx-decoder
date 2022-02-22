@@ -4,6 +4,7 @@ import {TransactionReceipt} from '@ethersproject/abstract-provider';
 import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../../../helpers/dest-amount.helper';
 import {decodeSwapTx} from '../../../helpers/swap-decode.helper';
 import {SwapTxDecoded} from '../../../model/swap-tx.model';
+import { NetworkEnum } from '../../../const/common.const';
 
 export interface ClipperTxItemData {
     srcToken: string;
@@ -16,7 +17,8 @@ export class ClipperTxDecoder implements TxDecoder<ClipperTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData: ClipperTxItemData) {
+                readonly txData: ClipperTxItemData,
+                readonly chainId: NetworkEnum) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
