@@ -15,6 +15,7 @@ import {OneInchUniswapV3PermitTxDecoder} from './decoders/swap/1inch/one-inch-un
 import {TxConfirmTemplate} from './model/tx-template.model';
 import {BlockchainResources, BlockchainRpcCaller, DecodeInfo} from './model/common.model';
 import { UniswapV3TxDecoder } from './decoders/swap/uniswap/uniswap-v3-tx.decoder';
+import { NetworkEnum } from './const/common.const';
 
 interface TxDecodeConfig {
     [methodSelector: string]: ContractMethodsDecodeConfig;
@@ -22,7 +23,7 @@ interface TxDecodeConfig {
 
 interface TxDecoderType<T> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new (...args: [BlockchainResources, BlockchainRpcCaller, DecodeInfo, any]): T;
+    new (...args: [BlockchainResources, BlockchainRpcCaller, DecodeInfo, any, NetworkEnum]): T;
 }
 
 export interface ContractMethodsDecodeConfig {
