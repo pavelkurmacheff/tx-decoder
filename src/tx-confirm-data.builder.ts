@@ -1,6 +1,6 @@
 import {Item, TxType} from './model/tx-ui-items.model';
 import {BlockchainResources, BlockchainRpcCaller, Transaction} from './model/common.model';
-import {OinchTxDecoder} from './oinch-tx.decoder';
+import {CommonTxDecoder} from './common-tx.decoder';
 
 export class TxConfirmDataBuilder {
     constructor(
@@ -15,7 +15,7 @@ export class TxConfirmDataBuilder {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         dataArguments: any
     }> {
-        const decoder = new OinchTxDecoder(this.resources, this.rpcCaller);
+        const decoder = new CommonTxDecoder(this.resources, this.rpcCaller);
 
         const {data, config, dataArguments, txConfig} = await (typeof txConfigOrHash === 'string'
             ? decoder.decodeTxByLogs(txConfigOrHash)
