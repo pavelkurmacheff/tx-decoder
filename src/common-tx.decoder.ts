@@ -5,6 +5,7 @@ import {Interface, Result} from '@ethersproject/abi';
 import {DecodedTx} from './model/decoded-tx.model';
 import {TxDecoder} from './decoders/base-tx.decoder';
 import {BigNumber} from '@ethersproject/bignumber';
+import { NetworkEnum } from './const/common.const';
 
 export type OinchTxDecodingResult = {
     config: ContractMethodsDecodeConfig;
@@ -26,10 +27,11 @@ function decodedResultToObject(result: Result): any {
     }, {} as {[key: string]: any});
 }
 
-export class OinchTxDecoder {
+export class CommonTxDecoder {
     constructor(
         private readonly resources: BlockchainResources,
         private readonly rpcCaller: BlockchainRpcCaller,
+        private readonly chainId: NetworkEnum,
     ) {
     }
 
@@ -74,7 +76,7 @@ export class OinchTxDecoder {
         };
     }
 
-    private getDecoderAndType(to: string, callData: string): {
+    private getDecoderAndType(to: string, callData: string, chainId: NetworkEnum): {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         decoder: TxDecoder<any>,
         config: ContractMethodsDecodeConfig
@@ -95,7 +97,8 @@ export class OinchTxDecoder {
                 this.resources,
                 this.rpcCaller,
                 decodeInfo,
-                txArguments
+                txArguments,
+                chainId
             )
         };
     }
