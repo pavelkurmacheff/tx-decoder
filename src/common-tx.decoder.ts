@@ -49,7 +49,7 @@ export class CommonTxDecoder {
             gasLimit: BigNumber.from(gasLimit || gas),
             nonce: +nonce
         };
-        const {decoder, config} = this.getDecoderAndType(txConfig.to, txConfig.data);
+        const {decoder, config} = this.getDecoderAndType(txConfig.to, txConfig.data, this.chainId);
 
         return {
             config,
@@ -66,7 +66,7 @@ export class CommonTxDecoder {
             txConfig.value = txConfig.value.toString();
         }
 
-        const {decoder, config} = this.getDecoderAndType(txConfig.to, txConfig.data);
+        const {decoder, config} = this.getDecoderAndType(txConfig.to, txConfig.data, this.chainId);
 
         return {
             config,
