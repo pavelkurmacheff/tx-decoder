@@ -6,6 +6,7 @@ import {decodeSwapTx} from '../../../helpers/swap-decode.helper';
 import {BigNumber} from '@ethersproject/bignumber';
 import {getDestTokenAddressOfUnoSwap} from '../../../helpers/uni-pool.helper';
 import {SwapTxDecoded} from '../../../model/swap-tx.model';
+import { NetworkEnum } from '../../../const/common.const';
 
 export interface UnoswapTxItemData {
     srcToken: string;
@@ -18,7 +19,8 @@ export class UnoswapTxDecoder implements TxDecoder<UnoswapTxItemData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData: UnoswapTxItemData) {
+                readonly txData: UnoswapTxItemData,
+                readonly chainId: NetworkEnum) {
     }
 
     async decodeByConfig(txConfig: Transaction): Promise<SwapTxDecoded> {
