@@ -1,4 +1,3 @@
-
 import Web3 from 'web3'
 import { AbiItem } from 'web3-utils';
 
@@ -9,14 +8,13 @@ export class Web3Service {
         this.web3 = new Web3(rpc)
     }
 
-
-  getInstance(abi: unknown, address: string | undefined = undefined): unknown {
+    getInstance(abi: unknown, address: string | undefined = undefined): unknown {
     return new this.web3.eth.Contract(abi as (AbiItem[] | AbiItem), address)
   }
+}
 
-  checksumAddress(address: string): string {
-    return web3NoNetwork.utils.toChecksumAddress(address)
-  }
+export function checksumAddress(address: string): string {
+    return web3NoNetwork.utils.toChecksumAddress(address);
 }
 
 const web3NoNetwork = new Web3('')
