@@ -3,7 +3,7 @@ import { forkJoin, map, Observable, switchMap } from 'rxjs';
 
 import {
     Item,
-    OinchTxDecoder,
+    CommonTxDecoder,
     OinchTxDecodingResult,
     Transaction,
     TxConfirmDataBuilder,
@@ -47,7 +47,7 @@ export class DecoderService {
                     tokenPrices,
                 }, this.rpcCaller);
 
-                const decoder = new OinchTxDecoder({
+                const decoder = new CommonTxDecoder({
                     tokens,
                     tokenPrices,
                 }, this.rpcCaller);
