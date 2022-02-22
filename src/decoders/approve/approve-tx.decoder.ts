@@ -1,22 +1,24 @@
-import {BigNumber} from '@ethersproject/bignumber';
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../../model/common.model';
-import {findTokenByAddress} from '../../helpers/tokens.helper';
-import {TxDecoder} from '../base-tx.decoder';
-import {TransactionReceipt} from '@ethersproject/abstract-provider';
+import { BigNumber } from '@ethersproject/bignumber';
+import { BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction } from '../../model/common.model';
+import { TxDecoder } from '../base-tx.decoder';
+import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { ApproveTxDecoded } from '../../model/approve-tx.model';
+import { NetworkEnum } from '../../const/common.const';
+import { findTokenByAddress } from '../../helpers/ tokens/tokens.helper';
 
 export interface ApproveTxData {
     _value: BigNumber;
 }
 
 
-
 export class ApproveTxDecoder implements TxDecoder<ApproveTxData> {
     constructor(readonly resources: BlockchainResources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
-                readonly txData: ApproveTxData) {
-    }
+                readonly txData: ApproveTxData,
+                readonly chainId: NetworkEnum
+) {
+}
 
     async decodeByConfig(txConfig: Transaction): Promise<ApproveTxDecoded> {
         return this.decode(txConfig.to.toLowerCase());
