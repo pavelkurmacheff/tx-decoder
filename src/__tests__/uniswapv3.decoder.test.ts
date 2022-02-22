@@ -2,6 +2,7 @@ import { BlockchainResources, BlockchainRpcCaller, Transaction } from '../model/
 import { BigNumber } from '@ethersproject/bignumber';
 import { UniswapV3TxDecoder } from '../decoders/swap/uniswap/uniswap-v3-tx.decoder';
 import { getTxTypeByCallData } from '../decoders/swap/uniswap/normalization';
+import { Interface } from '@ethersproject/abi';
 
 const fetch = require('node-fetch');
 
@@ -121,7 +122,10 @@ describe('UniswapV3TxDecoder test', () => {
     });
 
     beforeEach(() => {
-        uniswapV3TxDecoder = new UniswapV3TxDecoder(resources, rpcCaller, chainId);
+        uniswapV3TxDecoder = new UniswapV3TxDecoder(resources, rpcCaller, {
+            iface: {} as Interface,
+            methodSelector: ''
+        }, {data: ''}, chainId);
     });
 
     it('decodeByConfig() swapExactTokensForTokens + unwrapWETH9', async () => {
