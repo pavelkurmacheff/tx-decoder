@@ -66,12 +66,12 @@ export function buildSwapTxDecoded(
                 srcToken = nativeToken ? nativeToken : srcToken;
             }
             return {
-                dstAmount: BigNumber.from('0x' + estimatedValue),
+                dstAmount: estimatedValue !== '0' ? BigNumber.from('0x' + estimatedValue) : undefined,
                 dstToken,
                 minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
                 srcAmount: BigNumber.from(tx.params.srcAmount),
                 srcToken,
-            }
+            };
         }
         if (tx.type === TxType.SWAP_OUTPUT) {
             // check that user originally send native currency instead of wrapped token
@@ -79,11 +79,10 @@ export function buildSwapTxDecoded(
                 const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
                 srcToken = nativeToken ? nativeToken : srcToken;
             }
-            const srcAmount = BigNumber.from('0x' + estimatedValue);
             return {
                 dstToken,
                 srcToken,
-                srcAmount,
+                srcAmount: estimatedValue !== '0' ? BigNumber.from('0x' + estimatedValue) : undefined,
                 amountInMaximum: BigNumber.from(tx.params.amountInMaximum),
                 dstAmount: BigNumber.from(tx.params.dstAmount),
             }
