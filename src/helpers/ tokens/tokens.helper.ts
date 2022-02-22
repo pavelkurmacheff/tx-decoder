@@ -1,7 +1,6 @@
 import { BlockchainResources, Token } from '../../model/common.model';
 import { NATIVE_TOKEN_ADDRESS, ZERO_ADDRESS } from '../../const/common.const';
 
-
 export function findTokenByAddress(
     resources: BlockchainResources,
     tokenAddress: string
