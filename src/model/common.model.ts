@@ -16,7 +16,7 @@ export interface Token {
     name: string;
     decimals: number;
     symbol: string;
-    logoURI: string;
+    logoURI?: string;
 }
 
 export interface BlockchainResources {
