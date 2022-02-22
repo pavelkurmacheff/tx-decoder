@@ -121,7 +121,7 @@ describe('UniswapV3TxDecoder test', () => {
     });
 
     beforeEach(() => {
-        uniswapV3TxDecoder = new UniswapV3TxDecoder(resources, rpcCaller);
+        uniswapV3TxDecoder = new UniswapV3TxDecoder(resources, rpcCaller, chainId);
     });
 
     it('decodeByConfig() swapExactTokensForTokens + unwrapWETH9', async () => {

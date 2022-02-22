@@ -1,4 +1,4 @@
-import {OinchTxDecoder} from '../oinch-tx.decoder';
+import {CommonTxDecoder} from '../common-tx.decoder';
 import {BlockchainResources, BlockchainRpcCaller} from '../model/common.model';
 const fetch = require('node-fetch');
 
@@ -21,7 +21,7 @@ async function buildTxForSwap(swapParams: any): Promise<any> {
 }
 
 describe('OinchTxDecoder integration test', () => {
-    let oinchTxDecoder: OinchTxDecoder;
+    let oinchTxDecoder: CommonTxDecoder;
     let resources: BlockchainResources;
 
     const rpcCaller: BlockchainRpcCaller = {
@@ -60,7 +60,7 @@ describe('OinchTxDecoder integration test', () => {
     });
 
     beforeEach(() => {
-        oinchTxDecoder = new OinchTxDecoder(resources, rpcCaller);
+        oinchTxDecoder = new CommonTxDecoder(resources, rpcCaller);
     });
 
     it('decodeTxByLogs()', async () => {
