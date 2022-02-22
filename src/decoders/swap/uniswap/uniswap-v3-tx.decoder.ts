@@ -5,11 +5,12 @@ import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import UniswapRouterV2BI from '../../../abi/UNI3_ROUTER_V2.json';
 import ERC20ABI from '../../../abi/ERC20ABI.json';
 import { estimateWithResult } from '../../../helpers/dest-amount.helper';
-import { Interface } from '@ethersproject/abi';
 import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
 import { getEstimatedValue, getTxTypeByCallData } from './normalization';
 import { buildResult } from './model-builder';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
+import { NetworkEnum } from '../../../const/common.const';
+import { UniswapV3PermitTxItemData } from '../1inch/one-inch-uniswap-v3-permit-tx.decoder';
 
 
 // todo: what is that? why is it here?
@@ -20,23 +21,16 @@ export interface UniswapV3TxItemData {
 }
 
 export class UniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
-    readonly decodeInfo: DecodeInfo = {
-        methodSelector: '0x5ae401dc',
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        iface: new Interface(UniswapRouterV2BI)
-    };
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     abiDecoder: unknown;
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    readonly txData: UniswapV3TxItemData;
 
     constructor(readonly resources: BlockchainResources,
-                readonly rpcCaller: BlockchainRpcCaller) {
+                readonly rpcCaller: BlockchainRpcCaller,
+                readonly decodeInfo: DecodeInfo,
+                readonly txData: UniswapV3PermitTxItemData,
+                readonly chainId: NetworkEnum) {
         this.abiDecoder = require('abi-decoder');
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
