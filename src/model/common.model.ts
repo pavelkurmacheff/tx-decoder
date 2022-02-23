@@ -25,6 +25,8 @@ export interface BlockchainResources {
 }
 
 export interface BlockchainRpcCaller {
+    rpcUrl: string;
+
     call<T>(method: string, params: unknown[]): Promise<T>;
 }
 
