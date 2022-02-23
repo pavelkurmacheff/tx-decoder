@@ -21,7 +21,7 @@ async function buildTxForSwap(swapParams: any): Promise<any> {
         });
 }
 
-describe('OinchTxDecoder integration test', () => {
+describe.skip('OinchTxDecoder integration test', () => {
     let commonTxDecoder: CommonTxDecoder;
     let resources: BlockchainResources;
 

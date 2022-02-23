@@ -192,7 +192,7 @@ console.log('Data arguments: ', dataArguments);
 }
 ```
 
-> **For more examples see [unit-tests](./src/__tests__/tx-confirm-data.builder.test.ts)**
+> **For more examples see [unit-tests](./src/__tests__/1inch.decoder.test.ts)**
 
 ## Should be implemented by consumer
 
