@@ -6,6 +6,8 @@ import {DecodedTx} from './model/decoded-tx.model';
 import {TxDecoder} from './decoders/base-tx.decoder';
 import {BigNumber} from '@ethersproject/bignumber';
 import { NetworkEnum } from './const/common.const';
+import { Web3Service } from './helpers/web3/web3.service';
+import { CustomTokensService } from './helpers/tokens/custom-tokens.service';
 
 export type OinchTxDecodingResult = {
     config: ContractMethodsDecodeConfig;
@@ -28,11 +30,17 @@ function decodedResultToObject(result: Result): any {
 }
 
 export class CommonTxDecoder {
+    readonly web3Service: Web3Service;
+
+    readonly tokensService: CustomTokensService;
+
     constructor(
         private readonly resources: BlockchainResources,
         private readonly rpcCaller: BlockchainRpcCaller,
         private readonly chainId: NetworkEnum,
     ) {
+        this.web3Service = new Web3Service(this.rpcCaller.rpcUrl);
+        this.tokensService = new CustomTokensService(this.web3Service, chainId);
     }
 
     async decodeTxByLogs(txHash: string): Promise<OinchTxDecodingResult> {
