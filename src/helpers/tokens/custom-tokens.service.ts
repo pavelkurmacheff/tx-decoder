@@ -42,7 +42,7 @@ export class CustomTokensService {
     }
   }
 
-  buildMinimizedTokenFromData(data: Token): Token {
+  private buildMinimizedTokenFromData(data: Token): Token {
       const info: Token = {name: data.name, symbol: data.symbol, address: data.address, decimals: data.decimals}
 
     if (data.logoURI) {
@@ -51,7 +51,7 @@ export class CustomTokensService {
     return info
   }
 
-  async fetchTokenInfo(address: string): Promise<Token | null> {
+  private async fetchTokenInfo(address: string): Promise<Token | null> {
     try {
         // eslint-disable-next-line @typescript-eslint/no-misused-promises,no-async-promise-executor
       return new Promise(async (resolve, reject) => {
