@@ -1,4 +1,4 @@
-import { BlockchainResources, Transaction } from '../../../model/common.model';
+import { Transaction, Web3Resources } from '../../../model/common.model';
 import { PermitTx, SwapTx, TxType, UnwrapTx } from './types';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
 import { BigNumber } from '@ethersproject/bignumber';
@@ -9,31 +9,32 @@ import { ethers } from 'ethers';
 import { NATIVE_TOKEN_ADDRESS } from '../../../const/common.const';
 import { findTokenByAddress } from '../../../helpers/tokens/tokens.helper';
 
-export function buildResult(
-    resources: BlockchainResources,
+export async function buildResult(
+    resources: Web3Resources,
     txConfig: Transaction,
     data: (SwapTx | UnwrapTx | PermitTx | undefined)[],
     estimatedResult: string
-): MultipleTxsDecoded {
+): Promise<MultipleTxsDecoded> {
     const txs: (SwapTxDecoded | UnwrapTxDecoded | ApproveTxDecoded)[] = [];
-    data.forEach((tx, index) => {
+    for (const tx of data) {
+        const index = data.indexOf(tx);
         if (!tx) {
-            return;
+            continue;
         }
         let txDecoded: SwapTxDecoded | UnwrapTxDecoded | ApproveTxDecoded | undefined;
         switch (tx.type) {
             case TxType.SWAP_INPUT:
             case TxType.SWAP_OUTPUT:
-                txDecoded = buildSwapTxDecoded(resources,txConfig, tx as SwapTx, estimatedResult);
+                txDecoded = await buildSwapTxDecoded(resources, txConfig, tx as SwapTx, estimatedResult);
                 break;
             case TxType.UNWRAP:
                 if (index > 0) {
                     const dstTokenAddress = (data[index - 1] as SwapTx).params.dstTokenAddress;
-                    txDecoded = buildUnwrapTxDecoded(resources, tx as UnwrapTx, estimatedResult, dstTokenAddress);
+                    txDecoded = await buildUnwrapTxDecoded(resources, tx as UnwrapTx, estimatedResult, dstTokenAddress);
                 }
                 break;
             case TxType.PERMIT:
-                txDecoded = buildApproveTxDecoded(resources,  tx as PermitTx);
+                txDecoded = await buildApproveTxDecoded(resources, tx as PermitTx);
                 break;
             default:
                 break;
@@ -41,20 +42,29 @@ export function buildResult(
         if (txDecoded) {
             txs.push(txDecoded);
         }
-    })
+    }
 
     return {txs};
 }
 
-export function buildSwapTxDecoded(
-    resources: BlockchainResources,
+export async function buildSwapTxDecoded(
+    resources: Web3Resources,
     txConfig: Transaction,
     tx: SwapTx,
     estimatedValue: string
-): SwapTxDecoded | undefined {
+): Promise<SwapTxDecoded | undefined> {
     try {
-        const dstToken = findTokenByAddress(resources, tx.params.dstTokenAddress);
+        let dstToken = findTokenByAddress(resources, tx.params.dstTokenAddress);
         let srcToken = findTokenByAddress(resources, tx.params.srcTokenAddress);
+
+        if (!dstToken) {
+            dstToken = await resources.customTokens.getTokenByAddress(tx.params.dstTokenAddress);
+        }
+
+        if (!srcToken) {
+            srcToken = await resources.customTokens.getTokenByAddress(tx.params.srcTokenAddress);
+        }
+
         if (!srcToken || !dstToken) {
             return undefined;
         }
@@ -94,14 +104,17 @@ export function buildSwapTxDecoded(
     }
 }
 
-export function buildUnwrapTxDecoded(
-    resources: BlockchainResources,
+export async function buildUnwrapTxDecoded(
+    resources: Web3Resources,
     tx: UnwrapTx,
     dstAmountRaw: string,
     dstTokenAddress: string,
-): UnwrapTxDecoded | undefined {
+): Promise<UnwrapTxDecoded | undefined> {
     try {
-        const token = findTokenByAddress(resources, dstTokenAddress);
+        let token = findTokenByAddress(resources, dstTokenAddress);
+        if (!token) {
+            token = await resources.customTokens.getTokenByAddress(dstTokenAddress);
+        }
         if (!token) {
             return undefined;
         }
@@ -115,12 +128,15 @@ export function buildUnwrapTxDecoded(
     }
 }
 
-export function buildApproveTxDecoded(
-    resources: BlockchainResources,
+export async function buildApproveTxDecoded(
+    resources: Web3Resources,
     tx: PermitTx,
-): ApproveTxDecoded | undefined {
+): Promise<ApproveTxDecoded | undefined> {
     try {
-        const token = findTokenByAddress(resources, tx.params.token);
+        let token = findTokenByAddress(resources, tx.params.token);
+        if (!token) {
+            token = await resources.customTokens.getTokenByAddress(tx.params.token);
+        }
         if (!token) {
             return undefined;
         }
