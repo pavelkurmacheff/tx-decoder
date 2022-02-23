@@ -6,7 +6,6 @@ import { UnwrapTxDecoded } from '../../../model/unwrap-tx.model';
 import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
 import { ApproveTxDecoded } from '../../../model/approve-tx.model';
 import { ethers } from 'ethers';
-import { NATIVE_TOKEN_ADDRESS } from '../../../const/common.const';
 import { findTokenByAddress } from '../../../helpers/tokens/tokens.helper';
 
 export async function buildResult(
@@ -25,7 +24,7 @@ export async function buildResult(
         switch (tx.type) {
             case TxType.SWAP_INPUT:
             case TxType.SWAP_OUTPUT:
-                txDecoded = await buildSwapTxDecoded(resources, txConfig, tx as SwapTx, estimatedResult);
+                txDecoded = await buildSwapTxDecoded(resources, tx as SwapTx, estimatedResult);
                 break;
             case TxType.UNWRAP:
                 if (index > 0) {
@@ -44,12 +43,18 @@ export async function buildResult(
         }
     }
 
-    return {txs};
+    const result = patch(txConfig, {txs});
+
+    return result;
+}
+
+export function patch(txConfig: Transaction, txs: MultipleTxsDecoded): MultipleTxsDecoded {
+    console.log(txConfig)
+    return txs;
 }
 
 export async function buildSwapTxDecoded(
     resources: Web3Resources,
-    txConfig: Transaction,
     tx: SwapTx,
     estimatedValue: string
 ): Promise<SwapTxDecoded | undefined> {
@@ -71,10 +76,10 @@ export async function buildSwapTxDecoded(
 
         if (tx.type === TxType.SWAP_INPUT) {
             // check that user originally send native currency instead of wrapped token
-            if (tx.params.srcAmount && txConfig.value === tx.params.srcAmount.toString()) {
-                const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
-                srcToken = nativeToken ? nativeToken : srcToken;
-            }
+            // if (tx.params.srcAmount && txConfig.value === tx.params.srcAmount.toString()) {
+            //     const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
+            //     srcToken = nativeToken ? nativeToken : srcToken;
+            // }
             const base = {
                 dstToken,
                 minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
@@ -85,10 +90,10 @@ export async function buildSwapTxDecoded(
         }
         if (tx.type === TxType.SWAP_OUTPUT) {
             // check that user originally send native currency instead of wrapped token
-            if (BigNumber.from(txConfig.value).gte(ethers.constants.Zero)) {
-                const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
-                srcToken = nativeToken ? nativeToken : srcToken;
-            }
+            // if (BigNumber.from(txConfig.value).gte(ethers.constants.Zero)) {
+            //     const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
+            //     srcToken = nativeToken ? nativeToken : srcToken;
+            // }
             const base = {
                 dstToken,
                 srcToken,
@@ -118,11 +123,12 @@ export async function buildUnwrapTxDecoded(
         if (!token) {
             return undefined;
         }
-        return {
-            amount: BigNumber.from('0x' + dstAmountRaw),
+        const base = {
+
             minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
             token,
         }
+        return dstAmountRaw !== '0' ? {...base, amount: BigNumber.from('0x' + dstAmountRaw)} : base;
     } catch (e) {
         return undefined;
     }
