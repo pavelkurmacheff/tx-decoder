@@ -1,6 +1,8 @@
 import { ChainTokenByNetwork, NATIVE_TOKEN_ADDRESS, NetworkEnum, ZERO_ADDRESS } from '../../const/common.const';
 import { Token } from '../../model/common.model';
 import { Web3Service } from '../web3/web3.service';
+import { ERC20, ERC20_BYTE32, ERC20_UPPER_CASE } from './abi';
+import { AbiItem } from 'web3-utils';
 
 export class CustomTokensService {
     private customTokensMap: { [key: string]: Token } = {}
@@ -81,9 +83,7 @@ export class CustomTokensService {
 
     private async fetchNormalTokenInfo(tokenAddress: string): Promise<Token> {
         const token = new this.web3Service.web3.eth.Contract(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            ERC20,
+            ERC20 as AbiItem[] | AbiItem,
             tokenAddress
         )
 
@@ -99,10 +99,8 @@ export class CustomTokensService {
     tokenAddress: string
   ): Promise<Token> {
     const token = new this.web3Service.web3.eth.Contract(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      ERC20_UPPER_CASE,
-      tokenAddress
+        ERC20_UPPER_CASE as AbiItem[] | AbiItem,
+        tokenAddress
     )
 
     return {
@@ -115,10 +113,8 @@ export class CustomTokensService {
 
   private async fetchBytes32TokenInfo(tokenAddress: string): Promise<Token> {
     const token = new this.web3Service.web3.eth.Contract(
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      ERC20_BYTE32,
-      tokenAddress
+        ERC20_BYTE32 as AbiItem[] | AbiItem,
+        tokenAddress
     )
 
     return {
