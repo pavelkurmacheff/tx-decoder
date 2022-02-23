@@ -1,4 +1,9 @@
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from '../../../model/common.model';
+import {
+    BlockchainRpcCaller,
+    DecodeInfo,
+    Transaction,
+    Web3Resources
+} from '../../../model/common.model';
 import {TxDecoder} from '../../base-tx.decoder';
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
 import {getDestAmountViaEstimation, getReturnAmountFromLogs} from '../../../helpers/dest-amount.helper';
@@ -15,7 +20,7 @@ export interface UniswapV3TxItemData {
 }
 
 export class OneInchUniswapV3TxDecoder implements TxDecoder<UniswapV3TxItemData> {
-    constructor(readonly resources: BlockchainResources,
+    constructor(readonly resources: Web3Resources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
                 readonly txData: UniswapV3TxItemData,
