@@ -7,7 +7,7 @@ import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
 import { ApproveTxDecoded } from '../../../model/approve-tx.model';
 import { ethers } from 'ethers';
 import { NATIVE_TOKEN_ADDRESS } from '../../../const/common.const';
-import { findTokenByAddress } from '../../../helpers/ tokens/tokens.helper';
+import { findTokenByAddress } from '../../../helpers/tokens/tokens.helper';
 
 export function buildResult(
     resources: BlockchainResources,
@@ -65,13 +65,13 @@ export function buildSwapTxDecoded(
                 const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
                 srcToken = nativeToken ? nativeToken : srcToken;
             }
-            return {
-                dstAmount: estimatedValue !== '0' ? BigNumber.from('0x' + estimatedValue) : undefined,
+            const base = {
                 dstToken,
                 minReturnAmount: BigNumber.from(tx.params.minReturnAmount),
                 srcAmount: BigNumber.from(tx.params.srcAmount),
                 srcToken,
-            };
+            }
+            return estimatedValue !== '0' ? {...base, dstAmount: BigNumber.from('0x' + estimatedValue)} : base;
         }
         if (tx.type === TxType.SWAP_OUTPUT) {
             // check that user originally send native currency instead of wrapped token
@@ -79,13 +79,13 @@ export function buildSwapTxDecoded(
                 const nativeToken = findTokenByAddress(resources, NATIVE_TOKEN_ADDRESS);
                 srcToken = nativeToken ? nativeToken : srcToken;
             }
-            return {
+            const base = {
                 dstToken,
                 srcToken,
-                srcAmount: estimatedValue !== '0' ? BigNumber.from('0x' + estimatedValue) : undefined,
                 amountInMaximum: BigNumber.from(tx.params.amountInMaximum),
                 dstAmount: BigNumber.from(tx.params.dstAmount),
             }
+            return estimatedValue !== '0' ? {...base, srcAmount: BigNumber.from('0x' + estimatedValue)} : base;
         }
 
         return undefined
