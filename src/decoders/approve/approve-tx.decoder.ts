@@ -1,5 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction } from '../../model/common.model';
+import {
+    BlockchainRpcCaller,
+    DecodeInfo,
+    Transaction,
+    Web3Resources
+} from '../../model/common.model';
 import { TxDecoder } from '../base-tx.decoder';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { ApproveTxDecoded } from '../../model/approve-tx.model';
@@ -12,7 +17,7 @@ export interface ApproveTxData {
 
 
 export class ApproveTxDecoder implements TxDecoder<ApproveTxData> {
-    constructor(readonly resources: BlockchainResources,
+    constructor(readonly resources: Web3Resources,
                 readonly rpcCaller: BlockchainRpcCaller,
                 readonly decodeInfo: DecodeInfo,
                 readonly txData: ApproveTxData,
