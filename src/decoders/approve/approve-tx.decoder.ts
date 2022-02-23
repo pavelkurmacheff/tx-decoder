@@ -4,7 +4,7 @@ import { TxDecoder } from '../base-tx.decoder';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
 import { ApproveTxDecoded } from '../../model/approve-tx.model';
 import { NetworkEnum } from '../../const/common.const';
-import { findTokenByAddress } from '../../helpers/ tokens/tokens.helper';
+import { findTokenByAddress } from '../../helpers/tokens/tokens.helper';
 
 export interface ApproveTxData {
     _value: BigNumber;
