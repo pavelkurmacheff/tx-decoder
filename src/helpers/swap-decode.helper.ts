@@ -1,7 +1,7 @@
 import {BigNumber} from '@ethersproject/bignumber';
 import {BlockchainResources} from '../model/common.model';
 import {SwapTxDecoded, SwapTxDecodeInput} from '../model/swap-tx.model';
-import { findTokenByAddress } from './ tokens/tokens.helper';
+import { findTokenByAddress } from './tokens/tokens.helper';
 
 export function decodeSwapTx(input: SwapTxDecodeInput, resources: BlockchainResources): SwapTxDecoded {
     const {
