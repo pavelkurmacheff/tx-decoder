@@ -90,6 +90,7 @@ export const TX_DECODE_CONFIG: TxDecodeConfig = {
         Decoder: OneInchUniswapV3PermitTxDecoder,
         template: swapTxConfirmTemplate
     },
+    // Swap: uniV3 multicall()
     '0x5ae401dc': {
         type: 'multicall',
         abi: uniRouterV2ABI,
