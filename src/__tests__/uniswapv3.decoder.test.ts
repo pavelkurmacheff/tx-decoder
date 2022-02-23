@@ -1,8 +1,10 @@
-import { BlockchainResources, BlockchainRpcCaller, Transaction } from '../model/common.model';
+import { BlockchainRpcCaller, Transaction, Web3Resources } from '../model/common.model';
 import { BigNumber } from '@ethersproject/bignumber';
 import { UniswapV3TxDecoder } from '../decoders/swap/uniswap/uniswap-v3-tx.decoder';
 import { getTxTypeByCallData } from '../decoders/swap/uniswap/normalization';
 import { Interface } from '@ethersproject/abi';
+import { CustomTokensService } from '../helpers/tokens/custom-tokens.service';
+import { Web3Service } from '../helpers/web3/web3.service';
 
 const fetch = require('node-fetch');
 
@@ -74,9 +76,10 @@ const getTxTypeByCallDataTestData = [
 
 describe('UniswapV3TxDecoder test', () => {
     let uniswapV3TxDecoder: UniswapV3TxDecoder;
-    let resources: BlockchainResources;
+    let resources: Web3Resources;
 
     const rpcCaller: BlockchainRpcCaller = {
+        rpcUrl: nodeUrl,
         call<T>(method: string, params: unknown[]): Promise<T> {
             return fetch(nodeUrl, {
                 method: 'POST',
@@ -116,8 +119,13 @@ describe('UniswapV3TxDecoder test', () => {
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
             fetch('https://token-prices.1inch.io/v1.1/' + chainId).then(res => res.json()),
+
         ]).then(([tokens, tokenPrices]) => {
-            return {tokens, tokenPrices} as BlockchainResources;
+            return {
+                tokens,
+                tokenPrices,
+                customTokens: new CustomTokensService(new Web3Service(nodeUrl), chainId),
+            } as Web3Resources;
         });
     });
 

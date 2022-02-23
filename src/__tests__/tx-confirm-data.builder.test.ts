@@ -1,9 +1,9 @@
-import {BlockchainRpcCaller, Transaction} from '../model/common.model';
-import {TxConfirmDataBuilder} from '../tx-confirm-data.builder';
-import {TOKENS_MOCK} from './mocks/tokens.mock';
-import {TOKEN_PRICES_MOCK} from './mocks/token-prices.mock';
-import {BigNumber} from '@ethersproject/bignumber';
-import {TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../const/common.const';
+import { BlockchainRpcCaller, Transaction } from '../model/common.model';
+import { TxConfirmDataBuilder } from '../tx-confirm-data.builder';
+import { TOKENS_MOCK } from './mocks/tokens.mock';
+import { TOKEN_PRICES_MOCK } from './mocks/token-prices.mock';
+import { BigNumber } from '@ethersproject/bignumber';
+import { NetworkEnum, TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR } from '../const/common.const';
 
 describe('Transaction data for confirmation builder', () => {
     let txUiItemsBuilder: TxConfirmDataBuilder;
@@ -13,12 +13,13 @@ describe('Transaction data for confirmation builder', () => {
     beforeEach(() => {
         rpcCallerMock = jest.fn();
         rpcCaller = {
+            rpcUrl: '',
             call: rpcCallerMock
         };
         txUiItemsBuilder = new TxConfirmDataBuilder({
             tokens: TOKENS_MOCK,
             tokenPrices: TOKEN_PRICES_MOCK
-        }, rpcCaller);
+        }, rpcCaller, NetworkEnum.ETHEREUM);
     });
 
     function isDestAmountEstimationCall(
