@@ -1,10 +1,10 @@
-import {BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction} from './model/common.model';
-import {getTxByHash, getTxReceipt} from './helpers/tx-logs.helper';
-import {ContractMethodsDecodeConfig, TX_DECODE_CONFIG} from './tx-decode.config';
-import {Interface, Result} from '@ethersproject/abi';
-import {DecodedTx} from './model/decoded-tx.model';
-import {TxDecoder} from './decoders/base-tx.decoder';
-import {BigNumber} from '@ethersproject/bignumber';
+import { BlockchainResources, BlockchainRpcCaller, DecodeInfo, Transaction } from './model/common.model';
+import { getTxByHash, getTxReceipt } from './helpers/tx-logs.helper';
+import { ContractMethodsDecodeConfig, TX_DECODE_CONFIG } from './tx-decode.config';
+import { Interface, Result } from '@ethersproject/abi';
+import { DecodedTx } from './model/decoded-tx.model';
+import { TxDecoder } from './decoders/base-tx.decoder';
+import { BigNumber } from '@ethersproject/bignumber';
 import { NetworkEnum } from './const/common.const';
 import { Web3Service } from './helpers/web3/web3.service';
 import { CustomTokensService } from './helpers/tokens/custom-tokens.service';
@@ -102,7 +102,7 @@ export class CommonTxDecoder {
         return {
             config: methodDecodeInfo,
             decoder: new methodDecodeInfo.Decoder(
-                this.resources,
+                {...this.resources, customTokens: this.tokensService},
                 this.rpcCaller,
                 decodeInfo,
                 txArguments,
