@@ -2,9 +2,6 @@ import { BigNumber } from "ethers";
 import { Transaction } from "../model/common.model";
 import { decodePancake } from "../decoders/swap/uniswap-v2-like/uniswap-v2-tx.decoder";
 
-
-
-
 describe('UniswapV2TxDecoder test (pancakeswap)', () => {
     it('Swap native to custom', async () => {
         const tx: Transaction = {
@@ -18,6 +15,8 @@ describe('UniswapV2TxDecoder test (pancakeswap)', () => {
 
         const result = decodePancake(tx);
         expect(result.tag).toEqual('Success');
+        expect((result as any).dstTokenAddress).toEqual('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82');
+
     });
 
     it('Activate custom token', async () => {
@@ -46,6 +45,8 @@ describe('UniswapV2TxDecoder test (pancakeswap)', () => {
 
         const result = decodePancake(tx);
         expect(result.tag).toEqual('Success');
+        expect((result as any).dstTokenAddress).toEqual('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82');
+        expect((result as any).srcTokenAddress).toEqual('0x8f0528ce5ef7b51152a59745befdd91d97091d2f');
     });
 
     it('Swap custom to native', async () => {
@@ -60,5 +61,6 @@ describe('UniswapV2TxDecoder test (pancakeswap)', () => {
 
         const result = decodePancake(tx);
         expect(result.tag).toEqual('Success');
+        expect((result as any).srcTokenAddress).toEqual('0x8f0528ce5ef7b51152a59745befdd91d97091d2f');
     });
 });
