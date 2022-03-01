@@ -106,18 +106,6 @@ function decodeUniV2Like(contractAddr: string, tx: Transaction): DecodeResult {
 
 type TxDecoder = (tx: Transaction) => DecodeResult;
 
-// Uniswap V2
-// https://etherscan.io/address/0x7a250d5630b4cf539739df2c5dacb4c659f2488d
-export function decodeUniswapV2(tx: Transaction): DecodeResult {
-    return decodeUniV2Like('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', tx);
-}
-
-// Pancake
-// https://bscscan.com/address/0x10ed43c718714eb63d5aa57b78b54704e256024e
-export function decodePancake(tx: Transaction): DecodeResult {
-    return decodeUniV2Like('0x10ed43c718714eb63d5aa57b78b54704e256024e', tx);
-}
-
 function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
     return tx => {
         let res: DecodeResult | null = null;
@@ -143,3 +131,17 @@ function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
         return {tag: 'AnotherContract'};
     }
 }
+
+// Uniswap V2
+// https://etherscan.io/address/0x7a250d5630b4cf539739df2c5dacb4c659f2488d
+export function decodeUniswapV2(tx: Transaction): DecodeResult {
+    return decodeUniV2Like('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', tx);
+}
+
+// Pancake
+// https://bscscan.com/address/0x10ed43c718714eb63d5aa57b78b54704e256024e
+export function decodePancake(tx: Transaction): DecodeResult {
+    return decodeUniV2Like('0x10ed43c718714eb63d5aa57b78b54704e256024e', tx);
+}
+
+export const decodeUniV2Like_: TxDecoder = combineTxDecoders([decodeUniswapV2, decodePancake]);
