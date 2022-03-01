@@ -1,0 +1,134 @@
+import {Interface} from '@ethersproject/abi';
+import {BigNumber} from '@ethersproject/bignumber';
+import {OneInchLimitOrderFillTxDecoder} from '../decoders/limit/1inch/one-inch-limit-order-fill-tx.decoder';
+import {CustomTokensService} from '../helpers/tokens/custom-tokens.service';
+import {Web3Service} from '../helpers/web3/web3.service';
+import {
+    BlockchainRpcCaller,
+    Transaction,
+    Web3Resources,
+} from '../model/common.model';
+
+const fetch = require('node-fetch');
+
+const nodeUrl = 'https://web3-node-private.1inch.exchange/';
+const chainId = 1;
+
+describe('OneInchLimitOrderFillTxDecoder test', () => {
+    let oneInchLimitOrderFillTxDecoder: OneInchLimitOrderFillTxDecoder;
+    let resources: Web3Resources;
+
+    const rpcCaller: BlockchainRpcCaller = {
+        rpcUrl: nodeUrl,
+        call<T>(method: string, params: unknown[]): Promise<T> {
+            return fetch(nodeUrl, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    referer: 'http://localhost:4200/',
+                    'user-agent':
+                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ' +
+                        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
+                },
+                body: JSON.stringify({
+                    method,
+                    params,
+                    jsonrpc: '2.0',
+                    id: Date.now(),
+                }),
+            })
+                .then(
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    (res) => {
+                        return res.json();
+                    }
+                )
+                .then(
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    (res) => {
+                        return res.result as T;
+                    }
+                );
+        },
+    };
+
+    beforeAll(async () => {
+        resources = await Promise.all([
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            fetch('https://tokens.1inch.io/v1.1/' + chainId).then((res) =>
+                res.json()
+            ),
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            fetch('https://token-prices.1inch.io/v1.1/' + chainId).then((res) =>
+                res.json()
+            ),
+        ]).then(([tokens, tokenPrices]) => {
+            return {
+                tokens,
+                tokenPrices,
+                customTokens: new CustomTokensService(
+                    new Web3Service(nodeUrl),
+                    chainId
+                ),
+            } as Web3Resources;
+        });
+    });
+
+    beforeEach(() => {
+        oneInchLimitOrderFillTxDecoder = new OneInchLimitOrderFillTxDecoder(
+            resources,
+            rpcCaller,
+            {
+                iface: {} as Interface,
+                methodSelector: '',
+            },
+            {data: ''},
+            chainId
+        );
+    });
+
+    // https://etherscan.io/tx/0xaf0d92ef658aa18343df7cf43cc5b8570f5cb6bf9c047c00bfc626bf9aaf9f15
+    it('decodeByConfig()', async () => {
+        const tx: Transaction = {
+            data: '0x655d13cd00000000000000000000000000000000000000000000000000000000000000a0000000000000000000000000000000000000000000000000000000000000074000000000000000000000000000000000000000000000061c4989edab2e99b17f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001605d9ee9862710000000000000000000000000000000000000000000000000000000000016d14e4e7130000000000000000000000006b175474e89094c44da98b954eedeac495271d0f000000000000000000000000408e41876cccdc0f92210600ef50372656052a380000000000000000000000003c7789f3cba7134e345a59d1a11ad77b13c7d79100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003b4ad496106b7f00000000000000000000000000000000000000000000000000d3c21bcecced9b0a1f0000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000022000000000000000000000000000000000000000000000000000000000000002a0000000000000000000000000000000000000000000000000000000000000032000000000000000000000000000000000000000000000000000000000000005400000000000000000000000000000000000000000000000000000000000000680000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044f4a215c3000000000000000000000000000000000000000000003b4ad496106b7f00000000000000000000000000000000000000000000000000d3c21bcecced9b0a1f00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044296637bf000000000000000000000000000000000000000000003b4ad496106b7f00000000000000000000000000000000000000000000000000d3c21bcecced9b0a1f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e4961d5b1e000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000119c71d3bbac22029622cbaec24854d3d32d2828000000000000000000000000119c71d3bbac22029622cbaec24854d3d32d28280000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000044cf6fc6e30000000000000000000000003c7789f3cba7134e345a59d1a11ad77b13c7d791000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002463592c2b00000000000000000000000000000000000000000000000000000000621f9a9b000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001146b175474e89094c44da98b954eedeac495271d0f0000000000000000000000003c7789f3cba7134e345a59d1a11ad77b13c7d791000000000000000000000000119c71d3bbac22029622cbaec24854d3d32d2828000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000621f9a6b0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000001b91db4d631b029fcb6d7801914182fffd1449227cc449732016a26483a1946449703011102542524a80acc65372bb1536eb02f5b4a4eac2740acbb42bb37256a8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000418e17ca0da2bf01a4b22fc78fd23cd3e4ba9b023a78c9b153fd838e6e883c826656ac0d0544a557f5cc283b199e095dd1dc82e4455980e337670a40f7d5e0ad9f0100000000000000000000000000000000000000000000000000000000000000',
+            from: '0x425371f572e3a09ae09d6efa29799b8a86cfb3d3',
+            gasLimit: BigNumber.from('0x2c137'),
+            gasPrice: BigNumber.from('0x163F29F8A1'),
+            to: '0x119c71d3bbac22029622cbaec24854d3d32d2828',
+            value: '0',
+        };
+        const result = await oneInchLimitOrderFillTxDecoder.decodeByConfig(tx);
+
+        expect(result).toBeDefined();
+        expect(JSON.stringify(result)).toBe(
+            JSON.stringify({
+                srcToken: {
+                    symbol: 'REN',
+                    name: 'Republic',
+                    address: '0x408e41876cccdc0f92210600ef50372656052a38',
+                    decimals: 18,
+                    logoURI:
+                        'https://tokens.1inch.io/0x408e41876cccdc0f92210600ef50372656052a38.png',
+                },
+                dstToken: {
+                    symbol: 'DAI',
+                    name: 'Dai Stablecoin',
+                    decimals: 18,
+                    address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+                    logoURI:
+                        'https://tokens.1inch.io/0x6b175474e89094c44da98b954eedeac495271d0f.png',
+                    eip2612: true,
+                },
+                maxSrcAmount: {
+                    type: 'BigNumber',
+                    hex: '0x1605d9ee986271000000',
+                },
+                dstAmount: {type: 'BigNumber', hex: '0x061c4989edab2e99b17f'},
+            })
+        );
+    });
+});

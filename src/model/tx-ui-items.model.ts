@@ -3,10 +3,11 @@ import {Token} from './common.model';
 /**** Keys ****/
 
 export type ItemTokenKey = {
-    type: 'token',
+    type: 'token';
     value: {
-        token: Token,
-        type: 'from'
+        token: Token;
+        type:
+            | 'from'
             | 'to'
             | 'amount'
             | 'reward'
@@ -16,120 +17,120 @@ export type ItemTokenKey = {
             | 'earnedReward'
             | 'depositAmount'
             | 'minimalReturn'
-            | 'aggregationProtocolVote'
-    }
+            | 'aggregationProtocolVote';
+    };
 };
 
 export type ItemIconKey = {
-    type: 'icon',
+    type: 'icon';
     value: {
-        icon: 'toWallet'
+        icon:
+            | 'toWallet'
             | 'fromWallet'
             | 'hash'
             | 'nonce'
             | 'spender'
             | 'contract'
-            | 'rawData'
-    }
+            | 'rawData';
+    };
 };
 
 export type ItemTokenPairKey = {
-    type: 'tokenPair',
+    type: 'tokenPair';
     value: {
         token1: Token;
         token2: Token;
         // '1lp': title "1LP-token1.symbol-token2.symbol"
         // 'generic': title "Liquidity Pool"
-        type: '1lp'
-            | 'generic'
-    }
+        type: '1lp' | 'generic';
+    };
 };
 
 export type ItemTitleKey = {
-    type: 'title',
+    type: 'title';
     value: {
-        title: string // 'Sell Price' | 'Buy Price' | 'Minimum Received' | '<voting parameter name>'
-    }
+        title: string; // 'Sell Price' | 'Buy Price' | 'Minimum Received' | '<voting parameter name>'
+    };
 };
 
 export type ItemWalletKey = {
-    type: 'wallet',
+    type: 'wallet';
     value: {
-        type: 'from' | 'to' | 'own'
-    }
+        type: 'from' | 'to' | 'own';
+    };
 };
 
 export type ItemPlaceholderKey = {
-    type: 'placeholder'
+    type: 'placeholder';
 };
 
-export type Key = ItemTokenKey
+export type Key =
+    | ItemTokenKey
     | ItemIconKey
     | ItemTokenPairKey
     | ItemTitleKey
     | ItemWalletKey
     | ItemPlaceholderKey;
 
-
 /**** Values ****/
 
 export type ItemAmountValue = {
-    type: 'amount',
+    type: 'amount';
     value: {
-        token: Token,
-        value: string, // BigInt
-        sign: '+' | '-' | '0'
-    }
+        token: Token;
+        value: string; // BigInt
+        sign: '+' | '-' | '0';
+    };
 };
 
 export type ItemTitleSubtitleValue = {
-    type: 'titleSubtitle',
+    type: 'titleSubtitle';
     value: {
-        title: string,
-        subtitle: string
-    }
+        title: string;
+        subtitle: string;
+    };
 };
 
 export type ItemTextValue = {
-    type: 'text',
+    type: 'text';
     value: {
-        text: string,
-        type: 'plain' | 'address' | 'txHash' | 'rawData'
-    }
+        text: string;
+        type: 'plain' | 'address' | 'txHash' | 'rawData';
+    };
 };
 
 export type ItemRateValue = {
-    type: 'rate',
+    type: 'rate';
     value: {
-        sourceToken: Token,
-        sourceAmount: string, // BigInt
-        destinationToken: Token,
-        destinationAmount: string // BigInt
-    }
+        sourceToken: Token;
+        sourceAmount: string; // BigInt
+        destinationToken: Token;
+        destinationAmount: string; // BigInt
+    };
 };
 
 export type ItemLocalizableValue = {
-    type: 'localizable',
+    type: 'localizable';
     value: {
-        format: string, // example: 'Please approve swap %%0%% for %%1%%'
-        args: string[] // example: ['ETH', '1INCH']
-    }
+        format: string; // example: 'Please approve swap %%0%% for %%1%%'
+        args: string[]; // example: ['ETH', '1INCH']
+    };
 };
 
 export type ItemPlaceholderValue = {
-    type: 'placeholder',
+    type: 'placeholder';
     value: {
-        type: 'fee'
-    }
+        type: 'fee';
+    };
 };
 
-export type Value = ItemAmountValue
+export type Value =
+    | ItemAmountValue
     | ItemTitleSubtitleValue
     | ItemTextValue
     | ItemRateValue
     | ItemLocalizableValue
     | ItemPlaceholderValue;
-
 
 /**** Item ****/
 
@@ -138,7 +139,8 @@ export interface Item {
     value?: Value;
 }
 
-export type TxType = 'swap'
+export type TxType =
+    | 'swap'
     | 'clipperSwap'
     | 'clipperSwapWithPermit'
     | 'unoswap'
@@ -146,4 +148,5 @@ export type TxType = 'swap'
     | 'uniswapV3Swap'
     | 'uniswapV3SwapToWithPermit'
     | 'multicall'
-    | 'approve';
+    | 'approve'
+    | 'fillOrder';

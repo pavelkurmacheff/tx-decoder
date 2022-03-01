@@ -13,9 +13,16 @@ import {UnoswapTxDecoder} from './decoders/swap/1inch/unoswap-tx.decoder';
 import {OneInchUniswapV3TxDecoder} from './decoders/swap/1inch/one-inch-uniswap-v3-tx.decoder';
 import {OneInchUniswapV3PermitTxDecoder} from './decoders/swap/1inch/one-inch-uniswap-v3-permit-tx.decoder';
 import {TxConfirmTemplate} from './model/tx-template.model';
-import { BlockchainRpcCaller, DecodeInfo, Web3Resources } from './model/common.model';
-import { UniswapV3TxDecoder } from './decoders/swap/uniswap/uniswap-v3-tx.decoder';
-import { NetworkEnum } from './const/common.const';
+import {
+    BlockchainRpcCaller,
+    DecodeInfo,
+    Web3Resources,
+} from './model/common.model';
+import {UniswapV3TxDecoder} from './decoders/swap/uniswap/uniswap-v3-tx.decoder';
+import {NetworkEnum} from './const/common.const';
+import oneInchLimitV2Abi from './abi/ONE_INCH_LIMIT_V2.json';
+import {OneInchLimitOrderFillTxDecoder} from './decoders/limit/1inch/one-inch-limit-order-fill-tx.decoder';
+import {limitOrderFillTemplate} from './templates/limit-order-fill.template';
 
 interface TxDecodeConfig {
     [methodSelector: string]: ContractMethodsDecodeConfig;
@@ -23,7 +30,15 @@ interface TxDecodeConfig {
 
 interface TxDecoderType<T> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    new (...args: [Web3Resources, BlockchainRpcCaller, DecodeInfo, any, NetworkEnum]): T;
+    new (
+        ...args: [
+            Web3Resources,
+            BlockchainRpcCaller,
+            DecodeInfo,
+            any,
+            NetworkEnum
+        ]
+    ): T;
 }
 
 export interface ContractMethodsDecodeConfig {
@@ -39,62 +54,69 @@ export const TX_DECODE_CONFIG: TxDecodeConfig = {
         type: 'approve',
         abi: erc20Abi,
         Decoder: ApproveTxDecoder,
-        template: approveTxConfirmTemplate
+        template: approveTxConfirmTemplate,
     },
     // Swap: swap()
     '0x7c025200': {
         type: 'swap',
         abi: oneInchRouterV4Abi,
         Decoder: SwapTxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
     },
     // Swap: clipperSwap()
     '0xb0431182': {
         type: 'clipperSwap',
         abi: oneInchRouterV4Abi,
         Decoder: ClipperTxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
     },
     // Swap: clipperSwapWithPermit()
     '0xd6a92a5d': {
         type: 'clipperSwapWithPermit',
         abi: oneInchRouterV4Abi,
         Decoder: ClipperTxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
     },
     // Swap: unoswap()
     '0x2e95b6c8': {
         type: 'unoswap',
         abi: oneInchRouterV4Abi,
         Decoder: UnoswapTxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
     },
     // Swap: unoswapWithPermit()
     '0xa1251d75': {
         type: 'unoswapWithPermit',
         abi: oneInchRouterV4Abi,
         Decoder: UnoswapTxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
     },
     // Swap: uniswapV3Swap()
     '0xe449022e': {
         type: 'uniswapV3Swap',
         abi: oneInchRouterV4Abi,
         Decoder: OneInchUniswapV3TxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
     },
     // Swap: uniswapV3SwapToWithPermit()
     '0x2521b930': {
         type: 'uniswapV3SwapToWithPermit',
         abi: oneInchRouterV4Abi,
         Decoder: OneInchUniswapV3PermitTxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
     },
     // Swap: uniV3 multicall()
     '0x5ae401dc': {
         type: 'multicall',
         abi: uniRouterV2ABI,
         Decoder: UniswapV3TxDecoder,
-        template: swapTxConfirmTemplate
+        template: swapTxConfirmTemplate,
+    },
+    // Fill limit order
+    '0x655d13cd': {
+        type: 'fillOrder',
+        abi: oneInchLimitV2Abi,
+        Decoder: OneInchLimitOrderFillTxDecoder,
+        template: limitOrderFillTemplate,
     },
 };
