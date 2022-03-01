@@ -3,4 +3,5 @@ node_modules
 ./app-example/node_modules
 ./app-example/.angular
 .idea
+.vscode
 coverage

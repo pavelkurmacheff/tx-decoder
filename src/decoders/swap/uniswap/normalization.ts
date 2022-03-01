@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber';
-import { DecoderResult, MulticallParam, PermitTx, SwapTx, TxType, UnwrapTx } from './types';
+import { DecoderResult, MulticallParam, PermitTx, SwapTx, TxType, UnwrapTx } from '../../types';
 
 import { normalizeEstimation } from './estimation';
 

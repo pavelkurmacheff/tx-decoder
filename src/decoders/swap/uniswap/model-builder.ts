@@ -1,5 +1,5 @@
 import { Transaction, Web3Resources } from '../../../model/common.model';
-import { PermitTx, SwapTx, TxType, UnwrapTx } from './types';
+import { PermitTx, SwapTx, TxType, UnwrapTx } from '../../types';
 import { SwapTxDecoded } from '../../../model/swap-tx.model';
 import { BigNumber } from '@ethersproject/bignumber';
 import { UnwrapTxDecoded } from '../../../model/unwrap-tx.model';

@@ -12,6 +12,15 @@ export interface DecoderResult {
     params: DecoderParams[];
 }
 
+export function getParam(r: DecoderResult, name: string): null | string | string[] {
+    const params = r.params.filter(p => p.name == name);
+    if (params.length == 0 || params.length > 1) {
+        return null;
+    }
+
+    return params[0].value;
+}
+
 export interface DecoderParams {
     name: string;
     value: string | string[];
