@@ -1,28 +1,10 @@
-import {
-    BlockchainRpcCaller,
-    DecodeInfo,
-    Transaction,
-    Web3Resources
-} from '../../../model/common.model';
+import { Transaction } from '../../../model/common.model';
 import UniswapRouterV2BI from '../../../abi/UNI2_ROUTER_V2.json';
 import ERC20ABI from '../../../abi/ERC20ABI.json';
 import { DecoderResult, getParam } from '../../types';
-import { BigNumber } from 'ethers';
+import { combineTxDecoders, DecodeResult, TxDecoder } from './decoder';
+import { TxType } from './tx-types';
 
-
-type DecodeResult = 
-    { tag: 'AnotherContract' } | 
-    { tag: 'WrongContractCall' } | 
-    { tag: 'NotSupported', funcName: string } | 
-    { 
-        tag: 'Success',
-        srcTokenAddress?: string | 'native';
-        dstTokenAddress?: string | 'native';
-        srcAmount?: string;
-        minReturnAmount?: string;
-        dstAmount?: BigNumber;
-    } | 
-    { tag: 'Activation' }
 
 function decodeUniV2Like(contractAddr: string, tx: Transaction): DecodeResult {
     if (contractAddr.toUpperCase() != tx.to.toUpperCase()) {
@@ -50,16 +32,21 @@ function decodeUniV2Like(contractAddr: string, tx: Transaction): DecodeResult {
                 const minAmount = getParam(rootFunc, 'amountOutMin') as string;
                 return { 
                     tag: 'Success',
-                    srcTokenAddress: 'native',
-                    dstTokenAddress: dst,
-                    srcAmount: tx.value,
-                    minReturnAmount: minAmount,
+                    tx: {
+                        tag: TxType.SwapExactInput,
+                        payload: {
+                            srcTokenAddress: 'native',
+                            dstTokenAddress: dst,
+                            srcAmount: tx.value,
+                            minDstAmount: minAmount,
+                        }
+                    }
                 };
             } 
             return { tag: 'WrongContractCall' };
         }
         case 'approve':
-            return { tag: 'Activation' };
+            return { tag: 'Success', tx: { tag: TxType.Permit }};
 
         case 'swapExactTokensForTokens': {
             const to = getParam(rootFunc, 'to');
@@ -69,13 +56,19 @@ function decodeUniV2Like(contractAddr: string, tx: Transaction): DecodeResult {
                 const path = getParam(rootFunc, 'path') as string[];
                 const src = path[0];
                 const dst = path[path.length - 1];
+                const amountIn = getParam(rootFunc, 'amountIn') as string;
                 const minAmount = getParam(rootFunc, 'amountOutMin') as string;
                 return { 
                     tag: 'Success',
-                    srcTokenAddress: src,
-                    dstTokenAddress: dst,
-                    srcAmount: tx.value,
-                    minReturnAmount: minAmount,
+                    tx: {
+                        tag: TxType.SwapExactInput,
+                        payload: {
+                            srcTokenAddress: src,
+                            dstTokenAddress: dst,
+                            srcAmount: amountIn,
+                            minDstAmount: minAmount,
+                        }
+                    }
                 };
             } 
             return { tag: 'WrongContractCall' };
@@ -87,13 +80,90 @@ function decodeUniV2Like(contractAddr: string, tx: Transaction): DecodeResult {
             } else if((to as string).toUpperCase() == tx.from.toUpperCase()) {
                 const path = getParam(rootFunc, 'path') as string[];
                 const src = path[0];
+                const amountIn = getParam(rootFunc, 'amountIn') as string;
                 const minAmount = getParam(rootFunc, 'amountOutMin') as string;
                 return { 
                     tag: 'Success',
-                    srcTokenAddress: src,
-                    dstTokenAddress: 'native',
-                    srcAmount: tx.value,
-                    minReturnAmount: minAmount,
+                    tx: {
+                        tag: TxType.SwapExactInput,
+                        payload: {
+                            srcTokenAddress: src,
+                            dstTokenAddress: 'native',
+                            srcAmount: amountIn,
+                            minDstAmount: minAmount,
+                        }
+                    }
+                };
+            } 
+            return { tag: 'WrongContractCall' };
+        }
+        case 'swapETHForExactTokens': {
+            const to = getParam(rootFunc, 'to');
+            if(to == null) {
+                return { tag: 'WrongContractCall' };
+            } else if((to as string).toUpperCase() == tx.from.toUpperCase()) {
+                const path = getParam(rootFunc, 'path') as string[];
+                const dst = path[path.length - 1];
+                const amountOut = getParam(rootFunc, 'amountOut') as string;
+                return { 
+                    tag: 'Success',
+                    tx: {
+                        tag: TxType.SwapExactOutput,
+                        payload: {
+                            srcTokenAddress: 'native',
+                            dstTokenAddress: dst,
+                            dstAmount: amountOut,
+                        }
+                    }
+                };
+            } 
+            return { tag: 'WrongContractCall' };
+        }
+        case 'swapTokensForExactTokens': {
+            const to = getParam(rootFunc, 'to');
+            if(to == null) {
+                return { tag: 'WrongContractCall' };
+            } else if((to as string).toUpperCase() == tx.from.toUpperCase()) {
+                const path = getParam(rootFunc, 'path') as string[];
+                const src = path[0];
+                const dst = path[path.length - 1];
+                const amountOut = getParam(rootFunc, 'amountOut') as string;
+                const amountInMax = getParam(rootFunc, 'amountInMax') as string;
+                return { 
+                    tag: 'Success',
+                    tx: {
+                        tag: TxType.SwapExactOutput,
+                        payload: {
+                            srcTokenAddress: src,
+                            dstTokenAddress: dst,
+                            dstAmount: amountOut,
+                            maxSrcAmount: amountInMax,
+                        }
+                    }
+                };
+            } 
+            return { tag: 'WrongContractCall' };
+        }
+        case 'swapTokensForExactETH': {
+            const to = getParam(rootFunc, 'to');
+            if(to == null) {
+                return { tag: 'WrongContractCall' };
+            } else if((to as string).toUpperCase() == tx.from.toUpperCase()) {
+                const path = getParam(rootFunc, 'path') as string[];
+                const src = path[0];
+                const amountOut = getParam(rootFunc, 'amountOut') as string;
+                const amountInMax = getParam(rootFunc, 'amountInMax') as string;
+                return { 
+                    tag: 'Success',
+                    tx: {
+                        tag: TxType.SwapExactOutput,
+                        payload: {
+                            srcTokenAddress: src,
+                            dstTokenAddress: 'native',
+                            dstAmount: amountOut,
+                            maxSrcAmount: amountInMax,
+                        }
+                    }
                 };
             } 
             return { tag: 'WrongContractCall' };
@@ -101,35 +171,6 @@ function decodeUniV2Like(contractAddr: string, tx: Transaction): DecodeResult {
         default:
             return { tag: 'NotSupported', funcName: rootFunc.name };
     } 
-}
-
-
-type TxDecoder = (tx: Transaction) => DecodeResult;
-
-function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
-    return tx => {
-        let res: DecodeResult | null = null;
-        for(let d of decoders) {
-            if (res != null) {
-                break;
-            }
-
-            const r = d(tx);
-            switch(r.tag) {
-                case 'AnotherContract':
-                    break;
-                default:
-                    res = r;
-                    break;
-            }
-        }
-
-        if(res != null) {
-            return res;
-        }
-
-        return {tag: 'AnotherContract'};
-    }
 }
 
 // Uniswap V2
