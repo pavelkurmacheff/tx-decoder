@@ -185,4 +185,7 @@ export function decodePancake(tx: Transaction): DecodeResult {
     return decodeUniV2Like('0x10ed43c718714eb63d5aa57b78b54704e256024e', tx);
 }
 
-export const decodeUniV2Like_: TxDecoder = combineTxDecoders([decodeUniswapV2, decodePancake]);
+export const decodeUniV2Like_: TxDecoder = combineTxDecoders([
+    decodeUniswapV2, 
+    decodePancake,
+]);

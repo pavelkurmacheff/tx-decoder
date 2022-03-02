@@ -12,7 +12,7 @@ export type TxDecoder = (tx: Transaction) => DecodeResult;
 export function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
     return tx => {
         let res: DecodeResult | null = null;
-        for(let d of decoders) {
+        for(const d of decoders) {
             if (res != null) {
                 break;
             }
