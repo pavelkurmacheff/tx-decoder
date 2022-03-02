@@ -1,4 +1,4 @@
-import {IAbiDecoder, IAbiDecoderParam} from './types';
+import {IAbiDecoder, IAbiDecoderParam, IAbiDecoderResult} from './types';
 
 const abiDecoder: IAbiDecoder = require('abi-decoder');
 
@@ -10,4 +10,13 @@ function getAbiParam<T>(paramList: IAbiDecoderParam[], name: string): T {
     return param.value as any;
 }
 
-export {abiDecoder, getAbiParam};
+function getParam(r: IAbiDecoderResult, name: string): null | string | string[] {
+    const params = r.params.filter(p => p.name == name);
+    if (params.length == 0 || params.length > 1) {
+        return null;
+    }
+
+    return params[0].value;
+}
+
+export {abiDecoder, getAbiParam, getParam};

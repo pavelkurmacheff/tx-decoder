@@ -1,9 +1,10 @@
-import {Transaction} from '../model/common.model';
-import {Item} from '../model/tx-ui-items.model';
+import {Item} from '../dex/uniswap-v3/model/tx-ui-items.model';
 import {formatUnits} from '@ethersproject/units';
-import {SwapTxDecoded} from '../model/swap-tx.model';
+import {SwapTxDecoded} from '../dex/uniswap-v3/model/swap-tx.model';
+import { TransactionRaw } from 'src/core/transaction-raw';
 
-export function swapTxConfirmTemplate(txConfig: Transaction, decoded: SwapTxDecoded): Item[] {
+// TODO: Change SwapTxDecoded to new Swap models
+export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapTxDecoded): Item[] {
     const {srcAmount, dstAmount, srcToken, dstToken, minReturnAmount} = decoded;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -62,7 +63,7 @@ export function swapTxConfirmTemplate(txConfig: Transaction, decoded: SwapTxDeco
                 type: 'text',
                 value: {
                     type: 'address',
-                    text: txConfig.from.toLowerCase()
+                    text: tx.from.toLowerCase()
                 }
             }
         },

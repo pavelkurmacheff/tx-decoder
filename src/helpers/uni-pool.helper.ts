@@ -1,5 +1,5 @@
-import {NATIVE_TOKEN_ADDRESS, TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../const/common.const';
-import {BlockchainRpcCaller} from '../model/common.model';
+import {NATIVE_TOKEN_ADDRESS, TOKEN0_POOL_SELECTOR, TOKEN1_POOL_SELECTOR} from '../core/const/common.const';
+import {BlockchainRpcCaller} from '../dex/uniswap-v3/model/common.model';
 import {BigNumber} from '@ethersproject/bignumber';
 
 const REVERSE_AND_UNWRAP_FLAG = 'c0';

@@ -1,148 +1,163 @@
-import { ChainTokenByNetwork, NATIVE_TOKEN_ADDRESS, NetworkEnum, ZERO_ADDRESS } from '../../const/common.const';
-import { Token } from '../../model/common.model';
-import { Web3Service } from '../web3/web3.service';
-import { ERC20, ERC20_BYTE32, ERC20_UPPER_CASE } from './abi';
-import { AbiItem } from 'web3-utils';
+import {
+    ChainTokenByNetwork,
+    NATIVE_TOKEN_ADDRESS,
+    ZERO_ADDRESS,
+} from '../../core/const/common.const';
+import {Web3Service} from '../web3/web3.service';
+import {ERC20, ERC20_BYTE32, ERC20_UPPER_CASE} from './abi';
+import {AbiItem} from 'web3-utils';
+import {Token} from 'src/core/transaction-rich/token';
+import {ChainId} from 'src/core/chain-id';
 
 export class CustomTokensService {
-    private customTokensMap: { [key: string]: Token } = {}
+    // TODO: Use native map
+    private customTokensMap: {[key: string]: Token} = {};
 
-    constructor(
-        readonly web3Service: Web3Service,
-        readonly chainId: NetworkEnum
-    ) {
-        const t: Token = ChainTokenByNetwork[this.chainId] ?
-            ChainTokenByNetwork[this.chainId] :
-            ChainTokenByNetwork[NetworkEnum.ETHEREUM];
+    constructor(readonly web3Service: Web3Service, readonly chainId: ChainId) {
+        const t: Token = ChainTokenByNetwork[this.chainId]
+            ? ChainTokenByNetwork[this.chainId]
+            : ChainTokenByNetwork[ChainId.Ethereum];
 
         this.customTokensMap[ZERO_ADDRESS] = t;
         this.customTokensMap[NATIVE_TOKEN_ADDRESS] = t;
     }
 
-  async getTokenByAddress(address: string): Promise<Token | null> {
-    try {
-      if (this.customTokensMap[address]) {
-        return this.customTokensMap[address]
-      }
-
-      const data = await this.fetchTokenInfo(address.toLowerCase())
-      if (!data) {
-        return null
-      }
-      if (data.decimals === null || data.decimals === undefined) {
-        return null
-      }
-
-      const info = this.buildMinimizedTokenFromData(data)
-
-      this.customTokensMap[address] = info
-
-      return info
-    } catch (e) {
-      console.error(e)
-      return null
+    appendTokensToCache(cache: {[key: string]: Token}): void {
+        // TODO
     }
-  }
 
-  private buildMinimizedTokenFromData(data: Token): Token {
-      const info: Token = {name: data.name, symbol: data.symbol, address: data.address, decimals: data.decimals}
-
-    if (data.logoURI) {
-      info.logoURI = data.logoURI
-    }
-    return info
-  }
-
-  private async fetchTokenInfo(address: string): Promise<Token | null> {
-    try {
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises,no-async-promise-executor
-      return new Promise(async (resolve, reject) => {
+    async getTokenByAddress(address: string): Promise<Token | null> {
         try {
-          resolve(await this.fetchNormalTokenInfo(address))
+            if (this.customTokensMap[address]) {
+                return this.customTokensMap[address];
+            }
+
+            const data = await this.fetchTokenInfo(address.toLowerCase());
+            if (!data || !data.decimals) {
+                return null;
+            }
+
+            const info = this.buildMinimizedTokenFromData(data);
+            this.customTokensMap[address] = info;
+
+            return info;
         } catch (e) {
-          if (isUpperCaseToken(e)) {
-            try {
-              resolve(await this.fetchUpperCaseTokenInfo(address))
-            } catch (e) {
-              console.error(e)
-            }
-          } else if (isBytes32TokenInfo(e)) {
-            try {
-              resolve(await this.fetchBytes32TokenInfo(address))
-            } catch (e) {
-              console.error(e)
-            }
-          }
+            console.error(e);
+            return null;
         }
-          reject('cannot fetch details for token: ' + address)
-      })
-    } catch (e) {
-        return null
     }
-  }
+
+    private buildMinimizedTokenFromData(data: Token): Token {
+        const info: Token = {
+            name: data.name,
+            symbol: data.symbol,
+            address: data.address,
+            decimals: data.decimals,
+        };
+
+        if (data.logoURI) {
+            info.logoURI = data.logoURI;
+        }
+        return info;
+    }
+
+    private async fetchTokenInfo(address: string): Promise<Token | null> {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises,no-async-promise-executor
+            return new Promise(async (resolve, reject) => {
+                try {
+                    resolve(await this.fetchNormalTokenInfo(address));
+                } catch (e) {
+                    if (isUpperCaseToken(e)) {
+                        try {
+                            resolve(await this.fetchUpperCaseTokenInfo(address));
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    } else if (isBytes32TokenInfo(e)) {
+                        try {
+                            resolve(await this.fetchBytes32TokenInfo(address));
+                        } catch (e) {
+                            console.error(e);
+                        }
+                    }
+                }
+                reject('cannot fetch details for token: ' + address);
+            });
+        } catch (e) {
+            return null;
+        }
+    }
 
     private async fetchNormalTokenInfo(tokenAddress: string): Promise<Token> {
         const token = new this.web3Service.web3.eth.Contract(
             ERC20 as AbiItem[] | AbiItem,
             tokenAddress
-        )
+        );
 
         return {
             symbol: await token.methods.symbol().call(),
             name: await token.methods.name().call(),
             address: tokenAddress,
-      decimals: Number((await token.methods.decimals().call()).toString())
+            decimals: Number(
+                (await token.methods.decimals().call()).toString()
+            ),
+        };
     }
-  }
 
-  private async fetchUpperCaseTokenInfo(
-    tokenAddress: string
-  ): Promise<Token> {
-    const token = new this.web3Service.web3.eth.Contract(
-        ERC20_UPPER_CASE as AbiItem[] | AbiItem,
-        tokenAddress
-    )
+    private async fetchUpperCaseTokenInfo(tokenAddress: string): Promise<Token> {
+        const token = new this.web3Service.web3.eth.Contract(
+            ERC20_UPPER_CASE as AbiItem[] | AbiItem,
+            tokenAddress
+        );
 
-    return {
-      symbol: await token.methods.SYMBOL().call(),
-      name: await token.methods.NAME().call(),
-      address: tokenAddress,
-      decimals: Number((await token.methods.DECIMALS().call()).toString())
+        return {
+            symbol: await token.methods.SYMBOL().call(),
+            name: await token.methods.NAME().call(),
+            address: tokenAddress,
+            decimals: Number(
+                (await token.methods.DECIMALS().call()).toString()
+            ),
+        };
     }
-  }
 
-  private async fetchBytes32TokenInfo(tokenAddress: string): Promise<Token> {
-    const token = new this.web3Service.web3.eth.Contract(
-        ERC20_BYTE32 as AbiItem[] | AbiItem,
-        tokenAddress
-    )
+    private async fetchBytes32TokenInfo(tokenAddress: string): Promise<Token> {
+        const token = new this.web3Service.web3.eth.Contract(
+            ERC20_BYTE32 as AbiItem[] | AbiItem,
+            tokenAddress
+        );
 
-    return {
-      symbol: this.web3Service.web3.utils.hexToUtf8(
-        await token.methods.symbol().call()
-      ),
-      name: this.web3Service.web3.utils.hexToUtf8(
-        await token.methods.name().call()
-      ),
-      address: tokenAddress,
-      decimals: Number((await token.methods.decimals().call()).toString())
+        return {
+            symbol: this.web3Service.web3.utils.hexToUtf8(
+                await token.methods.symbol().call()
+            ),
+            name: this.web3Service.web3.utils.hexToUtf8(
+                await token.methods.name().call()
+            ),
+            address: tokenAddress,
+            decimals: Number(
+                (await token.methods.decimals().call()).toString()
+            ),
+        };
     }
-  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isUpperCaseToken(e: any): boolean {
-    return e.toString().indexOf('Reverted 0x') !== -1
+    return e.toString().indexOf('Reverted 0x') !== -1;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isBytes32TokenInfo(e: any): boolean {
     return (
-        e.toString().indexOf('Number can only safely store up to 53 bits') !== -1 ||
-        e.toString().indexOf('overflow') !== -1
-    )
+        e.toString().indexOf('Number can only safely store up to 53 bits') !==
+            -1 || e.toString().indexOf('overflow') !== -1
+    );
 }
 
 export const isETH = (address: string): boolean => {
-    return NATIVE_TOKEN_ADDRESS === address.toLowerCase() || ZERO_ADDRESS === address
-}
+    return (
+        NATIVE_TOKEN_ADDRESS === address.toLowerCase() ||
+        ZERO_ADDRESS === address
+    );
+};

@@ -1,9 +1,9 @@
-import {APPROVE_INFO_PLACEHOLDER} from '../const/localizable.const';
-import {Transaction} from '../model/common.model';
-import {Item} from '../model/tx-ui-items.model';
-import { ApproveTxDecoded } from '../model/approve-tx.model';
+import {APPROVE_INFO_PLACEHOLDER} from '../core/const/localizable.const';
+import {Item} from '../dex/uniswap-v3/model/tx-ui-items.model';
+import { ApproveTxRich } from '../core/transaction-rich/approve-tx.model';
+import { TransactionRaw } from 'src/core/transaction-raw';
 
-export function approveTxConfirmTemplate(txConfig: Transaction, decoded: ApproveTxDecoded): Item[] {
+export function approveTxConfirmTemplate(tx: TransactionRaw, decoded: ApproveTxRich): Item[] {
     return [
         // ******** Info
         {
@@ -48,7 +48,7 @@ export function approveTxConfirmTemplate(txConfig: Transaction, decoded: Approve
                 type: 'text',
                 value: {
                     type: 'address',
-                    text: txConfig.from.toLowerCase()
+                    text: tx.from.toLowerCase()
                 }
             }
         },
