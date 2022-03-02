@@ -1,7 +1,12 @@
 import { BigNumber } from "ethers";
-import { TransactionRaw } from "src/core/transaction-raw";
-import { TransactionType } from "src/core/transaction-type";
-import { decodePancake } from "./uniswap-v2-tx.decoder";
+import { DecodeResult } from "../../core/decoder";
+import { TransactionRaw } from "../../core/transaction-raw";
+import { TransactionType } from "../../core/transaction-type";
+import { decodeUniV2Like } from "./uniswap-v2-tx.decoder";
+
+export function decodePancake(tx: TransactionRaw): DecodeResult {
+    return decodeUniV2Like('0x10ed43c718714eb63d5aa57b78b54704e256024e', tx);
+}
 
 describe('UniswapV2TxDecoder test (pancakeswap)', () => {
     it('Swap exact native to custom', async () => {
@@ -17,7 +22,6 @@ describe('UniswapV2TxDecoder test (pancakeswap)', () => {
         const result = decodePancake(tx);
         expect(result.tag).toEqual('Success');
         expect((result as any).tx.payload.dstTokenAddress).toEqual('0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82');
-
     });
 
     it('Activate custom token', async () => {

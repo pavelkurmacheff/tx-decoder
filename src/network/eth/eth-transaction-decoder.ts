@@ -2,6 +2,7 @@ import { combineTxDecoders, DecodeResult, TxDecoder } from "src/core/decoder";
 import { TransactionRaw } from "src/core/transaction-raw";
 import { decodeOneInchLimitOrderV2 } from "src/dex/1inch/limit/one-inch-limit-order-v2-tx.decoder";
 import { decodeUniV2Like } from "src/dex/uniswap-v2-like/uniswap-v2-tx.decoder";
+import { decodeUniV3 } from "src/dex/uniswap-v3/uniswap-v3-tx.decoder";
 
 
 // Uniswap V2
@@ -10,7 +11,14 @@ function decodeUniswapV2(tx: TransactionRaw): DecodeResult {
     return decodeUniV2Like('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', tx);
 }
 
+// Uniswap V3
+// https://etherscan.io/address/0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45
+function decodeUniswapV3(tx: TransactionRaw): DecodeResult {
+    return decodeUniV3('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', tx);
+}
+
 export const ehtTransactionDecoder: TxDecoder = combineTxDecoders([
     decodeOneInchLimitOrderV2,
     decodeUniswapV2,
+    decodeUniswapV3,
 ]);

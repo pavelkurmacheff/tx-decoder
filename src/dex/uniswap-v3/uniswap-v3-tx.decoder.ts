@@ -1,81 +1,184 @@
-import {
-    BlockchainRpcCaller,
-    DecodeInfo,
-    Transaction,
-    Web3Resources
-} from '../../../model/common.model';
-import { TxDecoder } from '../../base-tx.decoder';
-import { BigNumber } from '@ethersproject/bignumber';
-import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import UniswapRouterV2BI from '../../../abi/UNI3_ROUTER_V2.json';
-import ERC20ABI from '../../../abi/ERC20ABI.json';
-import { estimateWithResult } from '../../../helpers/dest-amount.helper';
-import { MultipleTxsDecoded } from '../../../model/multiple-tx.model';
-import { getEstimatedValue, getTxTypeByCallData } from './normalization';
-import { buildResult } from './model-builder';
-import { SwapTxDecoded } from '../../../model/swap-tx.model';
-import { NetworkEnum } from '../../../const/common.const';
+import { TransactionRaw } from '../../core/transaction-raw';
+import { DecodeResult } from '../../core/decoder';
+import UniswapRouterV2BI from './UNI3_ROUTER_V2.json';
+import ERC20ABI from '../../core/abi/ERC20ABI.json';
+import { abiDecoder, getParamDescriptor } from '../../helpers/abi/abi-decoder.helper';
+import { IAbiDecoderResult } from '../../helpers/abi/types';
+import { TransactionType } from '../../core/transaction-type';
+import { MulticallPayload } from '../../core/transaction-parsed';
 
-// todo: what is that? why is it here?
-export interface UniV3Data {
-    data: string;
-}
+abiDecoder.addABI(UniswapRouterV2BI);
+abiDecoder.addABI(ERC20ABI);
 
-export class UniswapV3TxDecoder implements TxDecoder<UniV3Data> {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    abiDecoder: unknown;
-
-
-    constructor(readonly resources: Web3Resources,
-                readonly rpcCaller: BlockchainRpcCaller,
-                readonly decodeInfo: DecodeInfo,
-                readonly txData: UniV3Data,
-                readonly chainId: NetworkEnum) {
-        this.abiDecoder = require('abi-decoder');
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        this.abiDecoder.addABI(UniswapRouterV2BI);
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        this.abiDecoder.addABI(ERC20ABI);
+export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeResult {
+    if (contractAddr.toUpperCase() != tx.to.toUpperCase()) {
+        return { tag: 'AnotherContract' };
     }
+    
+    const rootFunc: IAbiDecoderResult = abiDecoder.decodeMethod(tx.data);
+    if (rootFunc.name === 'multicall') {
+        const data = getParamDescriptor(rootFunc, 'data');
+        if(!data || data.type !== 'bytes[]') {
+            return { tag: 'WrongContractCall' };
+        }
 
-    async decodeByConfig(txConfig: Transaction): Promise<MultipleTxsDecoded> {
-        const data = getTxTypeByCallData(txConfig.data, this.abiDecoder);
-        const estimated = await estimateWithResult(this, txConfig);
-        const estimatedResult = getEstimatedValue(estimated);
+        const calls: string[] = data.value as string[];
+        const decodedTxs = calls.map(abiDecoder.decodeMethod);
+        const innerResults = decodedTxs.map(decodeSimpleCall);
+        const multicallPayload: MulticallPayload = innerResults.map(i => {
+            switch(i.tag) {
+                case 'Success': 
+                    return i.tx;
+                default: 
+                    return {tag: 'Error', code: i.tag, data: i};
+            }
+        })
 
-        return buildResult(this.resources, txConfig, data, estimatedResult ? estimatedResult : '0');
-    }
-
-
-    async decodeByLogs(receipt: TransactionReceipt): Promise<SwapTxDecoded> {
-        console.log(receipt);
         return {
-            dstAmount: BigNumber.from('0'),
-            dstToken: {
-                address: '0x',
-                name: '0x',
-                decimals: 0,
-                symbol: '0x',
-                logoURI: '0x',
-            },
-            minReturnAmount: BigNumber.from('0'),
-            srcAmount: BigNumber.from('0'),
-            srcToken: {
-                address: '0x',
-                name: '0x',
-                decimals: 0,
-                symbol: '0x',
-                logoURI: '0x',
+            tag: 'Success',
+            tx: {
+                tag: TransactionType.Multicall,
+                payload: multicallPayload,
             }
         }
-    }
 
+
+    } else {
+        // TODO: Is it possible to use plain UniV3 functions without multicall?
+        return { tag: 'WrongContractCall' };
+    }
 }
 
+function decodeSimpleCall(data: IAbiDecoderResult): DecodeResult {
+    switch (data.name) {
+        case 'swapTokensForExactTokens':
+            return normalizeSwapTokensForExactTokens(data);
+        case 'swapExactTokensForTokens':
+            return normalizeSwapExactTokensForTokens(data);
+        case 'exactInputSingle':
+            return normalizeExactInputSingle(data);
+        case 'exactOutputSingle':
+            return normalizeExactOutputSingle(data);
+        case 'unwrapWETH9':
+            return normailzeUnwrapWETH9(data);
+        case 'selfPermitAllowed':
+            return normalizeSelfPermitAllowed(data);
+        default:
+            return { tag: 'NotSupported', funcName: data.name }
+    }
+}
 
+function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult): DecodeResult {
+    if (data.params && data.params.length > 3
+        && data.params[2].value.length == 2) {
 
+        return { 
+            tag: 'Success', 
+            tx: { 
+                tag: TransactionType.SwapExactInput, 
+                payload: {
+                    srcTokenAddress: data.params[2].value[0],
+                    dstTokenAddress: data.params[2].value[1],
+                    srcAmount: data.params[0].value as string,
+                    minDstAmount: data.params[1].value as string,
+                } 
+            } 
+        };
+    }
+    return { tag: 'WrongContractCall' };
+}
 
+function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult): DecodeResult {
+    if (data.params && data.params.length > 3
+        && data.params[2].value.length == 2) {
+        return {
+            tag: 'Success', 
+            tx: { 
+                tag: TransactionType.SwapExactOutput, 
+                payload: {
+                    srcTokenAddress: data.params[2].value[0],
+                    dstTokenAddress: data.params[2].value[1],
+                    dstAmount: data.params[0].value as string,
+                    maxSrcAmount: data.params[1].value as string,
+                } 
+            } 
+        };
+    }
 
+    return { tag: 'WrongContractCall' };
+}
+
+function normailzeUnwrapWETH9(data: IAbiDecoderResult): DecodeResult {
+    if (data.params && data.params.length > 1) {
+        return {
+            tag: 'Success',
+            tx: {
+                tag: TransactionType.Unwrap,
+                // TODO: Add parameters to Unwrap tx payload
+                // minReturnAmount: BigNumber.from(data.params[0].value),
+                // recipient: data.params[1].value as string,
+            },
+        };
+    }
+
+    return { tag: 'WrongContractCall' };
+}
+
+function normalizeExactInputSingle(data: IAbiDecoderResult): DecodeResult {
+    if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
+        
+        return { 
+            tag: 'Success', 
+            tx: { 
+                tag: TransactionType.SwapExactInput, 
+                payload: {
+                    srcTokenAddress: data.params[0].value[0],
+                    dstTokenAddress: data.params[0].value[1],
+                    srcAmount: data.params[0].value[4],
+                    minDstAmount: data.params[0].value[5],
+                } 
+            } 
+        };
+    }
+
+    return { tag: 'WrongContractCall' };
+}
+
+function normalizeExactOutputSingle(data: IAbiDecoderResult): DecodeResult {
+    if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
+        return {
+            tag: 'Success', 
+            tx: { 
+                tag: TransactionType.SwapExactOutput, 
+                payload: {
+                    srcTokenAddress: data.params[0].value[0],
+                    dstTokenAddress: data.params[0].value[1],
+                    dstAmount: data.params[0].value[4],
+                    maxSrcAmount: data.params[0].value[5],
+                } 
+            } 
+        };
+    }
+
+    return { tag: 'WrongContractCall' };
+}
+
+// TODO: Condition?
+function normalizeSelfPermitAllowed(data: IAbiDecoderResult): DecodeResult {
+    try {
+        return {
+            tag: 'Success', 
+            tx: { 
+                tag: TransactionType.Approve, 
+                // TODO: Add payload to approve txs
+                // payload: {
+                //     token: data.params[0].value as string,
+                //     nonce: BigNumber.from(data.params[1].value),
+                //     expiry: BigNumber.from(data.params[2].value),
+                // } 
+            } 
+        };
+    } catch (e) {
+        return { tag: 'WrongContractCall' };
+    }
+}

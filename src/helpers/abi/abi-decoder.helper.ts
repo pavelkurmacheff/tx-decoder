@@ -19,4 +19,8 @@ function getParam(r: IAbiDecoderResult, name: string): null | string | string[] 
     return params[0].value;
 }
 
-export {abiDecoder, getAbiParam, getParam};
+function getParamDescriptor(r: IAbiDecoderResult, name: string): IAbiDecoderParam | undefined {
+    return r.params.find((p) => p.name === 'data');
+}
+
+export {abiDecoder, getAbiParam, getParam, getParamDescriptor};
