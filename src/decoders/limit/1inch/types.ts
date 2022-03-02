@@ -1,15 +1,2 @@
-import {BigNumber} from '@ethersproject/bignumber';
-
-export interface IOneInchLimitOrderFillTxData {
-    name: string;
-    params: {
-        order: {
-            maker: string;
-            makerAsset: string;
-            takerAsset: string;
-        };
-        makingAmount: BigNumber;
-        takingAmount: BigNumber;
-        thresholdAmount: BigNumber;
-    };
-}
+export const ONE_INCH_LIMIT_ORDER_V2_ROUTER_ADDRESS =
+    '0x119c71d3bbac22029622cbaec24854d3d32d2828';

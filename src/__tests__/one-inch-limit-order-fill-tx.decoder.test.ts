@@ -1,13 +1,8 @@
-import {Interface} from '@ethersproject/abi';
 import {BigNumber} from '@ethersproject/bignumber';
-import {OneInchLimitOrderFillTxDecoder} from '../decoders/limit/1inch/one-inch-limit-order-fill-tx.decoder';
 import {CustomTokensService} from '../helpers/tokens/custom-tokens.service';
 import {Web3Service} from '../helpers/web3/web3.service';
-import {
-    BlockchainRpcCaller,
-    Transaction,
-    Web3Resources,
-} from '../model/common.model';
+import {Transaction, Web3Resources} from '../model/common.model';
+import {decodeOneInchLimitOrderV2} from '../decoders/limit/1inch/one-inch-limit-order-v2-tx.decoder';
 
 const fetch = require('node-fetch');
 
@@ -15,54 +10,13 @@ const nodeUrl = 'https://web3-node-private.1inch.exchange/';
 const chainId = 1;
 
 describe('OneInchLimitOrderFillTxDecoder test', () => {
-    let oneInchLimitOrderFillTxDecoder: OneInchLimitOrderFillTxDecoder;
     let resources: Web3Resources;
-
-    const rpcCaller: BlockchainRpcCaller = {
-        rpcUrl: nodeUrl,
-        call<T>(method: string, params: unknown[]): Promise<T> {
-            return fetch(nodeUrl, {
-                method: 'POST',
-                headers: {
-                    'content-type': 'application/json',
-                    referer: 'http://localhost:4200/',
-                    'user-agent':
-                        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ' +
-                        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
-                },
-                body: JSON.stringify({
-                    method,
-                    params,
-                    jsonrpc: '2.0',
-                    id: Date.now(),
-                }),
-            })
-                .then(
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    (res) => {
-                        return res.json();
-                    }
-                )
-                .then(
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    (res) => {
-                        return res.result as T;
-                    }
-                );
-        },
-    };
 
     beforeAll(async () => {
         resources = await Promise.all([
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             fetch('https://tokens.1inch.io/v1.1/' + chainId).then((res) =>
                 res.json()
             ),
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             fetch('https://token-prices.1inch.io/v1.1/' + chainId).then((res) =>
                 res.json()
             ),
@@ -78,19 +32,6 @@ describe('OneInchLimitOrderFillTxDecoder test', () => {
         });
     });
 
-    beforeEach(() => {
-        oneInchLimitOrderFillTxDecoder = new OneInchLimitOrderFillTxDecoder(
-            resources,
-            rpcCaller,
-            {
-                iface: {} as Interface,
-                methodSelector: '',
-            },
-            {data: ''},
-            chainId
-        );
-    });
-
     // https://etherscan.io/tx/0xaf0d92ef658aa18343df7cf43cc5b8570f5cb6bf9c047c00bfc626bf9aaf9f15
     it('fill order', async () => {
         const tx: Transaction = {
@@ -101,7 +42,7 @@ describe('OneInchLimitOrderFillTxDecoder test', () => {
             to: '0x119c71d3bbac22029622cbaec24854d3d32d2828',
             value: '0',
         };
-        const result = await oneInchLimitOrderFillTxDecoder.decodeByConfig(tx);
+        const result = await decodeOneInchLimitOrderV2(resources, tx);
 
         expect(result).toBeDefined();
         expect(JSON.stringify(result)).toBe(
@@ -143,7 +84,46 @@ describe('OneInchLimitOrderFillTxDecoder test', () => {
             to: '0x119c71d3bbac22029622cbaec24854d3d32d2828',
             value: '0',
         };
-        const result = await oneInchLimitOrderFillTxDecoder.decodeByConfig(tx);
+        const result = await decodeOneInchLimitOrderV2(resources, tx);
+
+        expect(result).toBeDefined();
+        expect(JSON.stringify(result)).toBe(
+            JSON.stringify({
+                srcToken: {
+                    symbol: 'MATIC',
+                    name: 'Matic Token',
+                    decimals: 18,
+                    address: '0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0',
+                    logoURI:
+                        'https://tokens.1inch.io/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0.png',
+                },
+                dstToken: {
+                    symbol: 'USDT',
+                    name: 'Tether USD',
+                    address: '0xdac17f958d2ee523a2206206994597c13d831ec7',
+                    decimals: 6,
+                    logoURI:
+                        'https://tokens.1inch.io/0xdac17f958d2ee523a2206206994597c13d831ec7.png',
+                },
+                maxSrcAmount: {
+                    type: 'BigNumber',
+                    hex: '0x03b30cf3f7f91a380000',
+                },
+                dstAmount: {type: 'BigNumber', hex: '0x05cf903286'},
+            })
+        );
+    });
+
+    it('cancel order', async () => {
+        const tx: Transaction = {
+            data: '0xb244b450000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000005ffc4d2e5000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb480000000000000000000000002b591e99afe9f32eaa6214f7b7629768c40eeb3900000000000000000000000004ff04ffc7358b8944f2429faec6c3fe26a2f1300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e8fe9b40000000000000000000000000000000000000000000000000000002bccdcef68000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000022000000000000000000000000000000000000000000000000000000000000002a0000000000000000000000000000000000000000000000000000000000000032000000000000000000000000000000000000000000000000000000000000005400000000000000000000000000000000000000000000000000000000000000660000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044f4a215c300000000000000000000000000000000000000000000000000000000e8fe9b40000000000000000000000000000000000000000000000000000002bccdcef680000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044296637bf00000000000000000000000000000000000000000000000000000000e8fe9b40000000000000000000000000000000000000000000000000000002bccdcef6800000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001e4961d5b1e000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000002000000000000000000000000119c71d3bbac22029622cbaec24854d3d32d2828000000000000000000000000119c71d3bbac22029622cbaec24854d3d32d28280000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000044cf6fc6e300000000000000000000000004ff04ffc7358b8944f2429faec6c3fe26a2f130000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000002463592c2b000000000000000000000000000000000000000000000000000000006227b0d3000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f4a0b86991c6218b36c1d19d4a2e9eb0ce3606eb4800000000000000000000000004ff04ffc7358b8944f2429faec6c3fe26a2f130000000000000000000000000119c71d3bbac22029622cbaec24854d3d32d2828ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000006227b0c9000000000000000000000000000000000000000000000000000000000000001bc1085a7370ed81018e7de945bde95bfe58dc804ac46f1cfd90d6cf43ae4af17e1bcaf6542a200254ed9a92566f97bbce2127dad6ec01d2e747033ba3eef4a14f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
+            from: '0x425371f572e3a09ae09d6efa29799b8a86cfb3d3',
+            gasLimit: BigNumber.from('0x2c137'),
+            gasPrice: BigNumber.from('0x163F29F8A1'),
+            to: '0x119c71d3bbac22029622cbaec24854d3d32d2828',
+            value: '0',
+        };
+        const result = await decodeOneInchLimitOrderV2(resources, tx);
 
         expect(result).toBeDefined();
         expect(JSON.stringify(result)).toBe(
