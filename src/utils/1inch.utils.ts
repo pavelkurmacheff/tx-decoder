@@ -1,6 +1,6 @@
 import { Token } from "../core/token";
-import { ChainId } from "../core/chain-id"
-const fetch = require('node-fetch');
+import { ChainId } from "../core/chain-id";
+import fetch from 'isomorphic-unfetch';
 
 type TokenMap = {[tokenAddress: string]: Token};
 
@@ -11,9 +11,9 @@ export function loadTokens(chainId: ChainId): Promise<TokenMap> {
 
 export function loadTokensMap(chainId: ChainId): Promise<Map<string, Token>> {
     return fetch('https://tokens.1inch.io/v1.1/' + chainId)
-        .then(async (r: Response) => {
-            const obj = await r.json();
-            const entries = Object.entries(obj);
+        .then((r: Response) => r.json())
+        .then(d => {
+            const entries = Object.entries(d) as [string, Token][];
             return new Map(entries);
         });
 }
@@ -27,9 +27,9 @@ export function loadTokensPrice(chainId: ChainId): Promise<TokenPriceMap> {
 
 export function loadTokensPriceMap(chainId: ChainId): Promise<Map<string, string>> {
     return fetch('https://token-prices.1inch.io/v1.1/' + chainId)
-        .then(async (r: Response) => {
-            const obj = await r.json();
-            const entries = Object.entries(obj);
+        .then((r: Response) => r.json())
+        .then(d => {
+            const entries = Object.entries(d) as [string, string][];
             return new Map(entries);
         });
 }
