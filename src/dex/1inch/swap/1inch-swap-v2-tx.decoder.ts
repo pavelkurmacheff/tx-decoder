@@ -29,6 +29,9 @@ export function decode1InchSwapV4(
         case 'unoswap': {
             return parseUnoswap(rawTx, methodData);
         }
+        case 'swap': {
+            return parseSwap(rawTx, methodData);
+        }
         default:
             return {tag: 'NotSupported', funcName: methodData.name};
     }
@@ -71,6 +74,29 @@ function parseUnoswap(
         tx: {
             raw: rawTx,
             tag: TransactionType.SwapThroughPool,
+            payload,
+        },
+    };
+}
+
+function parseSwap(
+    rawTx: TransactionRaw,
+    data: IAbiDecoderResult
+): DecodeResult {
+    const descData = getParam(data, 'desc') as any;
+
+    const payload: SwapExactInputPayload = {
+        srcTokenAddress: descData['srcToken'] as string,
+        dstTokenAddress: descData['dstToken'] as string,
+        srcAmount: descData['amount'] as string,
+        minDstAmount: descData['minReturnAmount'] as string,
+    };
+
+    return {
+        tag: 'Success',
+        tx: {
+            raw: rawTx,
+            tag: TransactionType.SwapExactInput,
             payload,
         },
     };
