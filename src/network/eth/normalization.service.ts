@@ -2,30 +2,30 @@ import {
     MulticallItem,
     MulticallPayload,
     TransactionParsed,
-} from 'src/core/transaction-parsed';
+} from '../../core/transaction-parsed';
 import {
     MulticallPayloadRich,
     MulticallRichItem,
     TransactionRich,
-} from 'src/core/transaction-rich';
-import {createUnknownToken, Token} from 'src/core/token';
-import {TransactionType} from 'src/core/transaction-type';
-import {CustomTokensService} from 'src/helpers/tokens/custom-tokens.service';
-import {ChainTokenByNetwork} from 'src/const/common.const';
-import {LimitOrderFillPayload} from 'src/core/transaction-parsed/limit-order-fill-payload';
-import {ApproveTxPayload} from 'src/core/transaction-parsed/approve-payload';
-import {ApproveRich} from 'src/core/transaction-rich/approve';
+} from '../../core/transaction-rich';
+import {createUnknownToken, Token} from '../../core/token';
+import {TransactionType} from '../../core/transaction-type';
+import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
+import {ChainTokenByNetwork} from '../../const/common.const';
+import {LimitOrderFillPayload} from '../../core/transaction-parsed/limit-order-fill-payload';
+import {ApproveTxPayload} from '../../core/transaction-parsed/approve-payload';
+import {ApproveRich} from '../../core/transaction-rich/approve';
 import {
     SwapExactInputRich,
     SwapExactOutputRich,
-} from 'src/core/transaction-rich/swap-payload';
-import {LimitOrderFillRich} from 'src/core/transaction-rich/limit-order-fill';
+} from '../../core/transaction-rich/swap-payload';
+import {LimitOrderFillRich} from '../../core/transaction-rich/limit-order-fill';
 import {
     SwapExactInputPayload,
     SwapExactOutputPayload,
     SwapThroughPoolPayload,
-} from 'src/core/transaction-parsed/swap-payload';
-import PoolService from 'src/helpers/pools/pool.service';
+} from '../../core/transaction-parsed/swap-payload';
+import PoolService from '../../helpers/pools/pool.service';
 
 export class NormalizationService {
     constructor(

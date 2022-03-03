@@ -45,6 +45,7 @@ export class CustomTokensService {
         }
     }
 
+    
     private buildMinimizedTokenFromData(data: Token): Token {
         const info: Token = {
             name: data.name,

@@ -1,8 +1,8 @@
-import {combineTxDecoders, TxDecoder} from 'src/core/decoder';
-import {decode1InchLimitOrderV2} from 'src/dex/1inch/limit/1inch-limit-order-v2-tx.decoder';
-import {decode1InchSwapV4} from 'src/dex/1inch/swap/1inch-swap-v2-tx.decoder';
-import {decodeUniV2Like} from 'src/dex/uniswap-v2-like/uniswap-v2-tx.decoder';
-import {decodeUniV3} from 'src/dex/uniswap-v3/uniswap-v3-tx.decoder';
+import {combineTxDecoders, TxDecoder} from '../../core/decoder';
+import {decode1InchLimitOrderV2} from '../../dex/1inch/limit/1inch-limit-order-v2-tx.decoder';
+import {decode1InchSwapV4} from '../../dex/1inch/swap/1inch-swap-v2-tx.decoder';
+import {decodeUniV2Like} from '../../dex/uniswap-v2-like/uniswap-v2-tx.decoder';
+import {decodeUniV3} from '../../dex/uniswap-v3/uniswap-v3-tx.decoder';
 
 export const ehtTransactionDecoder: TxDecoder = combineTxDecoders([
     // Uniswap V2
