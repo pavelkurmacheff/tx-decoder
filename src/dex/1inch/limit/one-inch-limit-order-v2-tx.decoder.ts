@@ -22,12 +22,12 @@ export function decodeOneInchLimitOrderV2(tx: TransactionRaw): DecodeResult {
 
     switch (methodData.name) {
         case 'fillOrder': {
-            return parseFillOrder(methodData);
+            return parseFillOrder(tx, methodData);
         }
         case 'cancelOrder': {
             return { 
                 tag: 'Success',
-                tx: { tag: TransactionType.LimitOrderCancel }
+                tx: { tag: TransactionType.LimitOrderCancel, raw: tx }
             };
         }
         default:
@@ -35,7 +35,7 @@ export function decodeOneInchLimitOrderV2(tx: TransactionRaw): DecodeResult {
     }
 }
 
-function parseFillOrder(data: IAbiDecoderResult): DecodeResult {
+function parseFillOrder(tx: TransactionRaw, data: IAbiDecoderResult): DecodeResult {
     const orderData = getAbiParam<any>(data.params, 'order');
     const order = {
         maker: orderData['maker'],
@@ -74,6 +74,7 @@ function parseFillOrder(data: IAbiDecoderResult): DecodeResult {
         tag: 'Success',
         tx: { 
             tag: TransactionType.LimitOrderFill, 
+            raw: tx,
             payload
         }
     };

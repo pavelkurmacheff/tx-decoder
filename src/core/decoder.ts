@@ -1,11 +1,11 @@
 import { TransactionParsed } from "src/core/transaction-parsed";
 import { TransactionRaw } from "src/core/transaction-raw";
 
-export type DecodeResult = 
+export type DecodeResult<Tx = TransactionParsed> = 
     { tag: 'AnotherContract' } | 
     { tag: 'WrongContractCall' } | 
     { tag: 'NotSupported', funcName: string } | 
-    { tag: 'Success', tx: TransactionParsed }
+    { tag: 'Success', tx: Tx }
 
 export type TxDecoder = (tx: TransactionRaw) => DecodeResult;
 

@@ -1,18 +1,17 @@
-import {Item} from '../dex/uniswap-v3/model/tx-ui-items.model';
 import {formatUnits} from '@ethersproject/units';
-import {SwapTxDecoded} from '../dex/uniswap-v3/model/swap-tx.model';
+import { SwapExactInputTxEstimated } from 'src/core/transaction-esimated/swap-payload.estimated';
 import { TransactionRaw } from 'src/core/transaction-raw';
+import { Item } from '../item';
 
-// TODO: Change SwapTxDecoded to new Swap models
-export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapTxDecoded): Item[] {
-    const {srcAmount, dstAmount, srcToken, dstToken, minReturnAmount} = decoded;
+export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapExactInputTxEstimated): Item[] {
+    const {srcAmount, srcToken, dstToken, minDstAmount, dstAmountEstimated} = decoded;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const srcUnits = formatUnits(srcAmount, srcToken.decimals);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const dstUnits = formatUnits(dstAmount, dstToken.decimals);
+    const dstUnits = formatUnits(dstAmountEstimated, dstToken.decimals);
 
     return [
         // ******** From token
@@ -46,7 +45,7 @@ export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapTxDecoded
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: dstAmount? dstAmount.toString(): '0',
+                    value: dstAmountEstimated ? dstAmountEstimated.toString(): '0',
                     sign: '+'
                 }
             }
@@ -127,7 +126,7 @@ export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapTxDecoded
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: minReturnAmount? minReturnAmount.toString(): '0',
+                    value: minDstAmount? minDstAmount.toString(): '0',
                     sign: '0'
                 }
             }

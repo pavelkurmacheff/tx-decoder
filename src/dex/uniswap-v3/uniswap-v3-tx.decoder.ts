@@ -5,7 +5,7 @@ import ERC20ABI from '../../core/abi/ERC20ABI.json';
 import { abiDecoder, getParamDescriptor } from '../../helpers/abi/abi-decoder.helper';
 import { IAbiDecoderResult } from '../../helpers/abi/types';
 import { TransactionType } from '../../core/transaction-type';
-import { MulticallPayload } from '../../core/transaction-parsed';
+import { MulticallItem, MulticallPayload } from '../../core/transaction-parsed';
 
 abiDecoder.addABI(UniswapRouterV2BI);
 abiDecoder.addABI(ERC20ABI);
@@ -38,6 +38,7 @@ export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeRes
             tag: 'Success',
             tx: {
                 tag: TransactionType.Multicall,
+                raw: tx,
                 payload: multicallPayload,
             }
         }
@@ -49,7 +50,7 @@ export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeRes
     }
 }
 
-function decodeSimpleCall(data: IAbiDecoderResult): DecodeResult {
+function decodeSimpleCall(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
     switch (data.name) {
         case 'swapTokensForExactTokens':
             return normalizeSwapTokensForExactTokens(data);
@@ -68,7 +69,7 @@ function decodeSimpleCall(data: IAbiDecoderResult): DecodeResult {
     }
 }
 
-function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult): DecodeResult {
+function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
     if (data.params && data.params.length > 3
         && data.params[2].value.length == 2) {
 
@@ -88,7 +89,7 @@ function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult): DecodeResul
     return { tag: 'WrongContractCall' };
 }
 
-function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult): DecodeResult {
+function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
     if (data.params && data.params.length > 3
         && data.params[2].value.length == 2) {
         return {
@@ -108,7 +109,7 @@ function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult): DecodeResul
     return { tag: 'WrongContractCall' };
 }
 
-function normailzeUnwrapWETH9(data: IAbiDecoderResult): DecodeResult {
+function normailzeUnwrapWETH9(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
     if (data.params && data.params.length > 1) {
         return {
             tag: 'Success',
@@ -124,7 +125,7 @@ function normailzeUnwrapWETH9(data: IAbiDecoderResult): DecodeResult {
     return { tag: 'WrongContractCall' };
 }
 
-function normalizeExactInputSingle(data: IAbiDecoderResult): DecodeResult {
+function normalizeExactInputSingle(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
     if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
         
         return { 
@@ -144,7 +145,7 @@ function normalizeExactInputSingle(data: IAbiDecoderResult): DecodeResult {
     return { tag: 'WrongContractCall' };
 }
 
-function normalizeExactOutputSingle(data: IAbiDecoderResult): DecodeResult {
+function normalizeExactOutputSingle(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
     if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
         return {
             tag: 'Success', 
@@ -164,7 +165,7 @@ function normalizeExactOutputSingle(data: IAbiDecoderResult): DecodeResult {
 }
 
 // TODO: Condition?
-function normalizeSelfPermitAllowed(data: IAbiDecoderResult): DecodeResult {
+function normalizeSelfPermitAllowed(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
     try {
         return {
             tag: 'Success', 

@@ -1,9 +1,9 @@
-import {APPROVE_INFO_PLACEHOLDER} from '../core/const/localizable.const';
-import {Item} from '../dex/uniswap-v3/model/tx-ui-items.model';
-import { ApproveTxRich } from '../core/transaction-rich/approve-tx.model';
+import {APPROVE_INFO_PLACEHOLDER} from '../../core/const/localizable.const';
 import { TransactionRaw } from 'src/core/transaction-raw';
+import { Item } from '../item';
+import { ApproveTxEstimated } from 'src/core/transaction-esimated/approve-tx.estimated';
 
-export function approveTxConfirmTemplate(tx: TransactionRaw, decoded: ApproveTxRich): Item[] {
+export function approveTxConfirmTemplate(tx: TransactionRaw, decoded: ApproveTxEstimated): Item[] {
     return [
         // ******** Info
         {

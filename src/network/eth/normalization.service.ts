@@ -1,4 +1,5 @@
 import { TransactionParsed } from "src/core/transaction-parsed";
+import { TransactionRaw } from "src/core/transaction-raw";
 import { TransactionRich } from "src/core/transaction-rich";
 import { createUnknownToken } from "src/core/transaction-rich/token";
 import { TransactionType } from "src/core/transaction-type";
@@ -10,7 +11,7 @@ export class NormalizationService {
     async normalize(tx: TransactionParsed): Promise<TransactionRich> {
         switch(tx.tag) {
             case TransactionType.SwapExactInput:
-                return this.normalizeSwapExactInput(tx.payload);
+                return this.normalizeSwapExactInput(tx.raw, tx.payload);
             case TransactionType.Approve:
             case TransactionType.Unwrap:
             case TransactionType.SwapExactInput:
@@ -23,7 +24,7 @@ export class NormalizationService {
         }
     }
 
-    private async normalizeSwapExactInput(p: SwapExactInputTx): Promise<TransactionRich> {
+    private async normalizeSwapExactInput(raw: TransactionRaw, p: SwapExactInputTx): Promise<TransactionRich> {
         const [srcToken, dstToken] = await Promise.all([
             this.customTokenSvc.getTokenByAddress(p.srcTokenAddress),
             this.customTokenSvc.getTokenByAddress(p.dstTokenAddress),
@@ -31,6 +32,7 @@ export class NormalizationService {
 
         return {
             tag: TransactionType.SwapExactInput,
+            raw,
             payload: {
                 ...p,
                 srcToken: srcToken ? srcToken : createUnknownToken(p.srcTokenAddress),

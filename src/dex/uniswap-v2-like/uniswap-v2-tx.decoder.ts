@@ -29,6 +29,7 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactInput,
+                        raw: tx,
                         payload: {
                             srcTokenAddress: 'native',
                             dstTokenAddress: dst,
@@ -41,7 +42,7 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
             return { tag: 'WrongContractCall' };
         }
         case 'approve':
-            return { tag: 'Success', tx: { tag: TransactionType.Approve }};
+            return { tag: 'Success', tx: { tag: TransactionType.Approve, raw: tx }};
 
         case 'swapExactTokensForTokens': {
             const to = getParam(rootFunc, 'to');
@@ -57,6 +58,7 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactInput,
+                        raw: tx,
                         payload: {
                             srcTokenAddress: src,
                             dstTokenAddress: dst,
@@ -81,6 +83,7 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactInput,
+                        raw: tx,
                         payload: {
                             srcTokenAddress: src,
                             dstTokenAddress: 'native',
@@ -104,6 +107,7 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactOutput,
+                        raw: tx,
                         payload: {
                             srcTokenAddress: 'native',
                             dstTokenAddress: dst,
@@ -128,6 +132,7 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactOutput,
+                        raw: tx,
                         payload: {
                             srcTokenAddress: src,
                             dstTokenAddress: dst,
@@ -152,6 +157,7 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactOutput,
+                        raw: tx,
                         payload: {
                             srcTokenAddress: src,
                             dstTokenAddress: 'native',
