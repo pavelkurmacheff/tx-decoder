@@ -64,6 +64,8 @@ function decodeSimpleCall(data: IAbiDecoderResult): DecodeResult<MulticallItem> 
             return normailzeUnwrapWETH9(data);
         case 'selfPermitAllowed':
             return normalizeSelfPermitAllowed(data);
+        case 'selfPermit':
+            return normalizeSelfPermitAllowed(data);
         default:
             return { tag: 'NotSupported', funcName: data.name }
     }

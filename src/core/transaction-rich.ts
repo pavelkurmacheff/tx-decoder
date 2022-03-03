@@ -1,6 +1,6 @@
 import {TransactionRaw} from './transaction-raw';
 import {ApproveRich} from './transaction-rich/approve';
-import {LimitOrderFillRich} from '././transaction-rich/limit-order-fill
+import {LimitOrderFillRich} from '././transaction-rich/limit-order-fill'
 import {
     SwapExactInputRich,
     SwapExactOutputRich,
