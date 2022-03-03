@@ -48,7 +48,7 @@ describe('NormalizationService test', () => {
         }
     });
 
-    it('swap 1 UNI to some USDC on ETH-chain\'s UniswapV3 with permit', async () => {
+    it('permit UNI and swap 1 UNI to some USDC on ETH-chain\'s UniswapV3 ', async () => {
         const normSvc = new NormalizationService(tokesSvc);
 
         const rawTx: TransactionRaw = {
@@ -72,7 +72,8 @@ describe('NormalizationService test', () => {
             if (call.tag == TransactionType.SwapExactInput) {
                 expect(call.payload.srcToken.symbol).toEqual('UNI');
                 expect(call.payload.dstToken.symbol).toEqual('USDC');
-                expect(call.payload.srcAmount).toEqual('1000000000000000000');                
+                expect(call.payload.srcAmount).toEqual('1000000000000000000');
+                expect(call.payload.minDstAmount).toBeDefined();
             } else {
                 expect(false).toBeTruthy();
             }
