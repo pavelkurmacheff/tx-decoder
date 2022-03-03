@@ -3,7 +3,7 @@ import {
     Web3Resources,
 } from '../../dex/uniswap-v3/model/common.model';
 import { NATIVE_TOKEN_ADDRESS, ZERO_ADDRESS } from '../../core/const/common.const';
-import { Token } from 'src/core/transaction-rich/token';
+import { Token } from 'src/core/token';
 
 export function findTokenByAddress(resources: BlockchainResources, tokenAddress: string): Token | null {
     const address =

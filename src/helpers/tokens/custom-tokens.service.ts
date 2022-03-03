@@ -6,7 +6,7 @@ import {
 import {Web3Service} from '../web3/web3.service';
 import {ERC20, ERC20_BYTE32, ERC20_UPPER_CASE} from './abi';
 import {AbiItem} from 'web3-utils';
-import {Token} from 'src/core/transaction-rich/token';
+import {Token} from 'src/core/token';
 import {ChainId} from 'src/core/chain-id';
 
 export class CustomTokensService {
