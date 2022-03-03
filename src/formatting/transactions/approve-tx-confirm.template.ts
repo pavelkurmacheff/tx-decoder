@@ -1,7 +1,9 @@
-import {APPROVE_INFO_PLACEHOLDER} from '../../core/const/localizable.const';
 import { TransactionRaw } from 'src/core/transaction-raw';
 import { Item } from '../item';
 import { ApproveTxEstimated } from 'src/core/transaction-esimated/approve-tx.estimated';
+
+export const APPROVE_INFO_PLACEHOLDER = 'To continue, you need to allow 1inch smart contracts' +
+    ' to use your %%0%%. This has to be done only once for each token.';
 
 export function approveTxConfirmTemplate(tx: TransactionRaw, decoded: ApproveTxEstimated): Item[] {
     return [

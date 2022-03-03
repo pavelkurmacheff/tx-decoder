@@ -3,9 +3,7 @@ export enum TransactionType {
     Unwrap,
     SwapExactInput,
     SwapExactOutput,
-    
     LimitOrderFill,
     LimitOrderCancel,
-
     Multicall,
 }

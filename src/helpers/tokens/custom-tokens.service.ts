@@ -6,30 +6,28 @@ import {
 import {Web3Service} from '../web3/web3.service';
 import {ERC20, ERC20_BYTE32, ERC20_UPPER_CASE} from './abi';
 import {AbiItem} from 'web3-utils';
-import {Token} from 'src/core/token';
-import {ChainId} from 'src/core/chain-id';
+import {Token} from '../../core/token';
+import {ChainId} from '../../core/chain-id';
 
 export class CustomTokensService {
-    // TODO: Use native map
-    private customTokensMap: {[key: string]: Token} = {};
+    constructor(
+        private cache: Map<String, Token>,
+        private web3Service: Web3Service, 
+        readonly chainId: ChainId) {
 
-    constructor(readonly web3Service: Web3Service, readonly chainId: ChainId) {
         const t: Token = ChainTokenByNetwork[this.chainId]
             ? ChainTokenByNetwork[this.chainId]
             : ChainTokenByNetwork[ChainId.Ethereum];
 
-        this.customTokensMap[ZERO_ADDRESS] = t;
-        this.customTokensMap[NATIVE_TOKEN_ADDRESS] = t;
-    }
-
-    appendTokensToCache(cache: {[key: string]: Token}): void {
-        // TODO
+        this.cache.set(ZERO_ADDRESS, t);
+        this.cache.set(NATIVE_TOKEN_ADDRESS, t);
     }
 
     async getTokenByAddress(address: string): Promise<Token | null> {
         try {
-            if (this.customTokensMap[address]) {
-                return this.customTokensMap[address];
+            const cachedArrd = this.cache.get(address);
+            if (cachedArrd) {
+                return cachedArrd;
             }
 
             const data = await this.fetchTokenInfo(address.toLowerCase());
@@ -38,7 +36,7 @@ export class CustomTokensService {
             }
 
             const info = this.buildMinimizedTokenFromData(data);
-            this.customTokensMap[address] = info;
+            this.cache.set(address, info);
 
             return info;
         } catch (e) {
