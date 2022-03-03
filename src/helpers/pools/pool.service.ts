@@ -1,10 +1,9 @@
-import {Contract} from 'web3-eth-contract';
-import {Web3Service} from '../web3/web3.service';
 import {
     NATIVE_TOKEN_ADDRESS,
     TOKEN0_POOL_SELECTOR,
     TOKEN1_POOL_SELECTOR,
 } from '../../core/const/common.const';
+import {Web3Service} from '../web3/web3.service';
 
 const REVERSE_AND_UNWRAP_FLAG = 'c0';
 const REVERSE_AND_WRAP_FLAG = 'a0';
@@ -20,8 +19,6 @@ const WRAP_FLAGS = [REVERSE_AND_WRAP_FLAG, WRAP_FLAG];
 const UNWRAP_FLAGS = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG];
 
 export default class PoolService {
-    private contractMap: Map<string, Contract> = new Map();
-
     constructor(private web3Service: Web3Service) {}
 
     getDestTokenAddressOfUnoSwap(poolData: string) {
@@ -41,18 +38,6 @@ export default class PoolService {
         return this.requestTokenAddress(poolAddress, isReverseFlag);
     }
 
-    private getContract(address: string, contractAbi: object): Contract {
-        let contract = this.contractMap.get(address);
-        if (!contract) {
-            contract = this.web3Service.getInstance(
-                contractAbi,
-                address
-            ) as Contract;
-            this.contractMap.set(address, contract);
-        }
-        return contract;
-    }
-
     private getPoolAddress(poolInfo: string): string {
         const hasOnlyAddress = poolInfo.length === 40;
         return '0x' + (hasOnlyAddress ? poolInfo : poolInfo.slice(24));
@@ -66,16 +51,13 @@ export default class PoolService {
             ? TOKEN0_POOL_SELECTOR
             : TOKEN1_POOL_SELECTOR;
 
+        const data = {
+            to: this.web3Service.web3.utils.toChecksumAddress(address),
+            data: methodSelector,
+        };
+
         return await this.web3Service.web3.eth
-            .call(
-                {
-                    to: this.web3Service.web3.utils.toChecksumAddress(address),
-                    data: methodSelector,
-                },
-                'latest'
-            )
-            .then((result) => {
-                return '0x' + result.slice(26);
-            });
+            .call(data, 'latest')
+            .then((result) => '0x' + result.slice(26));
     }
 }
