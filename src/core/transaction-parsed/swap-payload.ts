@@ -1,11 +1,11 @@
-export interface SwapExactInputTx {
+export interface SwapExactInputPayload {
     srcTokenAddress: string | 'native';
     dstTokenAddress: string | 'native';
     srcAmount: string;
     minDstAmount?: string;
 }
 
-export interface SwapExactOutputTx {
+export interface SwapExactOutputPayload {
     srcTokenAddress: string | 'native';
     dstTokenAddress: string | 'native';
     dstAmount: string;

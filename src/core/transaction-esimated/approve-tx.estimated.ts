@@ -1,3 +1,3 @@
-import { ApproveTxRich } from '../transaction-rich/approve-tx.model';
+import { ApproveRich } from '../transaction-rich/approve';
 
-export interface ApproveTxEstimated extends ApproveTxRich {}
+export interface ApproveTxEstimated extends ApproveRich {}

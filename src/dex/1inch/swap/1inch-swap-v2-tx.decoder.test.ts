@@ -1,5 +1,5 @@
 import {BigNumber} from 'ethers';
-import {SwapExactInputTx} from 'src/core/transaction-parsed/swap-payload';
+import {SwapExactInputPayload} from 'src/core/transaction-parsed/swap-payload';
 import {TransactionParsed} from '../../../core/transaction-parsed';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';
@@ -26,7 +26,7 @@ describe('decode1InchSwapV4', () => {
 
         const parsedTx = result.tx as {
             tag: TransactionType.SwapExactInput;
-            payload: SwapExactInputTx;
+            payload: SwapExactInputPayload;
         };
 
         expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);
@@ -60,7 +60,7 @@ describe('decode1InchSwapV4', () => {
 
         const parsedTx = result.tx as {
             tag: TransactionType.SwapExactInput;
-            payload: SwapExactInputTx;
+            payload: SwapExactInputPayload;
         };
 
         expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);

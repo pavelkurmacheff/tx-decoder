@@ -14,15 +14,15 @@ import {CustomTokensService} from 'src/helpers/tokens/custom-tokens.service';
 import {ChainTokenByNetwork} from 'src/const/common.const';
 import {LimitOrderFillPayload} from 'src/core/transaction-parsed/limit-order-fill-payload';
 import {ApproveTxPayload} from 'src/core/transaction-parsed/approve-payload';
-import {ApproveTxRich} from 'src/core/transaction-rich/approve-tx.model';
+import {ApproveRich} from 'src/core/transaction-rich/approve';
 import {
-    SwapExactInputTxRich,
-    SwapExactOutputTxRich,
+    SwapExactInputRich,
+    SwapExactOutputRich,
 } from 'src/core/transaction-rich/swap-payload';
-import {LimitOrderFillRich} from 'src/core/transaction-rich/limit-order-fill.model';
+import {LimitOrderFillRich} from 'src/core/transaction-rich/limit-order-fill';
 import {
-    SwapExactInputTx,
-    SwapExactOutputTx,
+    SwapExactInputPayload,
+    SwapExactOutputPayload,
     SwapThroughPoolPayload,
 } from 'src/core/transaction-parsed/swap-payload';
 
@@ -76,7 +76,7 @@ export class NormalizationService {
 
     private async normalizeApprove(
         p?: ApproveTxPayload
-    ): Promise<ApproveTxRich | undefined> {
+    ): Promise<ApproveRich | undefined> {
         if (!p) {
             return undefined;
         } else {
@@ -87,8 +87,8 @@ export class NormalizationService {
     }
 
     private async normalizeSwapExactInput(
-        p: SwapExactInputTx
-    ): Promise<SwapExactInputTxRich> {
+        p: SwapExactInputPayload
+    ): Promise<SwapExactInputRich> {
         const [srcToken, dstToken] = await Promise.all([
             this.getToket(p.srcTokenAddress),
             this.getToket(p.dstTokenAddress),
@@ -106,8 +106,8 @@ export class NormalizationService {
     }
 
     private async normalizeSwapExactOutput(
-        p: SwapExactOutputTx
-    ): Promise<SwapExactOutputTxRich> {
+        p: SwapExactOutputPayload
+    ): Promise<SwapExactOutputRich> {
         const [srcToken, dstToken] = await Promise.all([
             this.getToket(p.srcTokenAddress),
             this.getToket(p.dstTokenAddress),

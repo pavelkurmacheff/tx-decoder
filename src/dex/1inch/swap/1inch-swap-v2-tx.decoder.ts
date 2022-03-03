@@ -5,7 +5,7 @@ import {abiDecoder, getParam} from '../../../helpers/abi/abi-decoder.helper';
 import oneInchRouterV4Abi from './ONEINCH_ROUTER_V4.json';
 import {IAbiDecoderResult} from '../../../helpers/abi/types';
 import {
-    SwapExactInputTx,
+    SwapExactInputPayload,
     SwapThroughPoolPayload,
 } from '../../../core/transaction-parsed/swap-payload';
 
@@ -38,7 +38,7 @@ function parseClipperSwap(
     rawTx: TransactionRaw,
     data: IAbiDecoderResult
 ): DecodeResult {
-    const payload: SwapExactInputTx = {
+    const payload: SwapExactInputPayload = {
         srcTokenAddress: getParam(data, 'srcToken') as string,
         dstTokenAddress: getParam(data, 'dstToken') as string,
         srcAmount: getParam(data, 'amount') as string,

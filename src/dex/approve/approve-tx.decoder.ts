@@ -7,7 +7,7 @@ import {
 } from '../uniswap-v3/model/common.model';
 import { TxDecoder } from '../uniswap-v3/base-tx.decoder';
 import { TransactionReceipt } from '@ethersproject/abstract-provider';
-import { ApproveTxDecoded } from '../../core/transaction-rich/approve-tx.model';
+import { ApproveTxDecoded } from '../../core/transaction-rich/approve';
 import { NetworkEnum } from '../../core/const/common.const';
 import { findTokenByAddress } from '../../helpers/tokens/tokens.helper';
 
