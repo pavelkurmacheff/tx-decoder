@@ -13,7 +13,7 @@ export type MulticallRichItem =
     { tag: TransactionType.LimitOrderCancel } |
     { tag: TransactionType.Multicall };
 
-export type MulticallPayload = ({ tag: 'Error', code: string, data: any } | MulticallRichItem)[];
+export type MulticallPayloadRich = ({ tag: 'Error', code: string, data: any } | MulticallRichItem)[];
 
 export type TransactionRich = 
 { raw: TransactionRaw, tag: TransactionType.Approve, payload?: ApproveTxRich } |
@@ -22,4 +22,4 @@ export type TransactionRich =
 { raw: TransactionRaw, tag: TransactionType.SwapExactOutput, payload: SwapExactOutputTxRich } |
 { raw: TransactionRaw, tag: TransactionType.LimitOrderFill, payload: LimitOrderFillRich } |
 { raw: TransactionRaw, tag: TransactionType.LimitOrderCancel } |
-{ raw: TransactionRaw, tag: TransactionType.Multicall,  payload: MulticallPayload };
+{ raw: TransactionRaw, tag: TransactionType.Multicall,  payload: MulticallPayloadRich };

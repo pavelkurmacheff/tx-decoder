@@ -1,4 +1,4 @@
-import { Token } from '../../dex/uniswap-v3/model/common.model';
+import { Token } from "../token";
 
 export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const NATIVE_TOKEN_ADDRESS = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee';
