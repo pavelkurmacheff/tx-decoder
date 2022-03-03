@@ -1,58 +1,82 @@
-import { MulticallItem, MulticallPayload, TransactionParsed } from "src/core/transaction-parsed";
-import { MulticallPayloadRich, MulticallRichItem, TransactionRich } from "src/core/transaction-rich";
-import { createUnknownToken, Token } from "src/core/token";
-import { TransactionType } from "src/core/transaction-type";
-import { CustomTokensService } from "src/helpers/tokens/custom-tokens.service";
-import { ChainTokenByNetwork } from "src/const/common.const";
-import { LimitOrderFillPayload } from "src/core/transaction-parsed/limit-order-fill-payload";
-import { ApproveTxPayload } from "src/core/transaction-parsed/approve-payload";
-import { ApproveTxRich } from "src/core/transaction-rich/approve-tx.model";
-import { SwapExactInputTxRich, SwapExactOutputTxRich } from "src/core/transaction-rich/swap-payload";
-import { LimitOrderFillRich } from "src/core/transaction-rich/limit-order-fill.model";
+import {
+    MulticallItem,
+    MulticallPayload,
+    TransactionParsed,
+} from 'src/core/transaction-parsed';
+import {
+    MulticallPayloadRich,
+    MulticallRichItem,
+    TransactionRich,
+} from 'src/core/transaction-rich';
+import {createUnknownToken, Token} from 'src/core/token';
+import {TransactionType} from 'src/core/transaction-type';
+import {CustomTokensService} from 'src/helpers/tokens/custom-tokens.service';
+import {ChainTokenByNetwork} from 'src/const/common.const';
+import {LimitOrderFillPayload} from 'src/core/transaction-parsed/limit-order-fill-payload';
+import {ApproveTxPayload} from 'src/core/transaction-parsed/approve-payload';
+import {ApproveTxRich} from 'src/core/transaction-rich/approve-tx.model';
+import {
+    SwapExactInputTxRich,
+    SwapExactOutputTxRich,
+} from 'src/core/transaction-rich/swap-payload';
+import {LimitOrderFillRich} from 'src/core/transaction-rich/limit-order-fill.model';
+import {
+    SwapExactInputTx,
+    SwapExactOutputTx,
+    SwapThroughPoolPayload,
+} from 'src/core/transaction-parsed/swap-payload';
 
 export class NormalizationService {
-    constructor(private customTokenSvc: CustomTokensService){} 
+    constructor(private customTokenSvc: CustomTokensService) {}
 
     async normalize(tx: TransactionParsed): Promise<TransactionRich> {
-        switch(tx.tag) {
+        switch (tx.tag) {
             case TransactionType.Approve:
-                return { 
-                    tag: TransactionType.Approve, 
-                    raw: tx.raw, 
-                    payload: await this.normalizeApprove(tx.payload)
+                return {
+                    tag: TransactionType.Approve,
+                    raw: tx.raw,
+                    payload: await this.normalizeApprove(tx.payload),
                 };
             case TransactionType.Unwrap:
                 return tx;
             case TransactionType.SwapExactInput:
-                return { 
-                    tag: TransactionType.SwapExactInput, 
-                    raw: tx.raw, 
-                    payload: await this.normalizeSwapExactInput(tx.payload)
+                return {
+                    tag: TransactionType.SwapExactInput,
+                    raw: tx.raw,
+                    payload: await this.normalizeSwapExactInput(tx.payload),
                 };
             case TransactionType.SwapExactOutput:
-                return { 
-                    tag: TransactionType.SwapExactOutput, 
-                    raw: tx.raw, 
-                    payload: await this.normalizeSwapExactOutput(tx.payload)
+                return {
+                    tag: TransactionType.SwapExactOutput,
+                    raw: tx.raw,
+                    payload: await this.normalizeSwapExactOutput(tx.payload),
                 };
             case TransactionType.LimitOrderFill:
-                return { 
-                    tag: TransactionType.LimitOrderFill, 
-                    raw: tx.raw, 
-                    payload: await this.normalizeLimitOrderFill(tx.payload)
+                return {
+                    tag: TransactionType.LimitOrderFill,
+                    raw: tx.raw,
+                    payload: await this.normalizeLimitOrderFill(tx.payload),
                 };
             case TransactionType.LimitOrderCancel:
                 return tx;
             case TransactionType.Multicall:
-                return { 
-                    tag: TransactionType.Multicall, 
-                    raw: tx.raw, 
-                    payload: await this.normalizeMulticall(tx.payload) 
+                return {
+                    tag: TransactionType.Multicall,
+                    raw: tx.raw,
+                    payload: await this.normalizeMulticall(tx.payload),
+                };
+            case TransactionType.SwapThroughPool:
+                return {
+                    tag: TransactionType.SwapThroughPool,
+                    raw: tx.raw,
+                    payload: await this.normilizeSwapThroughPool(tx.payload),
                 };
         }
     }
 
-    private async normalizeApprove(p?: ApproveTxPayload): Promise<ApproveTxRich | undefined> {
+    private async normalizeApprove(
+        p?: ApproveTxPayload
+    ): Promise<ApproveTxRich | undefined> {
         if (!p) {
             return undefined;
         } else {
@@ -62,7 +86,9 @@ export class NormalizationService {
         }
     }
 
-    private async normalizeSwapExactInput(p: SwapExactInputTx): Promise<SwapExactInputTxRich> {
+    private async normalizeSwapExactInput(
+        p: SwapExactInputTx
+    ): Promise<SwapExactInputTxRich> {
         const [srcToken, dstToken] = await Promise.all([
             this.getToket(p.srcTokenAddress),
             this.getToket(p.dstTokenAddress),
@@ -70,25 +96,18 @@ export class NormalizationService {
 
         return {
             ...p,
-            srcToken: srcToken ? srcToken : createUnknownToken(p.srcTokenAddress),
-            dstToken: dstToken ? dstToken : createUnknownToken(p.dstTokenAddress),
+            srcToken: srcToken
+                ? srcToken
+                : createUnknownToken(p.srcTokenAddress),
+            dstToken: dstToken
+                ? dstToken
+                : createUnknownToken(p.dstTokenAddress),
         };
     }
 
-    private async normalizeSwapExactOutput(p: SwapExactOutputTx): Promise<SwapExactOutputTxRich> {
-        const [srcToken, dstToken] = await Promise.all([
-            this.getToket(p.srcTokenAddress),
-            this.getToket(p.dstTokenAddress),
-        ]);
-
-        return  {
-            ...p,
-            srcToken: srcToken ? srcToken : createUnknownToken(p.srcTokenAddress),
-            dstToken: dstToken ? dstToken : createUnknownToken(p.dstTokenAddress),
-        };
-    }
-
-    private async normalizeLimitOrderFill(p: LimitOrderFillPayload): Promise<LimitOrderFillRich> {
+    private async normalizeSwapExactOutput(
+        p: SwapExactOutputTx
+    ): Promise<SwapExactOutputTxRich> {
         const [srcToken, dstToken] = await Promise.all([
             this.getToket(p.srcTokenAddress),
             this.getToket(p.dstTokenAddress),
@@ -96,49 +115,81 @@ export class NormalizationService {
 
         return {
             ...p,
-            srcToken: srcToken ? srcToken : createUnknownToken(p.srcTokenAddress),
-            dstToken: dstToken ? dstToken : createUnknownToken(p.dstTokenAddress),
+            srcToken: srcToken
+                ? srcToken
+                : createUnknownToken(p.srcTokenAddress),
+            dstToken: dstToken
+                ? dstToken
+                : createUnknownToken(p.dstTokenAddress),
         };
     }
 
-    private async normalizeMulticall(p: MulticallPayload): Promise<MulticallPayloadRich> {
-        const mapNonError: (i: MulticallItem) => Promise<MulticallRichItem> = async i => {
-            switch(i.tag) {
-                case TransactionType.Approve:
-                    return { 
-                        tag: TransactionType.Approve, 
-                        payload: await this.normalizeApprove(i.payload)
-                    };
-                case TransactionType.Unwrap:
-                    return i;
-                case TransactionType.SwapExactInput:
-                    return { 
-                        tag: TransactionType.SwapExactInput, 
-                        payload: await this.normalizeSwapExactInput(i.payload)
-                    };
-                case TransactionType.SwapExactOutput:
-                    return { 
-                        tag: TransactionType.SwapExactOutput, 
-                        payload: await this.normalizeSwapExactOutput(i.payload)
-                    };
-                case TransactionType.LimitOrderFill:
-                    return { 
-                        tag: TransactionType.LimitOrderFill, 
-                        payload: await this.normalizeLimitOrderFill(i.payload)
-                    };
-                case TransactionType.LimitOrderCancel:
-                    return i;
-                case TransactionType.Multicall:
-                    return { 
-                        tag: TransactionType.Multicall, 
-                        payload: await this.normalizeMulticall(i.payload) 
-                    };
-            }
-        }
+    private async normalizeLimitOrderFill(
+        p: LimitOrderFillPayload
+    ): Promise<LimitOrderFillRich> {
+        const [srcToken, dstToken] = await Promise.all([
+            this.getToket(p.srcTokenAddress),
+            this.getToket(p.dstTokenAddress),
+        ]);
 
-        const ps = p.map(async i => {
-            switch(i.tag) {
-                case 'Error': 
+        return {
+            ...p,
+            srcToken: srcToken
+                ? srcToken
+                : createUnknownToken(p.srcTokenAddress),
+            dstToken: dstToken
+                ? dstToken
+                : createUnknownToken(p.dstTokenAddress),
+        };
+    }
+
+    private async normalizeMulticall(
+        p: MulticallPayload
+    ): Promise<MulticallPayloadRich> {
+        const mapNonError: (i: MulticallItem) => Promise<MulticallRichItem> =
+            async (i) => {
+                switch (i.tag) {
+                    case TransactionType.Approve:
+                        return {
+                            tag: TransactionType.Approve,
+                            payload: await this.normalizeApprove(i.payload),
+                        };
+                    case TransactionType.Unwrap:
+                        return i;
+                    case TransactionType.SwapExactInput:
+                        return {
+                            tag: TransactionType.SwapExactInput,
+                            payload: await this.normalizeSwapExactInput(
+                                i.payload
+                            ),
+                        };
+                    case TransactionType.SwapExactOutput:
+                        return {
+                            tag: TransactionType.SwapExactOutput,
+                            payload: await this.normalizeSwapExactOutput(
+                                i.payload
+                            ),
+                        };
+                    case TransactionType.LimitOrderFill:
+                        return {
+                            tag: TransactionType.LimitOrderFill,
+                            payload: await this.normalizeLimitOrderFill(
+                                i.payload
+                            ),
+                        };
+                    case TransactionType.LimitOrderCancel:
+                        return i;
+                    case TransactionType.Multicall:
+                        return {
+                            tag: TransactionType.Multicall,
+                            payload: await this.normalizeMulticall(i.payload),
+                        };
+                }
+            };
+
+        const ps = p.map(async (i) => {
+            switch (i.tag) {
+                case 'Error':
                     return i;
                 default:
                     return mapNonError(i);
@@ -149,11 +200,30 @@ export class NormalizationService {
         return payload;
     }
 
-    private async getToket(tokenAddr: string | 'native'): Promise<Token | null> {
+    private async getToket(
+        tokenAddr: string | 'native'
+    ): Promise<Token | null> {
         if (tokenAddr == 'native') {
             return ChainTokenByNetwork[this.customTokenSvc.chainId];
         } else {
             return this.customTokenSvc.getTokenByAddress(tokenAddr);
         }
+    }
+
+    private async normilizeSwapThroughPool(p: SwapThroughPoolPayload) {
+        const [srcToken, dstToken] = await Promise.all([
+            this.getToket(p.srcTokenAddress),
+            this.getToket(p.srcTokenAddress),
+        ]);
+
+        return {
+            ...p,
+            srcToken: srcToken
+                ? srcToken
+                : createUnknownToken(p.srcTokenAddress),
+            dstToken: dstToken
+                ? dstToken
+                : createUnknownToken(p.srcTokenAddress),
+        };
     }
 }

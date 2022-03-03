@@ -1,24 +1,24 @@
-import { TransactionParsed } from "src/core/transaction-parsed";
-import { TransactionRaw } from "src/core/transaction-raw";
+import {TransactionParsed} from 'src/core/transaction-parsed';
+import {TransactionRaw} from 'src/core/transaction-raw';
 
-export type DecodeResult<Tx = TransactionParsed> = 
-    { tag: 'AnotherContract' } | 
-    { tag: 'WrongContractCall' } | 
-    { tag: 'NotSupported', funcName: string } | 
-    { tag: 'Success', tx: Tx }
+export type DecodeResult<Tx = TransactionParsed> =
+    | {tag: 'AnotherContract'}
+    | {tag: 'WrongContractCall'}
+    | {tag: 'NotSupported'; funcName: string}
+    | {tag: 'Success'; tx: Tx};
 
 export type TxDecoder = (tx: TransactionRaw) => DecodeResult;
 
 export function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
-    return tx => {
+    return (tx) => {
         let res: DecodeResult | null = null;
-        for(const d of decoders) {
+        for (const d of decoders) {
             if (res != null) {
                 break;
             }
 
             const r = d(tx);
-            switch(r.tag) {
+            switch (r.tag) {
                 case 'AnotherContract':
                     break;
                 default:
@@ -27,10 +27,10 @@ export function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
             }
         }
 
-        if(res != null) {
+        if (res != null) {
             return res;
         }
 
         return {tag: 'AnotherContract'};
-    }
+    };
 }

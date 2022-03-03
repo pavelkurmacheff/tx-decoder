@@ -34,9 +34,9 @@ describe('decode1InchLimitOrderV2', () => {
 
         expect(parsedTx.payload).toEqual({
             srcTokenAddress: '0x408e41876cCCDC0F92210600ef50372656052a38',
-            maxSrcAmount: BigNumber.from('104000000000000000000000'),
+            maxSrcAmount: '104000000000000000000000',
             dstTokenAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-            dstAmount: BigNumber.from('28856006759037793841535'),
+            dstAmount: '28856006759037793841535',
         });
     });
 
@@ -69,9 +69,9 @@ describe('decode1InchLimitOrderV2', () => {
 
         expect(parsedTx.payload).toEqual({
             srcTokenAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-            srcAmount: BigNumber.from('2884698'),
+            srcAmount: '2884698',
             dstTokenAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-            minDstAmount: BigNumber.from('1000000000000000'),
+            minDstAmount: '1000000000000000',
         });
     });
 
@@ -103,9 +103,9 @@ describe('decode1InchLimitOrderV2', () => {
 
         expect(parsedTx.payload).toEqual({
             srcTokenAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-            srcAmount: BigNumber.from('20000000000000'),
+            srcAmount: '20000000000000',
             dstTokenAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
-            dstAmount: BigNumber.from('0'),
+            dstAmount: '0',
         });
     });
 

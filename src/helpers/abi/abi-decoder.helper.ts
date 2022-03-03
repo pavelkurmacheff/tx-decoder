@@ -15,8 +15,7 @@ function getParam(
 }
 
 function getParamDescriptor(
-    r: IAbiDecoderResult,
-    name: string
+    r: IAbiDecoderResult
 ): IAbiDecoderParam | undefined {
     return r.params.find((p) => p.name === 'data');
 }
