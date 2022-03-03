@@ -25,9 +25,13 @@ import {
     SwapExactOutputPayload,
     SwapThroughPoolPayload,
 } from 'src/core/transaction-parsed/swap-payload';
+import PoolService from 'src/helpers/pools/pool.service';
 
 export class NormalizationService {
-    constructor(private customTokenSvc: CustomTokensService) {}
+    constructor(
+        private customTokenSvc: CustomTokensService,
+        private poolSvc: PoolService
+    ) {}
 
     async normalize(tx: TransactionParsed): Promise<TransactionRich> {
         switch (tx.tag) {
@@ -211,9 +215,13 @@ export class NormalizationService {
     }
 
     private async normilizeSwapThroughPool(p: SwapThroughPoolPayload) {
+        const dstTokenAddress = await this.poolSvc.getDestTokenAddressOfUnoSwap(
+            p.poolAddressess[0]
+        );
+
         const [srcToken, dstToken] = await Promise.all([
             this.getToket(p.srcTokenAddress),
-            this.getToket(p.srcTokenAddress),
+            this.getToket(dstTokenAddress),
         ]);
 
         return {
@@ -221,9 +229,7 @@ export class NormalizationService {
             srcToken: srcToken
                 ? srcToken
                 : createUnknownToken(p.srcTokenAddress),
-            dstToken: dstToken
-                ? dstToken
-                : createUnknownToken(p.srcTokenAddress),
+            dstToken: dstToken ? dstToken : createUnknownToken(dstTokenAddress),
         };
     }
 }

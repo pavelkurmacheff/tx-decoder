@@ -2,7 +2,7 @@ import {
     NATIVE_TOKEN_ADDRESS,
     TOKEN0_POOL_SELECTOR,
     TOKEN1_POOL_SELECTOR,
-} from '../core/const/common.const';
+} from '../../core/const/common.const';
 import {BigNumber} from '@ethersproject/bignumber';
 
 const REVERSE_AND_UNWRAP_FLAG = 'c0';
@@ -19,31 +19,8 @@ const WRAP_FLAGS = [REVERSE_AND_WRAP_FLAG, WRAP_FLAG];
 const UNWRAP_FLAGS = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG];
 
 export function getDestTokenAddressOfUnoSwap(
-    poolData: string | BigNumber,
-    rpcCaller: BlockchainRpcCaller
-): Promise<string> {
-    const poolInfo = (
-        poolData instanceof BigNumber
-            ? poolData.toHexString()
-            : poolData.toString()
-    ).replace('0x', '');
-
-    const poolFlags = poolInfo.slice(0, 2);
-    const isReverseFlag = [REVERSE_AND_UNWRAP_FLAG, REVERSE_FLAG].includes(
-        poolFlags
-    );
-    const isUnwrapFlag = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG].includes(
-        poolFlags
-    );
-
-    if (isUnwrapFlag) {
-        return Promise.resolve(NATIVE_TOKEN_ADDRESS);
-    }
-
-    const poolAddress = getPoolAddress(poolInfo);
-
-    return requestPoolTokenAddress(poolAddress, isReverseFlag, rpcCaller);
-}
+    poolData: string | BigNumber
+): Promise<string> {}
 
 export async function getTokensOfUniswapV3Pools(
     pools: string[],
@@ -102,6 +79,5 @@ function requestPoolTokenAddress(
 
 function getPoolAddress(poolInfo: string): string {
     const hasOnlyAddress = poolInfo.length === 40;
-
     return '0x' + (hasOnlyAddress ? poolInfo : poolInfo.slice(24));
 }
