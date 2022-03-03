@@ -1,13 +1,13 @@
-import { Token } from "../token";
+import {Token} from '../token';
 
-export interface SwapExactInputTxRich { 
+export interface SwapExactInputTxRich {
     srcToken: Token;
     dstToken: Token;
     srcAmount: string;
     minDstAmount?: string;
 }
 
-export interface SwapExactOutputTxRich { 
+export interface SwapExactOutputTxRich {
     srcToken: Token;
     dstToken: Token;
     dstAmount: string;

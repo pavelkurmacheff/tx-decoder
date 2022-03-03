@@ -11,3 +11,10 @@ export interface SwapExactOutputTx {
     dstAmount: string;
     maxSrcAmount?: string;
 }
+
+export interface SwapThroughPoolPayload {
+    srcTokenAddress: string | 'native';
+    srcAmount: string;
+    minDstAmount?: string;
+    poolAddressess: string[];
+}

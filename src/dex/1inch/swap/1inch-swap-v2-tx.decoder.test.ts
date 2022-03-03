@@ -16,10 +16,44 @@ describe('decode1InchSwapV4', () => {
             to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
             value: '0',
         };
-        const result = decode1InchSwapV4(
+        const result = (await decode1InchSwapV4(
             '0x1111111254fb6c44bac0bed2854e76f90643097d',
             tx
-        ) as {tag: 'Success'; tx: TransactionParsed};
+        )) as {tag: 'Success'; tx: TransactionParsed};
+
+        expect(result).toBeDefined();
+        expect(result.tag).toBe('Success');
+
+        const parsedTx = result.tx as {
+            tag: TransactionType.SwapExactInput;
+            payload: SwapExactInputTx;
+        };
+
+        expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);
+        expect(parsedTx.payload).toBeDefined();
+
+        expect(parsedTx.payload).toEqual({
+            srcTokenAddress: '0x0000000000000000000000000000000000000000',
+            dstTokenAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+            srcAmount: '6000000000000000000',
+            minDstAmount: '17275930351',
+        });
+    });
+
+    // https://etherscan.io/tx/0x8294453b09734e39830edec57486e4622170618819c1250ec5a93d0816c58f0d
+    it('unoswap', async () => {
+        const tx: TransactionRaw = {
+            data: '0x2e95b6c80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000027f7d0bdb9200000000000000000000000000000000000000000000000000001edc738f266bdd090000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000180000000000000003b6d0340c0bf97bffa94a50502265c579a3b7086d081664be26b9977',
+            from: '0x83664b8a83b9845ac7b177df86d0f5bf3b7739ad',
+            gasLimit: BigNumber.from('0x2c137'),
+            gasPrice: BigNumber.from('0x163F29F8A1'),
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0',
+        };
+        const result = (await decode1InchSwapV4(
+            '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            tx
+        )) as {tag: 'Success'; tx: TransactionParsed};
 
         expect(result).toBeDefined();
         expect(result.tag).toBe('Success');

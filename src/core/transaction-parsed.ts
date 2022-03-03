@@ -3,6 +3,7 @@ import {LimitOrderFillPayload} from './transaction-parsed/limit-order-fill-paylo
 import {
     SwapExactInputTx,
     SwapExactOutputTx,
+    SwapThroughPoolPayload,
 } from './transaction-parsed/swap-payload';
 import {TransactionRaw} from './transaction-raw';
 import {TransactionType} from './transaction-type';
@@ -21,31 +22,13 @@ export type MulticallPayload = (
     | MulticallItem
 )[];
 
+/* prettier-ignore */
 export type TransactionParsed =
-    | {
-          raw: TransactionRaw;
-          tag: TransactionType.Approve;
-          payload?: ApproveTxPayload;
-      }
-    | {raw: TransactionRaw; tag: TransactionType.Unwrap}
-    | {
-          raw: TransactionRaw;
-          tag: TransactionType.SwapExactInput;
-          payload: SwapExactInputTx;
-      }
-    | {
-          raw: TransactionRaw;
-          tag: TransactionType.SwapExactOutput;
-          payload: SwapExactOutputTx;
-      }
-    | {
-          raw: TransactionRaw;
-          tag: TransactionType.LimitOrderFill;
-          payload: LimitOrderFillPayload;
-      }
+    | {raw: TransactionRaw, tag: TransactionType.Approve, payload?: ApproveTxPayload}
+    | {raw: TransactionRaw, tag: TransactionType.Unwrap}
+    | {raw: TransactionRaw, tag: TransactionType.SwapExactInput, payload: SwapExactInputTx}
+    | {raw: TransactionRaw, tag: TransactionType.SwapExactOutput, payload: SwapExactOutputTx}
+    | {raw: TransactionRaw, tag: TransactionType.LimitOrderFill,payload: LimitOrderFillPayload}
     | {raw: TransactionRaw; tag: TransactionType.LimitOrderCancel}
-    | {
-          raw: TransactionRaw;
-          tag: TransactionType.Multicall;
-          payload: MulticallPayload;
-      };
+    | {raw: TransactionRaw, tag: TransactionType.Multicall, payload: MulticallPayload }
+    | {raw: TransactionRaw, tag: TransactionType.SwapThroughPool,payload: SwapThroughPoolPayload};
