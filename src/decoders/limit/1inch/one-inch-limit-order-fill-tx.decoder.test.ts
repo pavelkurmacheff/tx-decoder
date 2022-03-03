@@ -1,6 +1,8 @@
 import {BigNumber} from '@ethersproject/bignumber';
 import {CustomTokensService} from '../../../helpers/tokens/custom-tokens.service';
 import {Web3Service} from '../../../helpers/web3/web3.service';
+import {Transaction, Web3Resources} from '../../../model/common.model';
+import {decodeOneInchLimitOrderV2} from './one-inch-limit-order-v2-tx.decoder';
 
 const fetch = require('node-fetch');
 
