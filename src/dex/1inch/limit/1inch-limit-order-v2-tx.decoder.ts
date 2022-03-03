@@ -1,4 +1,3 @@
-import {BigNumber} from 'ethers';
 import {DecodeResult} from '../../../core/decoder';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';
@@ -10,13 +9,13 @@ abiDecoder.addABI(oneInchLimitV2Abi);
 
 export function decode1InchLimitOrderV2(
     contractAddr: string,
-    tx: TransactionRaw
+    rawTx: TransactionRaw
 ): DecodeResult {
-    if (contractAddr.toUpperCase() != tx.to.toUpperCase()) {
+    if (contractAddr.toUpperCase() != rawTx.to.toUpperCase()) {
         return {tag: 'AnotherContract'};
     }
 
-    const methodData = abiDecoder.decodeMethod(tx.data);
+    const methodData = abiDecoder.decodeMethod(rawTx.data);
 
     switch (methodData.name) {
         case 'fillOrderRFQ':
@@ -25,12 +24,12 @@ export function decode1InchLimitOrderV2(
         case 'fillOrderToWithPermit':
         case 'fillOrderTo':
         case 'fillOrder': {
-            return parseFillOrder(methodData);
+            return parseFillOrder(rawTx, methodData);
         }
         case 'cancelOrder': {
             return {
                 tag: 'Success',
-                tx: {tag: TransactionType.LimitOrderCancel},
+                tx: {tag: TransactionType.LimitOrderCancel, raw: rawTx},
             };
         }
         default:
@@ -38,7 +37,10 @@ export function decode1InchLimitOrderV2(
     }
 }
 
-function parseFillOrder(data: IAbiDecoderResult): DecodeResult {
+function parseFillOrder(
+    rawTx: TransactionRaw,
+    data: IAbiDecoderResult
+): DecodeResult {
     const orderData = getParam(data, 'order') as any;
     if (orderData === null) {
         return {tag: 'WrongContractCall'};
@@ -49,13 +51,9 @@ function parseFillOrder(data: IAbiDecoderResult): DecodeResult {
         makerAsset: orderData['makerAsset'],
         takerAsset: orderData['takerAsset'],
     };
-    const makingAmount = BigNumber.from(getParam(data, 'makingAmount'));
-    const takingAmount = BigNumber.from(getParam(data, 'takingAmount'));
-    const thresholdAmountParam = getParam(data, 'thresholdAmount');
-    const thresholdAmount =
-        thresholdAmountParam !== null
-            ? BigNumber.from(thresholdAmountParam)
-            : null;
+    const makingAmount = getParam(data, 'makingAmount') as string;
+    const takingAmount = getParam(data, 'takingAmount') as string;
+    const thresholdAmount = getParam(data, 'thresholdAmount') as string | null;
 
     const payload: any = {
         srcTokenAddress: order.takerAsset,
@@ -68,15 +66,16 @@ function parseFillOrder(data: IAbiDecoderResult): DecodeResult {
         tag: 'Success',
         tx: {
             tag: TransactionType.LimitOrderFill,
+            raw: rawTx,
             payload,
         },
     };
 }
 function updateAmounts(
     payload: any,
-    takingAmount: BigNumber,
-    makingAmount: BigNumber,
-    thresholdAmount: BigNumber | null
+    takingAmount: string,
+    makingAmount: string,
+    thresholdAmount: string | null
 ) {
     if (thresholdAmount === null) {
         payload.srcAmount = takingAmount;
@@ -84,14 +83,13 @@ function updateAmounts(
         return;
     }
 
-    const bnZero = BigNumber.from('0');
-    if (!takingAmount.eq(bnZero)) {
+    if (takingAmount !== '0') {
         payload.srcAmount = takingAmount;
     } else {
         payload.maxSrcAmount = thresholdAmount;
     }
 
-    if (!makingAmount.eq(bnZero)) {
+    if (makingAmount !== '0') {
         payload.dstAmount = makingAmount;
     } else {
         payload.minDstAmount = thresholdAmount;
