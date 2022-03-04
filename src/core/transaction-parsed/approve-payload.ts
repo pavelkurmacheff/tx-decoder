@@ -1,7 +1,5 @@
-import { BigNumber } from '@ethersproject/bignumber';
-
 export interface ApproveTxPayload {
     tokenAddress: string;
-    value: BigNumber;
+    value: string;
     time?: number;
 }
