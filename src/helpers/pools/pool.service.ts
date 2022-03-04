@@ -10,6 +10,7 @@ const REVERSE_AND_WRAP_FLAG = 'a0';
 const REVERSE_FLAG = '80';
 const UNWRAP_FLAG = '40';
 const WRAP_FLAG = '20';
+
 const REVERSE_FLAGS = [
     REVERSE_AND_UNWRAP_FLAG,
     REVERSE_AND_WRAP_FLAG,
@@ -18,10 +19,12 @@ const REVERSE_FLAGS = [
 const WRAP_FLAGS = [REVERSE_AND_WRAP_FLAG, WRAP_FLAG];
 const UNWRAP_FLAGS = [REVERSE_AND_UNWRAP_FLAG, UNWRAP_FLAG];
 
+// This is black magic, bro
 export default class PoolService {
     constructor(private web3Service: Web3Service) {}
 
-    getDestTokenAddressOfUnoSwap(poolData: string) {
+    // 1inch unoswap
+    async getDestTokenAddress(poolData: string) {
         const poolInfo = poolData.replace('0x', '');
 
         const poolFlags = poolInfo.slice(0, 2);
@@ -36,6 +39,35 @@ export default class PoolService {
         }
         const poolAddress = this.getPoolAddress(poolInfo);
         return this.requestTokenAddress(poolAddress, isReverseFlag);
+    }
+
+    // 1inch uniswapV3Swap
+    async getBothTokenAddress(pools: string[]): Promise<string[]> {
+        const firstPoolInfo = BigInt(pools[0]).toString(16);
+        const firstPoolFlags = firstPoolInfo.slice(0, 2);
+        const lastPoolInfo = BigInt(pools[pools.length - 1]).toString(16);
+        const lastPoolFlags = lastPoolInfo.slice(0, 2);
+
+        const isUnwrapFirstToken = UNWRAP_FLAGS.includes(firstPoolFlags);
+        const isWrapLastToken = WRAP_FLAGS.includes(lastPoolFlags);
+        const isReverseFirstToken = REVERSE_FLAGS.includes(firstPoolFlags);
+        const isReverseLastToken = REVERSE_FLAGS.includes(lastPoolFlags);
+
+        const srcTokenAddress = isUnwrapFirstToken
+            ? NATIVE_TOKEN_ADDRESS
+            : await this.requestTokenAddress(
+                  this.getPoolAddress(firstPoolInfo),
+                  !isReverseFirstToken
+              );
+
+        const dstTokenAddress = isWrapLastToken
+            ? NATIVE_TOKEN_ADDRESS
+            : await this.requestTokenAddress(
+                  this.getPoolAddress(lastPoolInfo),
+                  isReverseLastToken
+              );
+
+        return [srcTokenAddress, dstTokenAddress];
     }
 
     private getPoolAddress(poolInfo: string): string {

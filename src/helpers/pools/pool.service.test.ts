@@ -11,7 +11,7 @@ describe('CustomTokensService test', () => {
         poolService = new PoolService(web3Svc);
     });
     it('PoolService shoold get token addres from unoswap pool', async () => {
-        const tokenAddress = await poolService.getDestTokenAddressOfUnoSwap(
+        const tokenAddress = await poolService.getDestTokenAddress(
             '0x80000000000000003b6d0340c0bf97bffa94a50502265c579a3b7086d081664b'
         );
         expect(tokenAddress).toBeDefined();

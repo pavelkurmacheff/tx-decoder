@@ -79,6 +79,43 @@ describe('decode1InchSwapV4', () => {
         });
     });
 
+    // https://etherscan.io/tx/0xe970c4f72e5d4a07d4fc52df338e75a082c3b4b835e40d7e4ea2df567b066de3
+
+    it('unoswapWithPermit', async () => {
+        const tx: TransactionRaw = {
+            data: '0xa1251d7500000000000000000000000019042021329fddcfbea5f934fb5b2670c91f7d2000000000000000000000000000000000000000000000000000000000000186a00000000000000000000000000000000000000000000000000000cbe1e61c676400000000000000000000000000000000000000000000000000000000000000a000000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000000000000000000000000000000000000000000140000000000000003b6d0340ec9eb7af42207a8da12a04ee4b2f2b4b9cb43bd500000000000000000000000000000000000000000000000000000000000000e00000000000000000000000003b608c5243732903152e38f1dab1056a4a79b9800000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000618d1e72000000000000000000000000000000000000000000000000000000000000001bb71d754ebc94ea2fe86bd06f941b4607b58433d29a4bded6f42c9ea789e997cc161711ec3aa97cc6af741c0f3e804398198db0d50f701fe42889509a5e0d8fb9e26b9977',
+            from: '0x3b608c5243732903152e38f1dab1056a4a79b980',
+            gasLimit: BigNumber.from('0x2c137'),
+            gasPrice: BigNumber.from('0x163F29F8A1'),
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0',
+        };
+        const result = decode1InchSwapV4(
+            '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            tx
+        ) as {tag: 'Success'; tx: TransactionParsed};
+
+        expect(result).toBeDefined();
+        expect(result.tag).toBe('Success');
+
+        const parsedTx = result.tx as {
+            tag: TransactionType.SwapThroughPool;
+            payload: SwapThroughPoolPayload;
+        };
+
+        expect(parsedTx.tag).toBe(TransactionType.SwapThroughPool);
+        expect(parsedTx.payload).toBeDefined();
+
+        expect(parsedTx.payload).toEqual({
+            srcTokenAddress: '0x19042021329fddcfbea5f934fb5b2670c91f7d20',
+            srcAmount: '100000',
+            minDstAmount: '224171088701284',
+            poolAddressess: [
+                '0x40000000000000003b6d0340ec9eb7af42207a8da12a04ee4b2f2b4b9cb43bd5',
+            ],
+        });
+    });
+
     // https://etherscan.io/tx/0x7b0566eeb04ef09692e3f903d2819e9adf8f9f1ee11cdb824500343750df0347
     it('swap', async () => {
         const tx: TransactionRaw = {
@@ -110,6 +147,79 @@ describe('decode1InchSwapV4', () => {
             dstTokenAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
             srcAmount: '14000000000000000000',
             minDstAmount: '39100212706',
+        });
+    });
+
+    // https://etherscan.io/tx/0xb7d5433274706670d52e68eabf49c0cd56c57ec8f336d520838d2552da01b329
+    it('uniswapV3Swap', async () => {
+        const tx: TransactionRaw = {
+            data: '0xe449022e0000000000000000000000000000000000000000000000000000002098a67800000000000000000000000000000000000000000000000002c75d7a94a6a716300000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000000120000000000000000000000088e6a0c2ddd26feeb64f039a2c41296fcb3f5640e26b9977',
+            from: '0xdcb01cee36a2c3fb31457be81916bd20141dfccd',
+            gasLimit: BigNumber.from('0x2c137'),
+            gasPrice: BigNumber.from('0x163F29F8A1'),
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0',
+        };
+
+        const result = decode1InchSwapV4(
+            '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            tx
+        ) as {tag: 'Success'; tx: TransactionParsed};
+
+        expect(result).toBeDefined();
+        expect(result.tag).toBe('Success');
+
+        const parsedTx = result.tx as {
+            tag: TransactionType.SwapThroughPool;
+            payload: SwapThroughPoolPayload;
+        };
+
+        expect(parsedTx.tag).toBe(TransactionType.SwapThroughPool);
+        expect(parsedTx.payload).toBeDefined();
+
+        expect(parsedTx.payload).toEqual({
+            srcAmount: '140000000000',
+            minDstAmount: '51259261312670570032',
+            poolAddressess: [
+                '14474011154664524427946373126867554402161832605793805858616410165020352009792',
+            ],
+        });
+    });
+
+    // https://etherscan.io/tx/0xa378ad47a20ef42a3c8cd7f898fe96c5cfb6a06fd9be8570a19f2e1bc9c3c652
+    it('uniswapV3SwapToWithPermit', async () => {
+        const tx: TransactionRaw = {
+            data: '0x2521b9300000000000000000000000005136cdfc4d2b1a74774f5137095f82f88af5ec99000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48000000000000000000000000000000000000000000000000000000022d6df4390000000000000000000000000000000000000000000000002f185e8000b83a9100000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000000120000000000000000000000088e6a0c2ddd26feeb64f039a2c41296fcb3f564000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000005136cdfc4d2b1a74774f5137095f82f88af5ec990000000000000000000000001111111254fb6c44bac0bed2854e76f90643097dffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000062224c37000000000000000000000000000000000000000000000000000000000000001b20aec56d86c636ea7bab18a9c7986aaed30a5f3b5337e25df6fcd52a10fb27a737dd3b5d9aefa47641e0955bd71d0a2cbee8f51d5450befadd1e1a00bdad818fe26b9977',
+            from: '0x5136cdfc4d2b1a74774f5137095f82f88af5ec99',
+            gasLimit: BigNumber.from('0x2c137'),
+            gasPrice: BigNumber.from('0x163F29F8A1'),
+            to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            value: '0',
+        };
+
+        const result = decode1InchSwapV4(
+            '0x1111111254fb6c44bac0bed2854e76f90643097d',
+            tx
+        ) as {tag: 'Success'; tx: TransactionParsed};
+
+        expect(result).toBeDefined();
+        expect(result.tag).toBe('Success');
+
+        const parsedTx = result.tx as {
+            tag: TransactionType.SwapThroughPool;
+            payload: SwapThroughPoolPayload;
+        };
+
+        expect(parsedTx.tag).toBe(TransactionType.SwapThroughPool);
+        expect(parsedTx.payload).toBeDefined();
+
+        expect(parsedTx.payload).toEqual({
+            srcTokenAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+            srcAmount: '9352115257',
+            minDstAmount: '3393566223084567185',
+            poolAddressess: [
+                '14474011154664524427946373126867554402161832605793805858616410165020352009792',
+            ],
         });
     });
 });

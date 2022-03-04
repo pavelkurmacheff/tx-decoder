@@ -22,16 +22,23 @@ export function decode1InchSwapV4(
     const methodData = abiDecoder.decodeMethod(rawTx.data);
 
     switch (methodData.name) {
+        case 'clipperSwapToWithPermit':
         case 'clipperSwapTo':
         case 'clipperSwap': {
             return parseClipperSwap(rawTx, methodData);
         }
+        case 'uniswapV3SwapToWithPermit':
+        case 'unoswapWithPermit':
         case 'unoswap': {
             return parseUnoswap(rawTx, methodData);
         }
         case 'swap': {
             return parseSwap(rawTx, methodData);
         }
+        case 'uniswapV3Swap': {
+            return parseUniswapV3Swap(rawTx, methodData);
+        }
+
         default:
             return {tag: 'NotSupported', funcName: methodData.name};
     }
@@ -97,6 +104,26 @@ function parseSwap(
         tx: {
             raw: rawTx,
             tag: TransactionType.SwapExactInput,
+            payload,
+        },
+    };
+}
+
+function parseUniswapV3Swap(
+    rawTx: TransactionRaw,
+    data: IAbiDecoderResult
+): DecodeResult {
+    const payload: SwapThroughPoolPayload = {
+        srcAmount: getParam(data, 'amount') as string,
+        minDstAmount: getParam(data, 'minReturn') as string,
+        poolAddressess: getParam(data, 'pools') as string[],
+    };
+
+    return {
+        tag: 'Success',
+        tx: {
+            raw: rawTx,
+            tag: TransactionType.SwapThroughPool,
             payload,
         },
     };

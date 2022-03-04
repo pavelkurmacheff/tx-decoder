@@ -215,20 +215,30 @@ export class NormalizationService {
     }
 
     private async normilizeSwapThroughPool(p: SwapThroughPoolPayload) {
-        const dstTokenAddress = await this.poolSvc.getDestTokenAddressOfUnoSwap(
-            p.poolAddressess[0]
-        );
+        let srcTokenAddress = '';
+        let dstTokenAddress = '';
+
+        if (p.srcTokenAddress) {
+            srcTokenAddress = p.srcTokenAddress;
+            dstTokenAddress = await this.poolSvc.getDestTokenAddress(
+                p.poolAddressess[p.poolAddressess.length - 1]
+            );
+        } else {
+            const tokenAddressList = await this.poolSvc.getBothTokenAddress(
+                p.poolAddressess
+            );
+            srcTokenAddress = tokenAddressList[0];
+            dstTokenAddress = tokenAddressList[1];
+        }
 
         const [srcToken, dstToken] = await Promise.all([
-            this.getToket(p.srcTokenAddress),
+            this.getToket(srcTokenAddress),
             this.getToket(dstTokenAddress),
         ]);
 
         return {
             ...p,
-            srcToken: srcToken
-                ? srcToken
-                : createUnknownToken(p.srcTokenAddress),
+            srcToken: srcToken ? srcToken : createUnknownToken(srcTokenAddress),
             dstToken: dstToken ? dstToken : createUnknownToken(dstTokenAddress),
         };
     }
