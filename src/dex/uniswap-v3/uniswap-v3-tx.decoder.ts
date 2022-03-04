@@ -23,8 +23,8 @@ export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeRes
         }
 
         const calls: string[] = data.value as string[];
-        const decodedTxs = calls.map(abiDecoder.decodeMethod);
-        const innerResults = decodedTxs.map(decodeSimpleCall);
+        const decodedTxs: [IAbiDecoderResult, string][] = calls.map(c => [abiDecoder.decodeMethod(c), c.slice(0, 10).toLowerCase()]);
+        const innerResults = decodedTxs.map(([d, sig]) => decodeSimpleCall(d, sig));
         const multicallPayload: MulticallPayload = innerResults.map(i => {
             switch(i.tag) {
                 case 'Success': 
@@ -33,11 +33,17 @@ export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeRes
                     return {tag: 'Error', code: i.tag, data: i};
             }
         })
-
+        
+        const sig = tx.data.slice(0, 10).toLowerCase();
         return {
             tag: 'Success',
             tx: {
                 tag: TransactionType.Multicall,
+                functionInfo: {
+                    name: data.name,
+                    hash: sig,
+                    params: rootFunc.params,
+                },
                 raw: tx,
                 payload: multicallPayload,
             }
@@ -50,28 +56,28 @@ export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeRes
     }
 }
 
-function decodeSimpleCall(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
+function decodeSimpleCall(data: IAbiDecoderResult, sig: string): DecodeResult<MulticallItem> {
     switch (data.name) {
         case 'swapTokensForExactTokens':
-            return normalizeSwapTokensForExactTokens(data);
+            return normalizeSwapTokensForExactTokens(data, sig);
         case 'swapExactTokensForTokens':
-            return normalizeSwapExactTokensForTokens(data);
+            return normalizeSwapExactTokensForTokens(data, sig);
         case 'exactInputSingle':
-            return normalizeExactInputSingle(data);
+            return normalizeExactInputSingle(data, sig);
         case 'exactOutputSingle':
-            return normalizeExactOutputSingle(data);
+            return normalizeExactOutputSingle(data, sig);
         case 'unwrapWETH9':
-            return normailzeUnwrapWETH9(data);
+            return normailzeUnwrapWETH9(data, sig);
         case 'selfPermitAllowed':
-            return normalizeSelfPermitAllowed(data);
+            return normalizeSelfPermitAllowed(data, sig);
         case 'selfPermit':
-            return normalizeSelfPermitAllowed(data);
+            return normalizeSelfPermitAllowed(data, sig);
         default:
             return { tag: 'NotSupported', funcName: data.name }
     }
 }
 
-function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
+function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult, sig: string): DecodeResult<MulticallItem> {
     if (data.params && data.params.length > 3
         && data.params[2].value.length == 2) {
 
@@ -79,6 +85,11 @@ function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult): DecodeResul
             tag: 'Success', 
             tx: { 
                 tag: TransactionType.SwapExactInput, 
+                functionInfo: {
+                    name: data.name,
+                    hash: sig,
+                    params: data.params,
+                },
                 payload: {
                     srcTokenAddress: data.params[2].value[0],
                     dstTokenAddress: data.params[2].value[1],
@@ -91,13 +102,18 @@ function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult): DecodeResul
     return { tag: 'WrongContractCall' };
 }
 
-function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
+function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult, sig: string): DecodeResult<MulticallItem> {
     if (data.params && data.params.length > 3
         && data.params[2].value.length == 2) {
         return {
             tag: 'Success', 
             tx: { 
                 tag: TransactionType.SwapExactOutput, 
+                functionInfo: {
+                    name: data.name,
+                    hash: sig,
+                    params: data.params,
+                },
                 payload: {
                     srcTokenAddress: data.params[2].value[0],
                     dstTokenAddress: data.params[2].value[1],
@@ -111,12 +127,17 @@ function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult): DecodeResul
     return { tag: 'WrongContractCall' };
 }
 
-function normailzeUnwrapWETH9(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
+function normailzeUnwrapWETH9(data: IAbiDecoderResult, sig: string): DecodeResult<MulticallItem> {
     if (data.params && data.params.length > 1) {
         return {
             tag: 'Success',
             tx: {
                 tag: TransactionType.Unwrap,
+                functionInfo: {
+                    name: data.name,
+                    hash: sig,
+                    params: data.params,
+                },
                 // TODO: Add parameters to Unwrap tx payload
                 // minReturnAmount: BigNumber.from(data.params[0].value),
                 // recipient: data.params[1].value as string,
@@ -127,13 +148,18 @@ function normailzeUnwrapWETH9(data: IAbiDecoderResult): DecodeResult<MulticallIt
     return { tag: 'WrongContractCall' };
 }
 
-function normalizeExactInputSingle(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
+function normalizeExactInputSingle(data: IAbiDecoderResult, sig: string): DecodeResult<MulticallItem> {
     if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
         
         return { 
             tag: 'Success', 
             tx: { 
                 tag: TransactionType.SwapExactInput, 
+                functionInfo: {
+                    name: data.name,
+                    hash: sig,
+                    params: data.params,
+                },
                 payload: {
                     srcTokenAddress: data.params[0].value[0],
                     dstTokenAddress: data.params[0].value[1],
@@ -147,12 +173,17 @@ function normalizeExactInputSingle(data: IAbiDecoderResult): DecodeResult<Multic
     return { tag: 'WrongContractCall' };
 }
 
-function normalizeExactOutputSingle(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
+function normalizeExactOutputSingle(data: IAbiDecoderResult, sig: string): DecodeResult<MulticallItem> {
     if (data.params && data.params.length == 1 && data.params[0].value.length == 7) {
         return {
             tag: 'Success', 
             tx: { 
                 tag: TransactionType.SwapExactOutput, 
+                functionInfo: {
+                    name: data.name,
+                    hash: sig,
+                    params: data.params,
+                },
                 payload: {
                     srcTokenAddress: data.params[0].value[0],
                     dstTokenAddress: data.params[0].value[1],
@@ -167,12 +198,17 @@ function normalizeExactOutputSingle(data: IAbiDecoderResult): DecodeResult<Multi
 }
 
 // TODO: Condition?
-function normalizeSelfPermitAllowed(data: IAbiDecoderResult): DecodeResult<MulticallItem> {
+function normalizeSelfPermitAllowed(data: IAbiDecoderResult, sig: string): DecodeResult<MulticallItem> {
     try {
         return {
             tag: 'Success', 
             tx: { 
                 tag: TransactionType.Approve, 
+                functionInfo: {
+                    name: data.name,
+                    hash: sig,
+                    params: data.params,
+                },
                 // TODO: Add payload to approve txs
                 // payload: {
                 //     token: data.params[0].value as string,

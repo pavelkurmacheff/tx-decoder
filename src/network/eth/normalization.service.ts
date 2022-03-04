@@ -37,42 +37,36 @@ export class NormalizationService {
         switch (tx.tag) {
             case TransactionType.Approve:
                 return {
-                    tag: TransactionType.Approve,
-                    raw: tx.raw,
+                    ...tx,
                     payload: await this.normalizeApprove(tx.payload),
                 };
             case TransactionType.Unwrap:
                 return tx;
             case TransactionType.SwapExactInput:
                 return {
-                    tag: TransactionType.SwapExactInput,
-                    raw: tx.raw,
+                    ...tx,
                     payload: await this.normalizeSwapExactInput(tx.payload),
                 };
             case TransactionType.SwapExactOutput:
                 return {
-                    tag: TransactionType.SwapExactOutput,
-                    raw: tx.raw,
+                    ...tx,
                     payload: await this.normalizeSwapExactOutput(tx.payload),
                 };
             case TransactionType.LimitOrderFill:
                 return {
-                    tag: TransactionType.LimitOrderFill,
-                    raw: tx.raw,
+                    ...tx,
                     payload: await this.normalizeLimitOrderFill(tx.payload),
                 };
             case TransactionType.LimitOrderCancel:
                 return tx;
             case TransactionType.Multicall:
                 return {
-                    tag: TransactionType.Multicall,
-                    raw: tx.raw,
+                    ...tx,
                     payload: await this.normalizeMulticall(tx.payload),
                 };
             case TransactionType.SwapThroughPool:
                 return {
-                    tag: TransactionType.SwapThroughPool,
-                    raw: tx.raw,
+                    ...tx,
                     payload: await this.normilizeSwapThroughPool(tx.payload),
                 };
         }
@@ -155,28 +149,28 @@ export class NormalizationService {
                 switch (i.tag) {
                     case TransactionType.Approve:
                         return {
-                            tag: TransactionType.Approve,
+                            ...i,
                             payload: await this.normalizeApprove(i.payload),
                         };
                     case TransactionType.Unwrap:
                         return i;
                     case TransactionType.SwapExactInput:
                         return {
-                            tag: TransactionType.SwapExactInput,
+                            ...i,
                             payload: await this.normalizeSwapExactInput(
                                 i.payload
                             ),
                         };
                     case TransactionType.SwapExactOutput:
                         return {
-                            tag: TransactionType.SwapExactOutput,
+                            ...i,
                             payload: await this.normalizeSwapExactOutput(
                                 i.payload
                             ),
                         };
                     case TransactionType.LimitOrderFill:
                         return {
-                            tag: TransactionType.LimitOrderFill,
+                            ...i,
                             payload: await this.normalizeLimitOrderFill(
                                 i.payload
                             ),
@@ -185,7 +179,7 @@ export class NormalizationService {
                         return i;
                     case TransactionType.Multicall:
                         return {
-                            tag: TransactionType.Multicall,
+                            ...i,
                             payload: await this.normalizeMulticall(i.payload),
                         };
                 }
