@@ -13,7 +13,7 @@ export interface SwapExactOutputPayload {
 }
 
 export interface SwapThroughPoolPayload {
-    srcTokenAddress: string | 'native';
+    srcTokenAddress?: string | 'native';
     srcAmount: string;
     minDstAmount?: string;
     poolAddressess: string[];

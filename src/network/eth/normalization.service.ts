@@ -25,9 +25,13 @@ import {
     SwapExactOutputPayload,
     SwapThroughPoolPayload,
 } from '../../core/transaction-parsed/swap-payload';
+import PoolService from '../../helpers/pools/pool.service';
 
 export class NormalizationService {
-    constructor(private customTokenSvc: CustomTokensService) {}
+    constructor(
+        private customTokenSvc: CustomTokensService,
+        private poolSvc: PoolService
+    ) {}
 
     async normalize(tx: TransactionParsed): Promise<TransactionRich> {
         switch (tx.tag) {
@@ -74,7 +78,6 @@ export class NormalizationService {
         }
     }
 
-    
     private async normalizeApprove(
         p?: ApproveTxPayload
     ): Promise<ApproveRich | undefined> {
@@ -212,19 +215,31 @@ export class NormalizationService {
     }
 
     private async normilizeSwapThroughPool(p: SwapThroughPoolPayload) {
+        let srcTokenAddress = '';
+        let dstTokenAddress = '';
+
+        if (p.srcTokenAddress) {
+            srcTokenAddress = p.srcTokenAddress;
+            dstTokenAddress = await this.poolSvc.getDestTokenAddress(
+                p.poolAddressess[p.poolAddressess.length - 1]
+            );
+        } else {
+            const tokenAddressList = await this.poolSvc.getBothTokenAddress(
+                p.poolAddressess
+            );
+            srcTokenAddress = tokenAddressList[0];
+            dstTokenAddress = tokenAddressList[1];
+        }
+
         const [srcToken, dstToken] = await Promise.all([
-            this.getToket(p.srcTokenAddress),
-            this.getToket(p.srcTokenAddress),
+            this.getToket(srcTokenAddress),
+            this.getToket(dstTokenAddress),
         ]);
 
         return {
             ...p,
-            srcToken: srcToken
-                ? srcToken
-                : createUnknownToken(p.srcTokenAddress),
-            dstToken: dstToken
-                ? dstToken
-                : createUnknownToken(p.srcTokenAddress),
+            srcToken: srcToken ? srcToken : createUnknownToken(srcTokenAddress),
+            dstToken: dstToken ? dstToken : createUnknownToken(dstTokenAddress),
         };
     }
 }
