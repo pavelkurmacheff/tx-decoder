@@ -1,5 +1,3 @@
-import {BigNumber} from '@ethersproject/bignumber';
-
 export interface LimitOrderFillPayload {
     srcTokenAddress: string;
     srcAmount?: string;

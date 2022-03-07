@@ -1,11 +1,10 @@
-import {BigNumber} from '@ethersproject/bignumber';
-import { Token } from '../token';
+import {Token} from '../token';
 
 export interface LimitOrderFillRich {
     srcToken: Token;
-    srcAmount?: BigNumber;
+    srcAmount?: string;
     dstToken: Token;
-    dstAmount?: BigNumber;
-    minDstAmount?: BigNumber;
-    maxSrcAmount?: BigNumber;
+    dstAmount?: string;
+    minDstAmount?: string;
+    maxSrcAmount?: string;
 }

@@ -1,11 +1,20 @@
 import {ApproveTxPayload} from './transaction-parsed/approve-payload';
 import {LimitOrderFillPayload} from './transaction-parsed/limit-order-fill-payload';
-import { SwapExactInputPayload, SwapExactOutputPayload, SwapThroughPoolPayload } from './transaction-parsed/swap-payload';
+import {
+    SwapExactInputPayload,
+    SwapExactOutputPayload,
+    SwapThroughPoolPayload,
+} from './transaction-parsed/swap-payload';
+import {TransferTxPayload} from './transaction-parsed/transfer-payload';
+import {ValueTxPayload} from './transaction-parsed/value-payload';
 import {TransactionRaw} from './transaction-raw';
 import {TransactionType} from './transaction-type';
 
 export type MulticallItem =
     | {tag: TransactionType.Approve; payload?: ApproveTxPayload}
+    | {tag: TransactionType.Deposit; payload: ValueTxPayload}
+    | {tag: TransactionType.Withdraw; payload: ValueTxPayload}
+    | {tag: TransactionType.Transfer; payload: TransferTxPayload}
     | {tag: TransactionType.Unwrap}
     | {tag: TransactionType.SwapExactInput; payload: SwapExactInputPayload}
     | {tag: TransactionType.SwapExactOutput; payload: SwapExactOutputPayload}
@@ -21,6 +30,9 @@ export type MulticallPayload = (
 /* prettier-ignore */
 export type TransactionParsed =
     | {raw: TransactionRaw, tag: TransactionType.Approve, payload?: ApproveTxPayload}
+    | {raw: TransactionRaw, tag: TransactionType.Deposit; payload: ValueTxPayload}
+    | {raw: TransactionRaw, tag: TransactionType.Withdraw; payload: ValueTxPayload}
+    | {raw: TransactionRaw, tag: TransactionType.Transfer; payload: TransferTxPayload}
     | {raw: TransactionRaw, tag: TransactionType.Unwrap}
     | {raw: TransactionRaw, tag: TransactionType.SwapExactInput, payload: SwapExactInputPayload}
     | {raw: TransactionRaw, tag: TransactionType.SwapExactOutput, payload: SwapExactOutputPayload}
