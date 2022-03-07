@@ -1,5 +1,5 @@
 import {TransactionRaw} from './transaction-raw';
-import {ApproveRich} from './transaction-rich/approve-rich-payload';
+import {ApproveRichTxPayload} from './transaction-rich/approve-rich-payload';
 import {LimitOrderFillRich} from '././transaction-rich/limit-order-fill';
 import {
     SwapExactInputRich,
@@ -7,53 +7,33 @@ import {
 } from './transaction-rich/swap-payload';
 import {TransactionType} from './transaction-type';
 import {FunctionInfo} from './transaction-parsed';
-
-export type MulticallRichItem =
-    | {
-          tag: TransactionType.Approve;
-          functionInfo: FunctionInfo;
-          payload?: ApproveRich;
-      }
-    | {tag: TransactionType.Deposit}
-    | {
-          tag: TransactionType.Unwrap;
-          functionInfo: FunctionInfo;
-      }
-    | {
-          tag: TransactionType.SwapExactInput;
-          functionInfo: FunctionInfo;
-          payload: SwapExactInputRich;
-      }
-    | {
-          tag: TransactionType.SwapExactOutput;
-          functionInfo: FunctionInfo;
-          payload: SwapExactOutputRich;
-      }
-    | {
-          tag: TransactionType.LimitOrderFill;
-          functionInfo: FunctionInfo;
-          payload: LimitOrderFillRich;
-      }
-    | {
-          tag: TransactionType.LimitOrderCancel;
-          functionInfo: FunctionInfo;
-      }
-    | {
-          tag: TransactionType.Multicall;
-          functionInfo: FunctionInfo;
-      };
-
-export type MulticallPayloadRich = (
-    | {tag: 'Error'; code: string; data: any}
-    | MulticallRichItem
-)[];
+import {ValueRichTxPayload} from './transaction-rich/value-rich-payload';
+import {TransferRichTxPayload} from './transaction-rich/transfer-rich-payload';
 
 export type TransactionRich =
     | {
           raw: TransactionRaw;
           tag: TransactionType.Approve;
           functionInfo: FunctionInfo;
-          payload?: ApproveRich;
+          payload?: ApproveRichTxPayload;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Deposit;
+          functionInfo: FunctionInfo;
+          payload?: ValueRichTxPayload;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Withdraw;
+          functionInfo: FunctionInfo;
+          payload?: ValueRichTxPayload;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Transfer;
+          functionInfo: FunctionInfo;
+          payload?: TransferRichTxPayload;
       }
     | {
           raw: TransactionRaw;
@@ -95,3 +75,8 @@ export type TransactionRich =
           functionInfo: FunctionInfo;
           payload: SwapExactInputRich;
       };
+
+export type MulticallPayloadRich = (
+    | {tag: 'Error'; code: string; data: any}
+    | TransactionRich
+)[];

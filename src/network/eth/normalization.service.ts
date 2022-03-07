@@ -1,11 +1,9 @@
 import {
-    MulticallItem,
     MulticallPayload,
     TransactionParsed,
 } from '../../core/transaction-parsed';
 import {
     MulticallPayloadRich,
-    MulticallRichItem,
     TransactionRich,
 } from '../../core/transaction-rich';
 import {createUnknownToken, Token} from '../../core/token';
@@ -14,7 +12,7 @@ import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
 import {ChainTokenByNetwork} from '../../const/common.const';
 import {LimitOrderFillPayload} from '../../core/transaction-parsed/limit-order-fill-payload';
 import {ApproveTxPayload} from '../../core/transaction-parsed/approve-payload';
-import {ApproveRich} from '../../core/transaction-rich/approve-rich-payload';
+import {ApproveRichTxPayload} from '../../core/transaction-rich/approve-rich-payload';
 import {
     SwapExactInputRich,
     SwapExactOutputRich,
@@ -26,6 +24,10 @@ import {
     SwapThroughPoolPayload,
 } from '../../core/transaction-parsed/swap-payload';
 import PoolService from '../../helpers/pools/pool.service';
+import {ValueRichTxPayload} from '../../core/transaction-rich/value-rich-payload';
+import {ValueTxPayload} from '../../core/transaction-parsed/value-payload';
+import {TransferRichTxPayload} from '../../core/transaction-rich/transfer-rich-payload';
+import {TransferTxPayload} from 'src/core/transaction-parsed/transfer-payload';
 
 export class NormalizationService {
     constructor(
@@ -40,6 +42,19 @@ export class NormalizationService {
                     ...tx,
                     payload: await this.normalizeApprove(tx.payload),
                 };
+            case TransactionType.Withdraw:
+            case TransactionType.Deposit: {
+                return {
+                    ...tx,
+                    payload: await this.normalizeValue(tx.payload),
+                };
+            }
+            case TransactionType.Transfer: {
+                return {
+                    ...tx,
+                    payload: await this.normalizeTransfer(tx.payload),
+                };
+            }
             case TransactionType.Unwrap:
                 return tx;
             case TransactionType.SwapExactInput:
@@ -74,7 +89,7 @@ export class NormalizationService {
 
     private async normalizeApprove(
         p?: ApproveTxPayload
-    ): Promise<ApproveRich | undefined> {
+    ): Promise<ApproveRichTxPayload | undefined> {
         if (!p) {
             return undefined;
         } else {
@@ -144,56 +159,14 @@ export class NormalizationService {
     private async normalizeMulticall(
         p: MulticallPayload
     ): Promise<MulticallPayloadRich> {
-        const mapNonError: (i: MulticallItem) => Promise<MulticallRichItem> =
-            async (i) => {
-                switch (i.tag) {
-                    case TransactionType.Approve:
-                        return {
-                            ...i,
-                            payload: await this.normalizeApprove(i.payload),
-                        };
-                    case TransactionType.Unwrap:
-                        return i;
-                    case TransactionType.SwapExactInput:
-                        return {
-                            ...i,
-                            payload: await this.normalizeSwapExactInput(
-                                i.payload
-                            ),
-                        };
-                    case TransactionType.SwapExactOutput:
-                        return {
-                            ...i,
-                            payload: await this.normalizeSwapExactOutput(
-                                i.payload
-                            ),
-                        };
-                    case TransactionType.LimitOrderFill:
-                        return {
-                            ...i,
-                            payload: await this.normalizeLimitOrderFill(
-                                i.payload
-                            ),
-                        };
-                    case TransactionType.LimitOrderCancel:
-                        return i;
-                    case TransactionType.Multicall:
-                        return {
-                            ...i,
-                            payload: await this.normalizeMulticall(i.payload),
-                        };
-                }
-            };
-
         const ps = p.map(async (i) => {
             switch (i.tag) {
                 case 'Error':
                     return i;
                 default:
-                    return mapNonError(i);
+                    return this.normalize(i);
             }
         });
-
         const payload = await Promise.all(ps);
         return payload;
     }
@@ -234,6 +207,28 @@ export class NormalizationService {
             ...p,
             srcToken: srcToken ? srcToken : createUnknownToken(srcTokenAddress),
             dstToken: dstToken ? dstToken : createUnknownToken(dstTokenAddress),
+        };
+    }
+
+    private async normalizeValue(
+        p: ValueTxPayload
+    ): Promise<ValueRichTxPayload> {
+        const token = await this.getToket(p.tokenAddress);
+
+        return {
+            ...p,
+            token: token ? token : createUnknownToken(p.tokenAddress),
+        };
+    }
+
+    private async normalizeTransfer(
+        p: TransferTxPayload
+    ): Promise<TransferRichTxPayload> {
+        const token = await this.getToket(p.tokenAddress);
+
+        return {
+            ...p,
+            token: token ? token : createUnknownToken(p.tokenAddress),
         };
     }
 }

@@ -17,61 +17,6 @@ export interface FunctionInfo {
     abi: any;
 }
 
-export type MulticallItem =
-    | {
-          tag: TransactionType.Approve;
-          functionInfo: FunctionInfo;
-          payload?: ApproveTxPayload;
-      }
-    | {
-          tag: TransactionType.Deposit;
-          functionInfo: FunctionInfo;
-          payload: ValueTxPayload;
-      }
-    | {
-          tag: TransactionType.Withdraw;
-          functionInfo: FunctionInfo;
-          payload: ValueTxPayload;
-      }
-    | {
-          tag: TransactionType.Transfer;
-          functionInfo: FunctionInfo;
-          payload: TransferTxPayload;
-      }
-    | {
-          tag: TransactionType.Unwrap;
-          functionInfo: FunctionInfo;
-      }
-    | {
-          tag: TransactionType.SwapExactInput;
-          functionInfo: FunctionInfo;
-          payload: SwapExactInputPayload;
-      }
-    | {
-          tag: TransactionType.SwapExactOutput;
-          functionInfo: FunctionInfo;
-          payload: SwapExactOutputPayload;
-      }
-    | {
-          tag: TransactionType.LimitOrderFill;
-          functionInfo: FunctionInfo;
-          payload: LimitOrderFillPayload;
-      }
-    | {
-          tag: TransactionType.LimitOrderCancel;
-          functionInfo: FunctionInfo;
-      }
-    | {
-          tag: TransactionType.Multicall;
-          functionInfo: FunctionInfo;
-          payload: MulticallPayload;
-      };
-
-export type MulticallPayload = (
-    | {tag: 'Error'; code: string; data: any}
-    | MulticallItem
-)[];
-
 export type TransactionParsed =
     | {
           raw: TransactionRaw;
@@ -137,3 +82,8 @@ export type TransactionParsed =
           tag: TransactionType.SwapThroughPool;
           payload: SwapThroughPoolPayload;
       };
+
+export type MulticallPayload = (
+    | {tag: 'Error'; code: string; data: any}
+    | TransactionParsed
+)[];
