@@ -58,8 +58,14 @@ function parseClipperSwap(
     return {
         tag: 'Success',
         tx: {
-            raw: rawTx,
+            
             tag: TransactionType.SwapExactInput,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
+            raw: rawTx,
             payload,
         },
     };
@@ -79,8 +85,13 @@ function parseUnoswap(
     return {
         tag: 'Success',
         tx: {
-            raw: rawTx,
             tag: TransactionType.SwapThroughPool,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
+            raw: rawTx,
             payload,
         },
     };
@@ -102,8 +113,13 @@ function parseSwap(
     return {
         tag: 'Success',
         tx: {
-            raw: rawTx,
             tag: TransactionType.SwapExactInput,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
+            raw: rawTx,
             payload,
         },
     };
@@ -122,8 +138,13 @@ function parseUniswapV3Swap(
     return {
         tag: 'Success',
         tx: {
-            raw: rawTx,
             tag: TransactionType.SwapThroughPool,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
+            raw: rawTx,
             payload,
         },
     };

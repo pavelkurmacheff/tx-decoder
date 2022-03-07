@@ -6,29 +6,92 @@ import {
     SwapExactOutputRich,
 } from './transaction-rich/swap-payload';
 import {TransactionType} from './transaction-type';
+import {FunctionInfo} from './transaction-parsed';
 
 export type MulticallRichItem =
-    | {tag: TransactionType.Approve; payload?: ApproveRich}
+    | {
+          tag: TransactionType.Approve;
+          functionInfo: FunctionInfo;
+          payload?: ApproveRich;
+      }
     | {tag: TransactionType.Deposit}
-    | {tag: TransactionType.Unwrap}
-    | {tag: TransactionType.SwapExactInput; payload: SwapExactInputRich}
-    | {tag: TransactionType.SwapExactOutput; payload: SwapExactOutputRich}
-    | {tag: TransactionType.LimitOrderFill; payload: LimitOrderFillRich}
-    | {tag: TransactionType.LimitOrderCancel}
-    | {tag: TransactionType.Multicall};
+    | {
+          tag: TransactionType.Unwrap;
+          functionInfo: FunctionInfo;
+      }
+    | {
+          tag: TransactionType.SwapExactInput;
+          functionInfo: FunctionInfo;
+          payload: SwapExactInputRich;
+      }
+    | {
+          tag: TransactionType.SwapExactOutput;
+          functionInfo: FunctionInfo;
+          payload: SwapExactOutputRich;
+      }
+    | {
+          tag: TransactionType.LimitOrderFill;
+          functionInfo: FunctionInfo;
+          payload: LimitOrderFillRich;
+      }
+    | {
+          tag: TransactionType.LimitOrderCancel;
+          functionInfo: FunctionInfo;
+      }
+    | {
+          tag: TransactionType.Multicall;
+          functionInfo: FunctionInfo;
+      };
 
 export type MulticallPayloadRich = (
     | {tag: 'Error'; code: string; data: any}
     | MulticallRichItem
 )[];
 
-/* prettier-ignore */
-export type TransactionRich = 
-{ raw: TransactionRaw, tag: TransactionType.Approve, payload?: ApproveRich } |
-{ raw: TransactionRaw, tag: TransactionType.Unwrap } |
-{ raw: TransactionRaw, tag: TransactionType.SwapExactInput, payload: SwapExactInputRich } |
-{ raw: TransactionRaw, tag: TransactionType.SwapExactOutput, payload: SwapExactOutputRich } |
-{ raw: TransactionRaw, tag: TransactionType.LimitOrderFill, payload: LimitOrderFillRich } |
-{ raw: TransactionRaw, tag: TransactionType.LimitOrderCancel } |
-{ raw: TransactionRaw, tag: TransactionType.Multicall,  payload: MulticallPayloadRich } | 
-{ raw: TransactionRaw, tag: TransactionType.SwapThroughPool,  payload: SwapExactInputRich };
+export type TransactionRich =
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Approve;
+          functionInfo: FunctionInfo;
+          payload?: ApproveRich;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Unwrap;
+          functionInfo: FunctionInfo;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.SwapExactInput;
+          functionInfo: FunctionInfo;
+          payload: SwapExactInputRich;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.SwapExactOutput;
+          functionInfo: FunctionInfo;
+          payload: SwapExactOutputRich;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.LimitOrderFill;
+          functionInfo: FunctionInfo;
+          payload: LimitOrderFillRich;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.LimitOrderCancel;
+          functionInfo: FunctionInfo;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Multicall;
+          functionInfo: FunctionInfo;
+          payload: MulticallPayloadRich;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.SwapThroughPool;
+          functionInfo: FunctionInfo;
+          payload: SwapExactInputRich;
+      };

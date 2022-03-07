@@ -29,6 +29,11 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactInput,
+                        functionInfo: {
+                            name: rootFunc.name,
+                            hash: tx.data.slice(0, 10).toLowerCase(),
+                            params: rootFunc.params,
+                        },
                         raw: tx,
                         payload: {
                             srcTokenAddress: 'native',
@@ -42,7 +47,18 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
             return { tag: 'WrongContractCall' };
         }
         case 'approve':
-            return { tag: 'Success', tx: { tag: TransactionType.Approve, raw: tx }};
+            return { 
+                tag: 'Success', 
+                tx: { 
+                    tag: TransactionType.Approve, 
+                    functionInfo: {
+                        name: rootFunc.name,
+                        hash: tx.data.slice(0, 10).toLowerCase(),
+                        params: rootFunc.params,
+                    },
+                    raw: tx 
+                }
+            };
 
         case 'swapExactTokensForTokens': {
             const to = getParam(rootFunc, 'to');
@@ -58,6 +74,11 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactInput,
+                        functionInfo: {
+                            name: rootFunc.name,
+                            hash: tx.data.slice(0, 10).toLowerCase(),
+                            params: rootFunc.params,
+                        },
                         raw: tx,
                         payload: {
                             srcTokenAddress: src,
@@ -83,6 +104,11 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactInput,
+                        functionInfo: {
+                            name: rootFunc.name,
+                            hash: tx.data.slice(0, 10).toLowerCase(),
+                            params: rootFunc.params,
+                        },
                         raw: tx,
                         payload: {
                             srcTokenAddress: src,
@@ -107,6 +133,11 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactOutput,
+                        functionInfo: {
+                            name: rootFunc.name,
+                            hash: tx.data.slice(0, 10).toLowerCase(),
+                            params: rootFunc.params,
+                        },
                         raw: tx,
                         payload: {
                             srcTokenAddress: 'native',
@@ -132,6 +163,11 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactOutput,
+                        functionInfo: {
+                            name: rootFunc.name,
+                            hash: tx.data.slice(0, 10).toLowerCase(),
+                            params: rootFunc.params,
+                        },
                         raw: tx,
                         payload: {
                             srcTokenAddress: src,
@@ -157,6 +193,11 @@ export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): Decod
                     tag: 'Success',
                     tx: {
                         tag: TransactionType.SwapExactOutput,
+                        functionInfo: {
+                            name: rootFunc.name,
+                            hash: tx.data.slice(0, 10).toLowerCase(),
+                            params: rootFunc.params,
+                        },
                         raw: tx,
                         payload: {
                             srcTokenAddress: src,
