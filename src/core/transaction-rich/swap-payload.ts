@@ -5,6 +5,7 @@ export interface SwapExactInputRich {
     dstToken: Token;
     srcAmount: string;
     minDstAmount?: string;
+    dstAmountEstimated?: string;
 }
 
 export interface SwapExactOutputRich {
@@ -12,4 +13,5 @@ export interface SwapExactOutputRich {
     dstToken: Token;
     dstAmount: string;
     maxSrcAmount?: string;
+    srcAmountEstimated?: string;
 }
