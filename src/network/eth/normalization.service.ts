@@ -14,7 +14,7 @@ import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
 import {ChainTokenByNetwork} from '../../const/common.const';
 import {LimitOrderFillPayload} from '../../core/transaction-parsed/limit-order-fill-payload';
 import {ApproveTxPayload} from '../../core/transaction-parsed/approve-payload';
-import {ApproveRich} from '../../core/transaction-rich/approve';
+import {ApproveRich} from '../../core/transaction-rich/approve-rich-payload';
 import {
     SwapExactInputRich,
     SwapExactOutputRich,

@@ -6,6 +6,8 @@ import {
     SwapExactOutputPayload,
     SwapThroughPoolPayload,
 } from './transaction-parsed/swap-payload';
+import {TransferTxPayload} from './transaction-parsed/transfer-payload';
+import {ValueTxPayload} from './transaction-parsed/value-payload';
 import {TransactionRaw} from './transaction-raw';
 import {TransactionType} from './transaction-type';
 
@@ -26,6 +28,21 @@ export type MulticallItem =
           tag: TransactionType.Approve;
           functionInfo: FunctionInfo;
           payload?: ApproveTxPayload;
+      }
+    | {
+          tag: TransactionType.Deposit;
+          functionInfo: FunctionInfo;
+          payload: ValueTxPayload;
+      }
+    | {
+          tag: TransactionType.Withdraw;
+          functionInfo: FunctionInfo;
+          payload: ValueTxPayload;
+      }
+    | {
+          tag: TransactionType.Transfer;
+          functionInfo: FunctionInfo;
+          payload: TransferTxPayload;
       }
     | {
           tag: TransactionType.Unwrap;
@@ -67,6 +84,24 @@ export type TransactionParsed =
           functionInfo: FunctionInfo;
           tag: TransactionType.Approve;
           payload?: ApproveTxPayload;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Deposit;
+          functionInfo: FunctionInfo;
+          payload: ValueTxPayload;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Withdraw;
+          functionInfo: FunctionInfo;
+          payload: ValueTxPayload;
+      }
+    | {
+          raw: TransactionRaw;
+          tag: TransactionType.Transfer;
+          functionInfo: FunctionInfo;
+          payload: TransferTxPayload;
       }
     | {
           raw: TransactionRaw;
