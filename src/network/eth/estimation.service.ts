@@ -7,45 +7,39 @@ export class EstimationService {
         switch(tx.tag) {
             case TransactionType.SwapExactInput: {
                 const res = await runTransaction(tx.raw, tx.functionInfo.abi);
-
-                console.log(res);
-
+                const estimated = tx.functionInfo.responseParser ? tx.functionInfo.responseParser(res) : undefined;
                 return {
                     ...tx,
                     payload: {
                         ...(tx.payload),
-                        dstAmountEstimated: res.returnAmount
+                        dstAmountEstimated: estimated?.returnAmount.toHexString()
                     }
                 }
             }
             case TransactionType.SwapExactOutput: {
                 const res = await runTransaction(tx.raw, tx.functionInfo.abi);
-
-                console.log(res);
-
+                const estimated = tx.functionInfo.responseParser ? tx.functionInfo.responseParser(res) : undefined;
                 return {
                     ...tx,
                     payload: {
                         ...(tx.payload),
-                        srcAmountEstimated: res.returnAmount
+                        srcAmountEstimated: estimated?.returnAmount.toHexString()
                     }
                 }
             }
             case TransactionType.SwapThroughPool: {
                 const res = await runTransaction(tx.raw, tx.functionInfo.abi);
-
-                console.log(res);
-                
+                const estimated = tx.functionInfo.responseParser ? tx.functionInfo.responseParser(res) : undefined;
                 return {
                     ...tx,
                     payload: {
                         ...(tx.payload),
-                        dstAmountEstimated: res.returnAmount
+                        dstAmountEstimated: estimated?.returnAmount.toHexString()
                     }
                 }
             }
-                
+            default:
+                return tx;
         }
-        throw 'todo';
     }
 }
