@@ -24,7 +24,7 @@ export function decodeERC20Token(
             return parseApprove(rawTx, methodData);
         }
         case 'deposit': {
-            return parseDeposit(rawTx);
+            return parseDeposit(rawTx, methodData);
         }
         case 'withdraw': {
             return parseWithdraw(rawTx, methodData);
@@ -55,12 +55,20 @@ function parseApprove(
         tx: {
             tag: TransactionType.Approve,
             raw: rawTx,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
             payload,
         },
     };
 }
 
-function parseDeposit(rawTx: TransactionRaw): DecodeResult {
+function parseDeposit(
+    rawTx: TransactionRaw,
+    data: IAbiDecoderResult
+): DecodeResult {
     const payload: ValueTxPayload = {
         tokenAddress: rawTx.to,
         value: rawTx.value.toString(),
@@ -70,6 +78,11 @@ function parseDeposit(rawTx: TransactionRaw): DecodeResult {
         tag: 'Success',
         tx: {
             tag: TransactionType.Deposit,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
             raw: rawTx,
             payload,
         },
@@ -88,6 +101,11 @@ function parseWithdraw(
         tag: 'Success',
         tx: {
             tag: TransactionType.Withdraw,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
             raw: rawTx,
             payload,
         },
@@ -108,6 +126,11 @@ function parseTransfer(
         tag: 'Success',
         tx: {
             tag: TransactionType.Transfer,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
             raw: rawTx,
             payload,
         },
@@ -128,6 +151,11 @@ function parseTransferFrom(
         tag: 'Success',
         tx: {
             tag: TransactionType.Transfer,
+            functionInfo: {
+                name: data.name,
+                hash: rawTx.data.slice(0, 10).toLowerCase(),
+                params: data.params,
+            },
             raw: rawTx,
             payload,
         },

@@ -22,9 +22,21 @@ export type MulticallItem =
           functionInfo: FunctionInfo;
           payload?: ApproveTxPayload;
       }
-    | {tag: TransactionType.Deposit; payload: ValueTxPayload}
-    | {tag: TransactionType.Withdraw; payload: ValueTxPayload}
-    | {tag: TransactionType.Transfer; payload: TransferTxPayload}
+    | {
+          tag: TransactionType.Deposit;
+          functionInfo: FunctionInfo;
+          payload: ValueTxPayload;
+      }
+    | {
+          tag: TransactionType.Withdraw;
+          functionInfo: FunctionInfo;
+          payload: ValueTxPayload;
+      }
+    | {
+          tag: TransactionType.Transfer;
+          functionInfo: FunctionInfo;
+          payload: TransferTxPayload;
+      }
     | {
           tag: TransactionType.Unwrap;
           functionInfo: FunctionInfo;
@@ -69,16 +81,19 @@ export type TransactionParsed =
     | {
           raw: TransactionRaw;
           tag: TransactionType.Deposit;
+          functionInfo: FunctionInfo;
           payload: ValueTxPayload;
       }
     | {
           raw: TransactionRaw;
           tag: TransactionType.Withdraw;
+          functionInfo: FunctionInfo;
           payload: ValueTxPayload;
       }
     | {
           raw: TransactionRaw;
           tag: TransactionType.Transfer;
+          functionInfo: FunctionInfo;
           payload: TransferTxPayload;
       }
     | {
