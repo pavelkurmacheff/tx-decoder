@@ -16,6 +16,13 @@ export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeRes
     }
     
     const rootFunc: IAbiDecoderResult = abiDecoder.decodeMethod(tx.data);
+    const functionInfo = {
+        name: rootFunc.name,
+        hash: tx.data.slice(0, 10).toLowerCase(),
+        params: rootFunc.params,
+        abi: UniswapRouterV2BI,
+    };
+
     if (rootFunc.name === 'multicall') {
         const data = getParamDescriptor(rootFunc, 'data');
         if(!data || data.type !== 'bytes[]') {
@@ -39,11 +46,7 @@ export function decodeUniV3(contractAddr: string, tx: TransactionRaw): DecodeRes
             tag: 'Success',
             tx: {
                 tag: TransactionType.Multicall,
-                functionInfo: {
-                    name: data.name,
-                    hash: sig,
-                    params: rootFunc.params,
-                },
+                functionInfo,
                 raw: tx,
                 payload: multicallPayload,
             }
@@ -89,6 +92,7 @@ function normalizeSwapExactTokensForTokens(data: IAbiDecoderResult, sig: string)
                     name: data.name,
                     hash: sig,
                     params: data.params,
+                    abi: UniswapRouterV2BI,
                 },
                 payload: {
                     srcTokenAddress: data.params[2].value[0],
@@ -113,6 +117,7 @@ function normalizeSwapTokensForExactTokens(data: IAbiDecoderResult, sig: string)
                     name: data.name,
                     hash: sig,
                     params: data.params,
+                    abi: UniswapRouterV2BI,
                 },
                 payload: {
                     srcTokenAddress: data.params[2].value[0],
@@ -137,6 +142,7 @@ function normailzeUnwrapWETH9(data: IAbiDecoderResult, sig: string): DecodeResul
                     name: data.name,
                     hash: sig,
                     params: data.params,
+                    abi: UniswapRouterV2BI,
                 },
                 // TODO: Add parameters to Unwrap tx payload
                 // minReturnAmount: BigNumber.from(data.params[0].value),
@@ -159,6 +165,7 @@ function normalizeExactInputSingle(data: IAbiDecoderResult, sig: string): Decode
                     name: data.name,
                     hash: sig,
                     params: data.params,
+                    abi: UniswapRouterV2BI,
                 },
                 payload: {
                     srcTokenAddress: data.params[0].value[0],
@@ -183,6 +190,7 @@ function normalizeExactOutputSingle(data: IAbiDecoderResult, sig: string): Decod
                     name: data.name,
                     hash: sig,
                     params: data.params,
+                    abi: UniswapRouterV2BI,
                 },
                 payload: {
                     srcTokenAddress: data.params[0].value[0],
@@ -208,6 +216,7 @@ function normalizeSelfPermitAllowed(data: IAbiDecoderResult, sig: string): Decod
                     name: data.name,
                     hash: sig,
                     params: data.params,
+                    abi: UniswapRouterV2BI,
                 },
                 // TODO: Add payload to approve txs
                 // payload: {

@@ -1,5 +1,5 @@
-import { TransactionEstimated } from "src/core/transaction-estimated";
-import { TransactionType } from "src/core/transaction-type";
+import { TransactionEstimated } from "../core/transaction-estimated";
+import { TransactionType } from "../core/transaction-type";
 import { Item } from "./item";
 import { approveTxConfirmTemplate } from "./transactions/approve-tx-confirm.template";
 import { limitOrderFillTemplate } from "./transactions/limit-order-fill.template";
