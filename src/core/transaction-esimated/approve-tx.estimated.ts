@@ -1,3 +1,3 @@
-import { ApproveRich } from '../transaction-rich/approve';
+import {ApproveRich} from '../transaction-rich/approve-rich-payload';
 
 export interface ApproveTxEstimated extends ApproveRich {}

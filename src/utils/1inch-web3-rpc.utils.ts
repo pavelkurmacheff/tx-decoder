@@ -1,6 +1,6 @@
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider';
 import { BigNumber } from 'ethers';
-import { Interface } from 'ethers/lib/utils';
+import { hexValue, Interface } from 'ethers/lib/utils';
 import fetch from 'isomorphic-unfetch';
 import { TransactionRaw } from 'src/core/transaction-raw';
 
@@ -66,12 +66,11 @@ export async function getTransactionReceipt(txHash: string): Promise<Transaction
 
 export async function runTransaction(tx: TransactionRaw, abi: any): Promise<any> {
     const { from, to, value, data } = tx;
+    const v = hexValue(BigNumber.from(value).toHexString());
     const request = {
         from, 
         to, data,
-        value: ['0', '0x', '0x0', '0x00'].includes(value)
-            ? '0x0'
-            : BigNumber.from(value).toHexString(),
+        value: v,
     };
 
     // https://eth.wiki/json-rpc/API#eth_call

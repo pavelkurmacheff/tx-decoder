@@ -14,6 +14,7 @@ export interface FunctionInfo {
     name: string;
     hash: string;
     params: any;
+    abi: any;
 }
 
 export type MulticallItem =

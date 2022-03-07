@@ -30,13 +30,14 @@ export function decode1InchLimitOrderV2(
             return {
                 tag: 'Success',
                 tx: {
-                    tag: TransactionType.LimitOrderCancel, 
+                    tag: TransactionType.LimitOrderCancel,
                     functionInfo: {
                         name: methodData.name,
                         hash: rawTx.data.slice(0, 10).toLowerCase(),
                         params: methodData.params,
+                        abi: oneInchLimitV2Abi,
                     },
-                    raw: rawTx
+                    raw: rawTx,
                 },
             };
         }
@@ -78,6 +79,7 @@ function parseFillOrder(
                 name: data.name,
                 hash: rawTx.data.slice(0, 10).toLowerCase(),
                 params: data.params,
+                abi: oneInchLimitV2Abi,
             },
             raw: rawTx,
             payload,
