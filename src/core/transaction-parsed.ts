@@ -1,3 +1,4 @@
+import { BigNumber } from 'ethers';
 import {ApproveTxPayload} from './transaction-parsed/approve-payload';
 import {LimitOrderFillPayload} from './transaction-parsed/limit-order-fill-payload';
 import {
@@ -10,11 +11,16 @@ import {ValueTxPayload} from './transaction-parsed/value-payload';
 import {TransactionRaw} from './transaction-raw';
 import {TransactionType} from './transaction-type';
 
+export interface EstimationResp {
+    returnAmount: BigNumber,
+}
+
 export interface FunctionInfo {
-    name: string;
-    hash: string;
-    params: any;
-    abi: any;
+    name: string,
+    hash: string,
+    params: any,
+    abi: any,
+    responseParser?: (data: any) => EstimationResp
 }
 
 export type TransactionParsed =

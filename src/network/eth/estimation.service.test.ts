@@ -24,7 +24,7 @@ describe('EstimationService test', () => {
         estSvc = new EstimationService();
     });
 
-    it("", async () => {
+    it("Estimate 1inch swap return", async () => {
         const rawTx: TransactionRaw = {
             data: '0x2e95b6c80000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016345785d8a0000000000000000000000000000000000000000000000000002d5069e44d5aa17350000000000000000000000000000000000000000000000000000000000000080000000000000000000000000000000000000000000000000000000000000000180000000000000003b6d0340e4ebd836832f1a8a81641111a5b081a2f90b9430e26b9977',
             from: '0x6e797B975B99a20d539786e5c4a32218a3d6d80E',
@@ -40,10 +40,8 @@ describe('EstimationService test', () => {
         }
 
         const r = await normSvc.normalize(parseRes.tx);
-
-        console.log(r);
         const er = await estSvc.estimate(r);
-        console.log(er);
 
+        console.log(er);
     });
 });
