@@ -15,7 +15,7 @@ module.exports = {
         'no-unused-vars': 'off',
         'max-len': ['error', {code: 120}],
         'max-depth': ['error', 3],
-        'max-lines-per-function': ['error', 100],
+        'max-lines-per-function': ['error', 200],
         'max-params': ['error', 6],
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
@@ -26,8 +26,9 @@ module.exports = {
         {
             files: ['src/**/*.test.ts'],
             rules: {
-                'max-lines-per-function': ['error', 400],
-                'max-len': ['error', {code: 130}],
+                'max-lines-per-function': 0,
+                'max-len': 0,
+                '@typescript-eslint/no-explicit-any': 0,
             },
         },
         {

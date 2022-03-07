@@ -77,6 +77,6 @@ export type TransactionRich =
       };
 
 export type MulticallPayloadRich = (
-    | {tag: 'Error'; code: string; data: any}
+    | {tag: 'Error'; code: string; data: unknown}
     | TransactionRich
 )[];

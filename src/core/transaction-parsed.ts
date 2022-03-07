@@ -18,9 +18,9 @@ export interface EstimationResp {
 export interface FunctionInfo {
     name: string,
     hash: string,
-    params: any,
-    abi: any,
-    responseParser?: (data: any) => EstimationResp
+    params: unknown,
+    abi: unknown,
+    responseParser?: (data: unknown) => EstimationResp
 }
 
 export type TransactionParsed =
@@ -90,6 +90,6 @@ export type TransactionParsed =
       };
 
 export type MulticallPayload = (
-    | {tag: 'Error'; code: string; data: any}
+    | {tag: 'Error'; code: string; data: unknown}
     | TransactionParsed
 )[];

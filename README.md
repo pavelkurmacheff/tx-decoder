@@ -12,8 +12,8 @@
 -   [x] 1inch V4 UnoswapWithPermit / Unoswap
 -   [x] 1inch V4 UniswapV3WithPermit / UniswapV3Swap
 -   [x] 1inch V4 ClipperSwapWithPermit / ClipperSwap
--   [ ] Uniswap V2
--   [ ] Uniswap V3
+-   [x] Uniswap V2
+-   [x] Uniswap V3
 -   [ ] Curve v2
 -   [ ] Balancer V2
 

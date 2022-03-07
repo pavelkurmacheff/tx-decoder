@@ -1,3 +1,5 @@
+import { decodeERC20Token } from 'src/dex/erc20-token/erc20-token-tx.decoder';
+import { decodeWrappedERC20Token } from 'src/dex/wrapped-erc20-token/erc20-token-tx.decoder';
 import {combineTxDecoders, TxDecoder} from '../../core/decoder';
 import {decode1InchLimitOrderV2} from '../../dex/1inch/limit/1inch-limit-order-v2-tx.decoder';
 import {decode1InchSwapV4} from '../../dex/1inch/swap/1inch-swap-v2-tx.decoder';
@@ -21,4 +23,10 @@ export const ehtTransactionDecoder: TxDecoder = combineTxDecoders([
     // 1inch swap V4
     // https://etherscan.io/address/0x1111111254fb6c44bac0bed2854e76f90643097d
     (tx) => decode1InchSwapV4('0x1111111254fb6c44bac0bed2854e76f90643097d', tx),
+
+    // WETH
+    // https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
+    (tx) => decodeWrappedERC20Token('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', tx),
+    
+    (tx) => decodeERC20Token(tx),
 ]);
