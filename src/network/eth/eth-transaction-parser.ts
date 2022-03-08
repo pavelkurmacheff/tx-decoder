@@ -4,7 +4,7 @@ import { ChainId } from "../../core/chain-id";
 import { Token } from "../../core/token";
 import { CustomTokensService } from "../../helpers/tokens/custom-tokens.service";
 import { Web3Service } from "../../helpers/web3/web3.service";
-import { loadTokensMap } from "../../utils/1inch.utils";
+import { loadTokensMap } from "../../helpers/oinch/1inch.utils";
 import { EhtTransactionDecoder } from "./eth-transaction-decoder";
 import { NormalizationService } from "./normalization.service";
 

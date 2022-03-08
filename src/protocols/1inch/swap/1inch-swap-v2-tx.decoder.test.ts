@@ -1,8 +1,5 @@
 import {BigNumber} from 'ethers';
-import {
-    SwapExactInputPayload,
-    SwapThroughPoolPayload,
-} from '../../../core/transaction-parsed/swap-payload';
+import {SwapExactInputPayload} from '../../../core/transaction-parsed/swap-payload';
 import PoolService from '../pools/pool.service';
 import { Web3Service } from '../../../helpers/web3/web3.service';
 import {TransactionParsed} from '../../../core/transaction-parsed';
@@ -183,8 +180,8 @@ describe('decode1InchSwapV4', () => {
         expect(result.tag).toBe('Success');
 
         const parsedTx = (result.tx as unknown) as {
-            tag: TransactionType.SwapThroughPool;
-            payload: SwapThroughPoolPayload;
+            tag: TransactionType.SwapExactInput;
+            payload: SwapExactInputPayload;
         };
 
         expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);
@@ -219,8 +216,8 @@ describe('decode1InchSwapV4', () => {
         expect(result.tag).toBe('Success');
 
         const parsedTx = result.tx as {
-            tag: TransactionType.SwapThroughPool;
-            payload: SwapThroughPoolPayload;
+            tag: TransactionType.SwapExactInput;
+            payload: SwapExactInputPayload;
         };
 
         expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);

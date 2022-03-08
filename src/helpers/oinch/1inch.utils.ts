@@ -1,5 +1,5 @@
-import { Token } from "../core/token";
-import { ChainId } from "../core/chain-id";
+import { Token } from "../../core/token";
+import { ChainId } from "../../core/chain-id";
 import fetch from 'isomorphic-unfetch';
 
 type TokenMap = {[tokenAddress: string]: Token};
