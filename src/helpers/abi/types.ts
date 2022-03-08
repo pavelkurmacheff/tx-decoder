@@ -1,5 +1,7 @@
+import { JsonFragment, Fragment } from "@ethersproject/abi";
+
 export interface IAbiDecoder {
-    addABI(data: object): void;
+    addABI(data: ReadonlyArray<Fragment | JsonFragment | string>): void;
     decodeMethod(data: string): IAbiDecoderResult;
 }
 

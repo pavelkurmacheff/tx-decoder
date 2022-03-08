@@ -5,7 +5,7 @@ import {abiDecoder, getParam} from '../../../helpers/abi/abi-decoder.helper';
 import oneInchRouterV4Abi from './ONEINCH_ROUTER_V4.json';
 import {IAbiDecoderResult} from '../../../helpers/abi/types';
 import {SwapExactInputPayload} from '../../../core/transaction-parsed/swap-payload';
-import PoolService from 'src/dex/1inch/pools/pool.service';
+import PoolService from 'src/protocols/1inch/pools/pool.service';
 
 abiDecoder.addABI(oneInchRouterV4Abi);
 

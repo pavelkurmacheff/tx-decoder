@@ -10,7 +10,7 @@ module.exports = {
     ],
     rules: {
         '@typescript-eslint/member-ordering': 'error',
-        'lines-between-class-members': 'error',
+        'lines-between-class-members': 0,
         'padding-line-between-statements': 'error',
         'no-unused-vars': 'off',
         'max-len': ['error', {code: 120}],

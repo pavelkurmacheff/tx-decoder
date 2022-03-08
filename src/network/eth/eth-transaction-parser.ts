@@ -1,16 +1,34 @@
 import { TransactionRaw } from "src/core/transaction-raw";
 import { TransactionRich } from "src/core/transaction-rich";
-import { ehtTransactionDecoder } from "./eth-transaction-decoder";
+import { ChainId } from "../../core/chain-id";
+import { Token } from "../../core/token";
+import { CustomTokensService } from "../../helpers/tokens/custom-tokens.service";
+import { Web3Service } from "../../helpers/web3/web3.service";
+import { loadTokensMap } from "../../utils/1inch.utils";
+import { EhtTransactionDecoder } from "./eth-transaction-decoder";
 import { NormalizationService } from "./normalization.service";
 
-class EthTransactionParser {
-    constructor(private norm: NormalizationService){}
+export class EthTransactionParser {
+    readonly decoder: EhtTransactionDecoder;
+    readonly normSvc: NormalizationService;
+
+    private constructor(result: Map<string, Token>, nodeUrl = 'https://web3-node-private.1inch.exchange/') {
+        const web3Svc = new Web3Service(nodeUrl);
+        const tokesSvc = new CustomTokensService(result, web3Svc, ChainId.Ethereum);
+        this.decoder = new EhtTransactionDecoder(nodeUrl);
+        this.normSvc = new NormalizationService(tokesSvc);
+    }
+
+    async create(): Promise<EthTransactionParser> {
+        const result = await loadTokensMap(ChainId.Ethereum);
+        return new EthTransactionParser(result);
+    }
 
     async parse(tx: TransactionRaw): Promise<TransactionRich> {
-        const parsed = ehtTransactionDecoder(tx);
+        const parsed = await this.decoder.decode(tx);
         switch(parsed.tag) {
             case 'Success':
-                return this.norm.normalize(parsed.tx);
+                return this.normSvc.normalize(parsed.tx);
                 
             case 'AnotherContract':
             case 'NotSupported':

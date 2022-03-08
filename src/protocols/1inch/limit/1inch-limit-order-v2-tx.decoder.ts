@@ -1,4 +1,5 @@
 import {DecodeResult} from '../../../core/decoder';
+import { LimitOrderFillPayload } from '../../../core/transaction-parsed/limit-order-fill-payload';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';
 import {abiDecoder, getParam} from '../../../helpers/abi/abi-decoder.helper';
@@ -64,7 +65,7 @@ function parseFillOrder(
     const takingAmount = getParam(data, 'takingAmount') as string;
     const thresholdAmount = getParam(data, 'thresholdAmount') as string | null;
 
-    const payload: any = {
+    const payload = {
         srcTokenAddress: order.takerAsset,
         dstTokenAddress: order.makerAsset,
     };
@@ -87,7 +88,7 @@ function parseFillOrder(
     };
 }
 function updateAmounts(
-    payload: any,
+    payload: LimitOrderFillPayload,
     takingAmount: string,
     makingAmount: string,
     thresholdAmount: string | null

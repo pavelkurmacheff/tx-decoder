@@ -1,7 +1,7 @@
 import {TransactionReceipt} from '@ethersproject/abstract-provider';
 import {BigNumber} from '@ethersproject/bignumber';
-import {TransactionRaw} from 'src/core/transaction-raw';
-import {TxDecoder} from '../dex/uniswap-v3/base-tx.decoder';
+import {TransactionRaw} from '../core/transaction-raw';
+import {TxDecoder} from '../protocols/uniswap-v3/base-tx.decoder';
 
 export function getDestAmountViaEstimation(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

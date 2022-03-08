@@ -1,4 +1,4 @@
-import {BlockchainRpcCaller} from '../dex/uniswap-v3/model/common.model';
+import {BlockchainRpcCaller} from '../protocols/uniswap-v3/model/common.model';
 import {
     TransactionReceipt,
     TransactionResponse,

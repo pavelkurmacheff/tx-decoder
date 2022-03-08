@@ -4,6 +4,7 @@ import { hexValue, Interface } from 'ethers/lib/utils';
 import fetch from 'isomorphic-unfetch';
 import { TransactionRaw } from '../core/transaction-raw';
 import { JsonRpcProvider } from '@ethersproject/providers';
+import { JsonFragment, Fragment } from "@ethersproject/abi";
 
 const nodeUrl = 'https://web3-node-private.1inch.exchange/';
 
@@ -65,7 +66,11 @@ export async function getTransactionReceipt(txHash: string): Promise<Transaction
     }
 }
 
-export async function runTransaction(tx: TransactionRaw, abi: any): Promise<any> {
+export async function runTransaction(
+    tx: TransactionRaw, 
+    abi: ReadonlyArray<Fragment | JsonFragment | string>
+    ): Promise<any> {
+        
     const { from, to, value, data } = tx;
     const v = hexValue(BigNumber.from(value).toHexString());
     const request = {

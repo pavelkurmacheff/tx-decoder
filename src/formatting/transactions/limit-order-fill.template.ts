@@ -1,8 +1,10 @@
-import { LimitOrderFillEstimated } from 'src/core/transaction-esimated/limit-order-fill.estimated';
 import { TransactionRaw } from 'src/core/transaction-raw';
+import { LimitOrderFillRich } from '../../core/transaction-rich/limit-order-fill';
 import { Item } from '../item';
 
-export function limitOrderFillTemplate(tx: TransactionRaw, decoded: LimitOrderFillEstimated): Item[] {
+export function limitOrderFillTemplate(tx: TransactionRaw, decoded: LimitOrderFillRich): Item[] {
+    console.log(tx, decoded);
+    
     return [
         // ******** Info
         // TODO

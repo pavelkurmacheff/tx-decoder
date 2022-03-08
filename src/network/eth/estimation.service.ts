@@ -1,6 +1,6 @@
 import { TransactionRich } from "../../core/transaction-rich";
 import { TransactionType } from "../../core/transaction-type";
-import { runTransaction } from "../../utils/1inch-web3-rpc.utils";
+import { runTransaction } from "../../helpers/oinch/1inch-web3-rpc.utils";
 
 export class EstimationService {
     async estimate(tx: TransactionRich): Promise<TransactionRich> {

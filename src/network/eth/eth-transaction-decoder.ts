@@ -1,15 +1,15 @@
-import { decodeCurveLiquidity } from '../../dex/curve/pool/curve-pool.decoder';
-import { decodeCurve } from '../../dex/curve/swap/curve.decoder';
-import { decodeERC20Token } from '../../dex/erc20-token/erc20-token-tx.decoder';
-import { decodeWrappedERC20Token } from '../../dex/wrapped-erc20-token/erc20-token-tx.decoder';
+import { decodeCurveLiquidity } from '../../protocols/curve/pool/curve-pool.decoder';
+import { decodeCurve } from '../../protocols/curve/swap/curve.decoder';
+import { decodeERC20Token } from '../../protocols/erc20-token/erc20-token-tx.decoder';
+import { decodeWrappedERC20Token } from '../../protocols/wrapped-erc20-token/erc20-token-tx.decoder';
 import {combineTxDecoders, TxDecoder} from '../../core/decoder';
-import {decode1InchLimitOrderV2} from '../../dex/1inch/limit/1inch-limit-order-v2-tx.decoder';
-import {decode1InchSwapV4} from '../../dex/1inch/swap/1inch-swap-v2-tx.decoder';
-import {decodeUniV2Like} from '../../dex/uniswap-v2-like/uniswap-v2-tx.decoder';
-import {decodeUniV3} from '../../dex/uniswap-v3/uniswap-v3-tx.decoder';
+import {decode1InchLimitOrderV2} from '../../protocols/1inch/limit/1inch-limit-order-v2-tx.decoder';
+import {decode1InchSwapV4} from '../../protocols/1inch/swap/1inch-swap-v2-tx.decoder';
+import {decodeUniV2Like} from '../../protocols/uniswap-v2-like/uniswap-v2-tx.decoder';
+import {decodeUniV3} from '../../protocols/uniswap-v3/uniswap-v3-tx.decoder';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Web3Service } from '../../helpers/web3/web3.service';
-import PoolService from '../../dex/1inch/pools/pool.service';
+import PoolService from '../../protocols/1inch/pools/pool.service';
 
 export class EhtTransactionDecoder {
     readonly decode: TxDecoder;

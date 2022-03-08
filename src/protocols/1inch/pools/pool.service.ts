@@ -24,7 +24,7 @@ export default class PoolService {
     constructor(private web3Service: Web3Service) {}
 
     // 1inch unoswap
-    async getDestTokenAddress(poolData: string) {
+    async getDestTokenAddress(poolData: string): Promise<string> {
         const poolInfo = BigInt(poolData).toString(16);
         const poolFlags = poolInfo.slice(0, 2);
         const isReverseFlag = [REVERSE_AND_UNWRAP_FLAG, REVERSE_FLAG].includes(

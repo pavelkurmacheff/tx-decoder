@@ -1,6 +1,6 @@
 import { getTransactionByHash, runTransaction } from "./1inch-web3-rpc.utils";
-import { TransactionRaw } from "../core/transaction-raw";
-import UniswapRouterV2BI from '../dex/uniswap-v3/UNI3_ROUTER_V2.json';
+import { TransactionRaw } from "../../core/transaction-raw";
+import UniswapRouterV2BI from '../../protocols/uniswap-v3/UNI3_ROUTER_V2.json';
 import { BigNumber } from "ethers";
 import { Interface } from "ethers/lib/utils";
 
@@ -14,7 +14,6 @@ describe('Transaction logs test', () => {
 
     it('est', async () => {
         const iface = new Interface(UniswapRouterV2BI);
-        // iface.encodeFunctionData('swapExactTokensForTokens', )
         
         const tx: TransactionRaw = {
             nonce: 366,
@@ -27,9 +26,10 @@ describe('Transaction logs test', () => {
         };
         try {
             const result = await runTransaction(tx, UniswapRouterV2BI);
-            expect(result).toBeDefined();;
-        } catch {
-
+            expect(result).toBeDefined();
+            iface.decodeFunctionResult('swapExactTokensForTokens', result);
+        } catch(e: unknown) {
+            console.log(e);
         }
     });
 });

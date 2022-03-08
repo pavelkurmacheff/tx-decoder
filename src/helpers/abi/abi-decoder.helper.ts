@@ -1,5 +1,6 @@
 import {IAbiDecoder, IAbiDecoderParam, IAbiDecoderResult} from './types';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const abiDecoder: IAbiDecoder = require('abi-decoder');
 
 function getParam(r: IAbiDecoderResult, name: string): null | string | string[] {

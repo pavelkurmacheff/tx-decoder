@@ -1,4 +1,4 @@
-import {loadTokensMap} from '../../utils/1inch.utils';
+import {loadTokensMap} from '../../helpers/oinch/1inch.utils';
 import {ChainId} from '../../core/chain-id';
 import {Web3Service} from '../../helpers/web3/web3.service';
 import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
@@ -7,11 +7,9 @@ import {BigNumber} from 'ethers';
 import {TransactionRaw} from '../../core/transaction-raw';
 import {EhtTransactionDecoder} from './eth-transaction-decoder';
 import {TransactionType} from '../../core/transaction-type';
-import PoolService from '../../dex/1inch/pools/pool.service';
 
 describe('NormalizationService test', () => {
     let tokesSvc: CustomTokensService;
-    let poolSvc: PoolService;
     let decoder: EhtTransactionDecoder;
     
     beforeAll(async () => {
@@ -20,7 +18,6 @@ describe('NormalizationService test', () => {
         const result = await loadTokensMap(chain);
         const web3Svc = new Web3Service(nodeUrl);
         tokesSvc = new CustomTokensService(result, web3Svc, chain);
-        poolSvc = new PoolService(web3Svc);
         decoder = new EhtTransactionDecoder(nodeUrl);
     });
 

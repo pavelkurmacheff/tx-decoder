@@ -182,7 +182,7 @@ describe('decode1InchSwapV4', () => {
         expect(result).toBeDefined();
         expect(result.tag).toBe('Success');
 
-        const parsedTx = result.tx as {
+        const parsedTx = (result.tx as unknown) as {
             tag: TransactionType.SwapThroughPool;
             payload: SwapThroughPoolPayload;
         };

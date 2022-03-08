@@ -1,4 +1,4 @@
-import { TransactionEstimated } from "../core/transaction-estimated";
+import { TransactionRich } from "../core/transaction-rich";
 import { TransactionType } from "../core/transaction-type";
 import { Item } from "./item";
 import { approveTxConfirmTemplate } from "./transactions/approve-tx-confirm.template";
@@ -6,8 +6,8 @@ import { limitOrderFillTemplate } from "./transactions/limit-order-fill.template
 import { swapTxConfirmTemplate as swapExactInTxConfirmTemplate } from "./transactions/swap-exact-input.template";
 import { swapExactOutTxConfirmTemplate } from "./transactions/swap-exact-output.template";
 
-class TransactionFormatterService {
-    format(tx: TransactionEstimated): Item[] {
+export class TransactionFormatterService {
+    format(tx: TransactionRich): Item[] {
         switch(tx.tag) {
             case TransactionType.Approve:
                 if (tx.payload) {
@@ -15,8 +15,6 @@ class TransactionFormatterService {
                 } else {
                     return [];
                 }
-            case TransactionType.Approve:
-                return [];
             case TransactionType.Unwrap:
                 return [];
             case TransactionType.SwapExactInput:
@@ -38,8 +36,6 @@ class TransactionFormatterService {
                             } else {
                                 return [];
                             }
-                        case TransactionType.Approve:
-                            return [];
                         case TransactionType.Unwrap:
                             return [];
                         case TransactionType.SwapExactInput:
@@ -52,11 +48,23 @@ class TransactionFormatterService {
                             return [];
                         case TransactionType.Multicall:
                             throw 'Nested multicalls not supported yet';
+                        case TransactionType.AddLiquidity:
+                        case TransactionType.RemoveLiquidity:
+                        case TransactionType.Deposit:
+                        case TransactionType.Withdraw:
+                        case TransactionType.Transfer:
+                            throw 'unimplemented';
                     }
                 });
 
                 return (multicallItems.flat() as unknown) as Item[];
             }
+            case TransactionType.AddLiquidity:
+            case TransactionType.RemoveLiquidity:
+            case TransactionType.Deposit:
+            case TransactionType.Withdraw:
+            case TransactionType.Transfer:
+                throw 'unimplemented';
                     
         }
     }

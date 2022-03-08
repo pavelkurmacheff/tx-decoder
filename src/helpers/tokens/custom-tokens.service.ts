@@ -11,7 +11,7 @@ import {ChainId} from '../../core/chain-id';
 
 export class CustomTokensService {
     constructor(
-        private cache: Map<String, Token>,
+        private cache: Map<string, Token>,
         private web3Service: Web3Service, 
         readonly chainId: ChainId) {
 

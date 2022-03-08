@@ -1,3 +1,4 @@
+import { JsonFragment, Fragment } from "@ethersproject/abi";
 import { DecodeResult } from '../../../core/decoder';
 import { TransactionType } from '../../../core/transaction-type';
 import { TransactionRaw } from '../../../core/transaction-raw';
@@ -10,10 +11,15 @@ import Curve2_V3 from './CURVE_POOL_2_V03.json';
 import { Interface } from 'ethers/lib/utils';
 import { JsonRpcProvider } from '@ethersproject/providers';
 
-abiDecoder.addABI(Curve2); // https://etherscan.io/address/0xc4c319e2d4d66cca4464c0c2b32c9bd23ebe784e
-abiDecoder.addABI(Curve3);
-abiDecoder.addABI(Curve4);
-abiDecoder.addABI(Curve2_V3); // https://etherscan.io/address/0xb576491f1e6e5e62f1d8f26062ee822b40b0e0d4
+// https://etherscan.io/address/0xc4c319e2d4d66cca4464c0c2b32c9bd23ebe784e
+abiDecoder.addABI(Curve2 as ReadonlyArray<Fragment | JsonFragment | string>); 
+
+abiDecoder.addABI(Curve3 as ReadonlyArray<Fragment | JsonFragment | string>);
+
+abiDecoder.addABI(Curve4 as ReadonlyArray<Fragment | JsonFragment | string>);
+
+// https://etherscan.io/address/0xb576491f1e6e5e62f1d8f26062ee822b40b0e0d4
+abiDecoder.addABI(Curve2_V3); 
 
 export async function decodeCurveLiquidity(rpc: JsonRpcProvider, tx: TransactionRaw): Promise<DecodeResult> {
     const rootFunc: IAbiDecoderResult = abiDecoder.decodeMethod(tx.data);
@@ -21,7 +27,7 @@ export async function decodeCurveLiquidity(rpc: JsonRpcProvider, tx: Transaction
         name: rootFunc.name,
         hash: tx.data.slice(0, 10).toLowerCase(),
         params: rootFunc.params,
-        abi: Curve2,
+        abi: Curve2 as ReadonlyArray<Fragment | JsonFragment | string>,
     };
 
     switch(rootFunc.name) {

@@ -1,3 +1,4 @@
+import { JsonFragment, Fragment } from "@ethersproject/abi";
 import { DecodeResult } from '../../../core/decoder';
 import { TransactionType } from '../../../core/transaction-type';
 import { TransactionRaw } from '../../../core/transaction-raw';
@@ -6,7 +7,7 @@ import { IAbiDecoderResult } from '../../../helpers/abi/types';
 import ERC20ABI from '../../../core/abi/ERC20ABI.json';
 import Curve from './CURVE.json';
 
-abiDecoder.addABI(Curve);
+abiDecoder.addABI(Curve as ReadonlyArray<Fragment | JsonFragment | string>);
 abiDecoder.addABI(ERC20ABI);
 
 export function decodeCurve(contractAddr: string, tx: TransactionRaw): DecodeResult {
@@ -19,7 +20,7 @@ export function decodeCurve(contractAddr: string, tx: TransactionRaw): DecodeRes
         name: rootFunc.name,
         hash: tx.data.slice(0, 10).toLowerCase(),
         params: rootFunc.params,
-        abi: Curve,
+        abi: Curve  as ReadonlyArray<Fragment | JsonFragment | string>,
     };
 
     switch(rootFunc.name) {

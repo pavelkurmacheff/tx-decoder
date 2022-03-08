@@ -1,6 +1,6 @@
 import { combineTxDecoders, DecodeResult, TxDecoder } from "src/core/decoder";
 import { TransactionRaw } from "src/core/transaction-raw";
-import { decodeUniV2Like } from "src/dex/uniswap-v2-like/uniswap-v2-tx.decoder";
+import { decodeUniV2Like } from "src/protocols/uniswap-v2-like/uniswap-v2-tx.decoder";
 
 
 // Pancake

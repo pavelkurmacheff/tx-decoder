@@ -1,5 +1,5 @@
 import { BigNumber } from "ethers";
-import { oinctRpcProvider } from "../../../utils/1inch-web3-rpc.utils";
+import { oinctRpcProvider } from "../../../helpers/oinch/1inch-web3-rpc.utils";
 import { TransactionRaw } from "../../../core/transaction-raw";
 import { decodeCurveLiquidity } from "./curve-pool.decoder";
 import { RemoveLiquidityPayload } from "../../../core/transaction-parsed/remove-liquidity-payload";

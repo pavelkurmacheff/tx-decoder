@@ -1,10 +1,9 @@
-import {loadTokensMap} from '../../utils/1inch.utils';
+import {loadTokensMap} from '../../helpers/oinch/1inch.utils';
 import {ChainId} from '../../core/chain-id';
 import {Web3Service} from '../../helpers/web3/web3.service';
 import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
 import {NormalizationService} from './normalization.service';
 import {EstimationService} from './estimation.service';
-import PoolService from '../../dex/1inch/pools/pool.service';
 import { TransactionRaw } from '../../core/transaction-raw';
 import { BigNumber } from 'ethers';
 import { EhtTransactionDecoder } from './eth-transaction-decoder';
@@ -20,8 +19,7 @@ describe('EstimationService test', () => {
         const result = await loadTokensMap(chain);
         const web3Svc = new Web3Service(nodeUrl);
         const tokesSvc = new CustomTokensService(result, web3Svc, chain);
-        const poolSvc = new PoolService(web3Svc);
-        normSvc = new NormalizationService(tokesSvc, poolSvc);
+        normSvc = new NormalizationService(tokesSvc);
         estSvc = new EstimationService();
         decoder = new EhtTransactionDecoder(nodeUrl);
     });

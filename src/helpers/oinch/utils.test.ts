@@ -1,4 +1,4 @@
-import { ChainId } from "../core/chain-id";
+import { ChainId } from "../../core/chain-id";
 import { loadTokens, loadTokensMap, loadTokensPrice, loadTokensPriceMap } from "./1inch.utils";
 
 const OInchAddr = '0x111111111117dc0aa78b770fa6a738034120c302';

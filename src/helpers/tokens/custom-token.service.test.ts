@@ -1,4 +1,4 @@
-import { loadTokensMap } from "../../utils/1inch.utils";
+import { loadTokensMap } from "../oinch/1inch.utils";
 import { ChainId } from "../../core/chain-id";
 import { Web3Service } from "../web3/web3.service";
 import { CustomTokensService } from "./custom-tokens.service";
