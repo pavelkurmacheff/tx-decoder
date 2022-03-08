@@ -1,4 +1,5 @@
-import { BigNumber } from 'ethers';
+import {BigNumber} from 'ethers';
+import { AddLiquidityPayload } from './transaction-parsed/add-liquidity-payload';
 import {ApproveTxPayload} from './transaction-parsed/approve-payload';
 import {LimitOrderFillPayload} from './transaction-parsed/limit-order-fill-payload';
 import {
@@ -12,15 +13,15 @@ import {TransactionRaw} from './transaction-raw';
 import {TransactionType} from './transaction-type';
 
 export interface EstimationResp {
-    returnAmount: BigNumber,
+    returnAmount: BigNumber;
 }
 
 export interface FunctionInfo {
-    name: string,
-    hash: string,
-    params: unknown,
-    abi: unknown,
-    responseParser?: (data: unknown) => EstimationResp
+    name: string;
+    hash: string;
+    params: unknown;
+    abi: unknown;
+    responseParser?: (data: unknown) => EstimationResp;
 }
 
 export type TransactionParsed =
@@ -87,6 +88,12 @@ export type TransactionParsed =
           functionInfo: FunctionInfo;
           tag: TransactionType.SwapThroughPool;
           payload: SwapThroughPoolPayload;
+      }
+    | {
+          raw: TransactionRaw;
+          functionInfo: FunctionInfo;
+          tag: TransactionType.AddLiquidity;
+          payload: AddLiquidityPayload;
       };
 
 export type MulticallPayload = (

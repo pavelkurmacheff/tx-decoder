@@ -2,7 +2,8 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract
 import { BigNumber } from 'ethers';
 import { hexValue, Interface } from 'ethers/lib/utils';
 import fetch from 'isomorphic-unfetch';
-import { TransactionRaw } from 'src/core/transaction-raw';
+import { TransactionRaw } from '../core/transaction-raw';
+import { JsonRpcProvider } from '@ethersproject/providers';
 
 const nodeUrl = 'https://web3-node-private.1inch.exchange/';
 
@@ -19,7 +20,7 @@ function callRpc<T>(method: string, params: unknown[]): Promise<RpcResponse<T>> 
             method: 'POST',
             headers: {
                 'content-type': 'application/json',
-                'referer': 'http://localhost:4200/',
+                // 'referer': 'http://localhost:4200/',
                 'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) ' +
                     'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
             },
@@ -84,3 +85,5 @@ export async function runTransaction(tx: TransactionRaw, abi: any): Promise<any>
     const res = iface.decodeFunctionResult(methodSelector, r.data);
     return res;
 }
+
+export const oinctRpcProvider = new JsonRpcProvider(nodeUrl);

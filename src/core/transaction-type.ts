@@ -10,4 +10,5 @@ export enum TransactionType {
     LimitOrderFill,
     LimitOrderCancel,
     Multicall,
+    AddLiquidity,
 }

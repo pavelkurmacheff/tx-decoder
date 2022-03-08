@@ -19,7 +19,7 @@
 
 ### Deposit / Withdraw
 
--   [ ] Deposit / Withdraw ERC20
+-   [x] Deposit / Withdraw (wrapped tokens) ERC20 
 -   [ ] 1inch Liquidity Porotocol Deposit / Withdraw
 -   [ ] Uniswap V2 Deposit / Withdraw
 -   [ ] Uniswap V3 Deposit / Withdraw

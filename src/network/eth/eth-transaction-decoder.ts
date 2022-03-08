@@ -1,5 +1,7 @@
-import { decodeERC20Token } from 'src/dex/erc20-token/erc20-token-tx.decoder';
-import { decodeWrappedERC20Token } from 'src/dex/wrapped-erc20-token/erc20-token-tx.decoder';
+import { decodeCurveLiquidity } from '../../dex/curve/pool/curve-pool.decoder';
+import { decodeCurve } from '../../dex/curve/swap/curve.decoder';
+import { decodeERC20Token } from '../../dex/erc20-token/erc20-token-tx.decoder';
+import { decodeWrappedERC20Token } from '../../dex/wrapped-erc20-token/erc20-token-tx.decoder';
 import {combineTxDecoders, TxDecoder} from '../../core/decoder';
 import {decode1InchLimitOrderV2} from '../../dex/1inch/limit/1inch-limit-order-v2-tx.decoder';
 import {decode1InchSwapV4} from '../../dex/1inch/swap/1inch-swap-v2-tx.decoder';
@@ -27,6 +29,15 @@ export const ehtTransactionDecoder: TxDecoder = combineTxDecoders([
     // WETH
     // https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
     (tx) => decodeWrappedERC20Token('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', tx),
+
+    // Curve swap 
+    // https://etherscan.io/address/0xfa9a30350048b2bf66865ee20363067c66f67e58
+    // https://curve.fi/ 
+    (tx) => decodeCurve('0xfA9a30350048B2BF66865ee20363067c66f67e58', tx),
+
+    // Curve swap via specific pool
+    // List of pools: https://curve.fi/pools
+    decodeCurveLiquidity,
     
     (tx) => decodeERC20Token(tx),
 ]);

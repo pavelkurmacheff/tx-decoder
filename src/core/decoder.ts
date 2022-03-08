@@ -7,22 +7,28 @@ export type DecodeResult<Tx = TransactionParsed> =
     | {tag: 'NotSupported'; funcName: string}
     | {tag: 'Success'; tx: Tx};
 
-export type TxDecoder = (tx: TransactionRaw) => DecodeResult;
+export type TxDecoder = (tx: TransactionRaw) => DecodeResult | Promise<DecodeResult>;
 
 export function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
-    return (tx) => {
+    return async (tx) => {
         let res: DecodeResult | null = null;
         for (const d of decoders) {
             if (res != null) {
                 break;
             }
 
+            let decodeRes: DecodeResult;
             const r = d(tx);
-            switch (r.tag) {
+            if(isPromise(r)) {
+                decodeRes = await r;
+            } else {
+                decodeRes = r as DecodeResult;
+            }
+            switch (decodeRes.tag) {
                 case 'AnotherContract':
                     break;
                 default:
-                    res = r;
+                    res = decodeRes;
                     break;
             }
         }
@@ -33,4 +39,8 @@ export function combineTxDecoders(decoders: TxDecoder[]): TxDecoder {
 
         return {tag: 'AnotherContract'};
     };
+}
+
+function isPromise(promise: any) {  
+    return !!promise && typeof promise.then === 'function'
 }
