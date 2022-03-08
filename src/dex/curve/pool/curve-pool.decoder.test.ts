@@ -2,6 +2,9 @@ import { BigNumber } from "ethers";
 import { oinctRpcProvider } from "../../../utils/1inch-web3-rpc.utils";
 import { TransactionRaw } from "../../../core/transaction-raw";
 import { decodeCurveLiquidity } from "./curve-pool.decoder";
+import { RemoveLiquidityPayload } from "../../../core/transaction-parsed/remove-liquidity-payload";
+import { TransactionType } from "../../../core/transaction-type";
+import { TransactionParsed } from "../../../core/transaction-parsed";
 
 describe('Curve pool test', () => {
     it('swap via pool (3 coins)', async () => {
@@ -47,5 +50,26 @@ describe('Curve pool test', () => {
         const result = await decodeCurveLiquidity(oinctRpcProvider, tx);
         expect(result.tag).toEqual('Success');
         expect((result as any).tx.payload.tokenAmount).toHaveLength(2);
+    });
+
+    it('remove liquidity from pool (2 coins)', async () => {
+        const tx: TransactionRaw = {
+            data: '0x269b55810000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001',
+            from: '0x6e797B975B99a20d539786e5c4a32218a3d6d80E',
+            to: '0xB576491F1E6e5E62f1d8F26062Ee822B40B0E0d4',
+            gasLimit: BigNumber.from('0x2c137'),
+            gasPrice: BigNumber.from('0x163F29F8A1'),
+            value: '30000000000000000'
+        };
+
+        const result = await decodeCurveLiquidity(oinctRpcProvider, tx);
+        expect(result.tag).toBe('Success');
+        
+        const parsedTx = (result as {tag: 'Success'; tx: TransactionParsed}).tx as {
+            tag: TransactionType.RemoveLiquidity;
+            payload: RemoveLiquidityPayload;
+        }
+
+        expect(parsedTx.payload.lpAmount).toEqual('0');
     });
 });

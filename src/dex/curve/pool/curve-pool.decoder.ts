@@ -6,12 +6,14 @@ import { IAbiDecoderResult } from '../../../helpers/abi/types';
 import Curve2 from './CURVE_POOL_2.json';
 import Curve3 from './CURVE_POOL_3.json';
 import Curve4 from './CURVE_POOL_4.json';
+import Curve2_V3 from './CURVE_POOL_2_V03.json';
 import { Interface } from 'ethers/lib/utils';
 import { JsonRpcProvider } from '@ethersproject/providers';
 
-abiDecoder.addABI(Curve2);
+abiDecoder.addABI(Curve2); // https://etherscan.io/address/0xc4c319e2d4d66cca4464c0c2b32c9bd23ebe784e
 abiDecoder.addABI(Curve3);
 abiDecoder.addABI(Curve4);
+abiDecoder.addABI(Curve2_V3); // https://etherscan.io/address/0xb576491f1e6e5e62f1d8f26062ee822b40b0e0d4
 
 export async function decodeCurveLiquidity(rpc: JsonRpcProvider, tx: TransactionRaw): Promise<DecodeResult> {
     const rootFunc: IAbiDecoderResult = abiDecoder.decodeMethod(tx.data);
@@ -51,7 +53,6 @@ export async function decodeCurveLiquidity(rpc: JsonRpcProvider, tx: Transaction
                 }
             };
         }
-
         case 'add_liquidity': {
             const amounts = getParam(rootFunc, '_amounts') as string[] | null;
             const minMints = getParam(rootFunc, '_min_mint_amount') as string | null;
@@ -83,7 +84,24 @@ export async function decodeCurveLiquidity(rpc: JsonRpcProvider, tx: Transaction
             };
         }
         case 'remove_liquidity': {
-            throw 'TODO';
+            const amount = getParam(rootFunc, '_amount') as string | null;
+            const minAmounts = getParam(rootFunc, 'min_amounts') as string[] | null;
+
+            if (!amount || !minAmounts) {
+                return { tag: 'AnotherContract' };
+            }
+
+            return { 
+                tag: 'Success',
+                tx: {
+                    tag: TransactionType.RemoveLiquidity,
+                    functionInfo,
+                    raw: tx,
+                    payload: {
+                        lpAmount: amount
+                    }
+                }
+            };
         }
         
         default:

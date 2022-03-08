@@ -1,7 +1,8 @@
 import {BigNumber} from 'ethers';
-import { AddLiquidityPayload } from './transaction-parsed/add-liquidity-payload';
+import {AddLiquidityPayload} from './transaction-parsed/add-liquidity-payload';
 import {ApproveTxPayload} from './transaction-parsed/approve-payload';
 import {LimitOrderFillPayload} from './transaction-parsed/limit-order-fill-payload';
+import {RemoveLiquidityPayload} from './transaction-parsed/remove-liquidity-payload';
 import {
     SwapExactInputPayload,
     SwapExactOutputPayload,
@@ -86,14 +87,14 @@ export type TransactionParsed =
     | {
           raw: TransactionRaw;
           functionInfo: FunctionInfo;
-          tag: TransactionType.SwapThroughPool;
-          payload: SwapThroughPoolPayload;
+          tag: TransactionType.AddLiquidity;
+          payload: AddLiquidityPayload;
       }
     | {
           raw: TransactionRaw;
           functionInfo: FunctionInfo;
-          tag: TransactionType.AddLiquidity;
-          payload: AddLiquidityPayload;
+          tag: TransactionType.RemoveLiquidity;
+          payload: RemoveLiquidityPayload;
       };
 
 export type MulticallPayload = (

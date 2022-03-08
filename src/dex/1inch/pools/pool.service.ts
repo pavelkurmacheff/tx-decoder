@@ -2,8 +2,8 @@ import {
     NATIVE_TOKEN_ADDRESS,
     TOKEN0_POOL_SELECTOR,
     TOKEN1_POOL_SELECTOR,
-} from '../../core/const/common.const';
-import {Web3Service} from '../web3/web3.service';
+} from '../../../core/const/common.const';
+import {Web3Service} from '../../../helpers/web3/web3.service';
 
 const REVERSE_AND_UNWRAP_FLAG = 'c0';
 const REVERSE_AND_WRAP_FLAG = 'a0';
@@ -25,8 +25,7 @@ export default class PoolService {
 
     // 1inch unoswap
     async getDestTokenAddress(poolData: string) {
-        const poolInfo = poolData.replace('0x', '');
-
+        const poolInfo = BigInt(poolData).toString(16);
         const poolFlags = poolInfo.slice(0, 2);
         const isReverseFlag = [REVERSE_AND_UNWRAP_FLAG, REVERSE_FLAG].includes(
             poolFlags

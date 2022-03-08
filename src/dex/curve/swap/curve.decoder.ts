@@ -1,9 +1,9 @@
-import { DecodeResult } from '../../core/decoder';
-import { TransactionType } from '../../core/transaction-type';
-import { TransactionRaw } from '../../core/transaction-raw';
-import { abiDecoder, getParam } from '../../helpers/abi/abi-decoder.helper';
-import { IAbiDecoderResult } from '../../helpers/abi/types';
-import ERC20ABI from '../../core/abi/ERC20ABI.json';
+import { DecodeResult } from '../../../core/decoder';
+import { TransactionType } from '../../../core/transaction-type';
+import { TransactionRaw } from '../../../core/transaction-raw';
+import { abiDecoder, getParam } from '../../../helpers/abi/abi-decoder.helper';
+import { IAbiDecoderResult } from '../../../helpers/abi/types';
+import ERC20ABI from '../../../core/abi/ERC20ABI.json';
 import Curve from './CURVE.json';
 
 abiDecoder.addABI(Curve);

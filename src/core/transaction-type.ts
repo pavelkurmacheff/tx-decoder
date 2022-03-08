@@ -6,9 +6,9 @@ export enum TransactionType {
     Unwrap,
     SwapExactInput,
     SwapExactOutput,
-    SwapThroughPool,
     LimitOrderFill,
     LimitOrderCancel,
     Multicall,
     AddLiquidity,
+    RemoveLiquidity,
 }

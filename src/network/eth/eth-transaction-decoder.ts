@@ -7,37 +7,53 @@ import {decode1InchLimitOrderV2} from '../../dex/1inch/limit/1inch-limit-order-v
 import {decode1InchSwapV4} from '../../dex/1inch/swap/1inch-swap-v2-tx.decoder';
 import {decodeUniV2Like} from '../../dex/uniswap-v2-like/uniswap-v2-tx.decoder';
 import {decodeUniV3} from '../../dex/uniswap-v3/uniswap-v3-tx.decoder';
+import { JsonRpcProvider } from '@ethersproject/providers';
+import { Web3Service } from '../../helpers/web3/web3.service';
+import PoolService from '../../dex/1inch/pools/pool.service';
 
-export const ehtTransactionDecoder: TxDecoder = combineTxDecoders([
-    // Uniswap V2
-    // https://etherscan.io/address/0x7a250d5630b4cf539739df2c5dacb4c659f2488d
-    (tx) => decodeUniV2Like('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', tx),
-    // Uniswap V3
-    // https://etherscan.io/address/0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45
-    (tx) => decodeUniV3('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', tx),
-    // 1inch limit order V2
-    // https://etherscan.io/address/0x119c71d3bbac22029622cbaec24854d3d32d2828,
-    (tx) =>
-        decode1InchLimitOrderV2(
-            '0x119c71d3bbac22029622cbaec24854d3d32d2828',
-            tx
-        ),
-    // 1inch swap V4
-    // https://etherscan.io/address/0x1111111254fb6c44bac0bed2854e76f90643097d
-    (tx) => decode1InchSwapV4('0x1111111254fb6c44bac0bed2854e76f90643097d', tx),
+export class EhtTransactionDecoder {
+    readonly decode: TxDecoder;
 
-    // WETH
-    // https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
-    (tx) => decodeWrappedERC20Token('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', tx),
+    constructor(nodeUrl = 'https://web3-node-private.1inch.exchange/') {
+        const oinctRpcProvider = new JsonRpcProvider(nodeUrl);
+        const web3Svc = new Web3Service(nodeUrl);
+        const poolService = new PoolService(web3Svc);
 
-    // Curve swap 
-    // https://etherscan.io/address/0xfa9a30350048b2bf66865ee20363067c66f67e58
-    // https://curve.fi/ 
-    (tx) => decodeCurve('0xfA9a30350048B2BF66865ee20363067c66f67e58', tx),
-
-    // Curve swap via specific pool
-    // List of pools: https://curve.fi/pools
-    decodeCurveLiquidity,
+        this.decode = combineTxDecoders([
+            // Uniswap V2
+            // https://etherscan.io/address/0x7a250d5630b4cf539739df2c5dacb4c659f2488d
+            (tx) => decodeUniV2Like('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', tx),
+            // Uniswap V3
+            // https://etherscan.io/address/0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45
+            (tx) => decodeUniV3('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', tx),
+            // 1inch limit order V2
+            // https://etherscan.io/address/0x119c71d3bbac22029622cbaec24854d3d32d2828,
+            (tx) =>
+                decode1InchLimitOrderV2(
+                    '0x119c71d3bbac22029622cbaec24854d3d32d2828',
+                    tx
+                ),
+            // 1inch swap V4
+            // https://etherscan.io/address/0x1111111254fb6c44bac0bed2854e76f90643097d
+            (tx) => decode1InchSwapV4(poolService, '0x1111111254fb6c44bac0bed2854e76f90643097d', tx),
     
-    (tx) => decodeERC20Token(tx),
-]);
+            // WETH
+            // https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
+            (tx) => decodeWrappedERC20Token('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', tx),
+    
+            // Curve swap 
+            // https://etherscan.io/address/0xfa9a30350048b2bf66865ee20363067c66f67e58
+            // https://curve.fi/ 
+            (tx) => decodeCurve('0xfA9a30350048B2BF66865ee20363067c66f67e58', tx),
+    
+            // Curve swap via specific pool
+            // List of pools: https://curve.fi/pools
+            (tx) => decodeCurveLiquidity(oinctRpcProvider, tx),
+            
+            // ERC20, parses any ERC20 call
+            // https://ethereum.org/en/developers/docs/standards/tokens/erc-20/ 
+            (tx) => decodeERC20Token(tx),
+        ]);        
+    }
+
+}

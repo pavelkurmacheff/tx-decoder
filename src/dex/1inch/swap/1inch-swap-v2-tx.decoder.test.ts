@@ -2,13 +2,25 @@ import {BigNumber} from 'ethers';
 import {
     SwapExactInputPayload,
     SwapThroughPoolPayload,
-} from 'src/core/transaction-parsed/swap-payload';
+} from '../../../core/transaction-parsed/swap-payload';
+import PoolService from '../pools/pool.service';
+import { Web3Service } from '../../../helpers/web3/web3.service';
 import {TransactionParsed} from '../../../core/transaction-parsed';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';
 import {decode1InchSwapV4} from './1inch-swap-v2-tx.decoder';
 
+const nodeUrl = 'https://web3-node-private.1inch.exchange/';
+
 describe('decode1InchSwapV4', () => {
+    let poolService: PoolService;
+
+    beforeAll(() => {
+        const web3Svc = new Web3Service(nodeUrl);
+        poolService = new PoolService(web3Svc);
+    });
+
+
     // https://etherscan.io/tx/0xc8ca8e6f65e3885f2d925f33aae797bbe6d61cafb22853ecc4c803c10a101e44
     it('clipperSwap', async () => {
         const tx: TransactionRaw = {
@@ -19,7 +31,8 @@ describe('decode1InchSwapV4', () => {
             to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
             value: '0',
         };
-        const result = decode1InchSwapV4(
+        const result = await decode1InchSwapV4(
+            poolService,
             '0x1111111254fb6c44bac0bed2854e76f90643097d',
             tx
         ) as {tag: 'Success'; tx: TransactionParsed};
@@ -53,7 +66,8 @@ describe('decode1InchSwapV4', () => {
             to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
             value: '0',
         };
-        const result = decode1InchSwapV4(
+        const result = await decode1InchSwapV4(
+            poolService,
             '0x1111111254fb6c44bac0bed2854e76f90643097d',
             tx
         ) as {tag: 'Success'; tx: TransactionParsed};
@@ -62,20 +76,18 @@ describe('decode1InchSwapV4', () => {
         expect(result.tag).toBe('Success');
 
         const parsedTx = result.tx as {
-            tag: TransactionType.SwapThroughPool;
-            payload: SwapThroughPoolPayload;
+            tag: TransactionType.SwapExactInput;
+            payload: SwapExactInputPayload;
         };
 
-        expect(parsedTx.tag).toBe(TransactionType.SwapThroughPool);
+        expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);
         expect(parsedTx.payload).toBeDefined();
 
         expect(parsedTx.payload).toEqual({
             srcTokenAddress: '0x0000000000000000000000000000000000000000',
+            dstTokenAddress:'0x990f341946a3fdb507ae7e52d17851b87168017c',
             srcAmount: '180000000000000000',
             minDstAmount: '2223779374676303113',
-            poolAddressess: [
-                '0x80000000000000003b6d0340c0bf97bffa94a50502265c579a3b7086d081664b',
-            ],
         });
     });
 
@@ -90,7 +102,8 @@ describe('decode1InchSwapV4', () => {
             to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
             value: '0',
         };
-        const result = decode1InchSwapV4(
+        const result = await decode1InchSwapV4(
+            poolService,
             '0x1111111254fb6c44bac0bed2854e76f90643097d',
             tx
         ) as {tag: 'Success'; tx: TransactionParsed};
@@ -99,20 +112,18 @@ describe('decode1InchSwapV4', () => {
         expect(result.tag).toBe('Success');
 
         const parsedTx = result.tx as {
-            tag: TransactionType.SwapThroughPool;
-            payload: SwapThroughPoolPayload;
+            tag: TransactionType.SwapExactInput;
+            payload: SwapExactInputPayload;
         };
 
-        expect(parsedTx.tag).toBe(TransactionType.SwapThroughPool);
+        expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);
         expect(parsedTx.payload).toBeDefined();
 
         expect(parsedTx.payload).toEqual({
             srcTokenAddress: '0x19042021329fddcfbea5f934fb5b2670c91f7d20',
+            dstTokenAddress:'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
             srcAmount: '100000',
             minDstAmount: '224171088701284',
-            poolAddressess: [
-                '0x40000000000000003b6d0340ec9eb7af42207a8da12a04ee4b2f2b4b9cb43bd5',
-            ],
         });
     });
 
@@ -126,7 +137,8 @@ describe('decode1InchSwapV4', () => {
             to: '0x1111111254fb6c44bac0bed2854e76f90643097d',
             value: '0',
         };
-        const result = decode1InchSwapV4(
+        const result = await decode1InchSwapV4(
+            poolService,
             '0x1111111254fb6c44bac0bed2854e76f90643097d',
             tx
         ) as {tag: 'Success'; tx: TransactionParsed};
@@ -161,7 +173,8 @@ describe('decode1InchSwapV4', () => {
             value: '0',
         };
 
-        const result = decode1InchSwapV4(
+        const result = await decode1InchSwapV4(
+            poolService,
             '0x1111111254fb6c44bac0bed2854e76f90643097d',
             tx
         ) as {tag: 'Success'; tx: TransactionParsed};
@@ -174,15 +187,14 @@ describe('decode1InchSwapV4', () => {
             payload: SwapThroughPoolPayload;
         };
 
-        expect(parsedTx.tag).toBe(TransactionType.SwapThroughPool);
+        expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);
         expect(parsedTx.payload).toBeDefined();
 
         expect(parsedTx.payload).toEqual({
+            srcTokenAddress:'0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+            dstTokenAddress:'0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
             srcAmount: '140000000000',
             minDstAmount: '51259261312670570032',
-            poolAddressess: [
-                '14474011154664524427946373126867554402161832605793805858616410165020352009792',
-            ],
         });
     });
 
@@ -197,7 +209,8 @@ describe('decode1InchSwapV4', () => {
             value: '0',
         };
 
-        const result = decode1InchSwapV4(
+        const result = await decode1InchSwapV4(
+            poolService,
             '0x1111111254fb6c44bac0bed2854e76f90643097d',
             tx
         ) as {tag: 'Success'; tx: TransactionParsed};
@@ -210,16 +223,14 @@ describe('decode1InchSwapV4', () => {
             payload: SwapThroughPoolPayload;
         };
 
-        expect(parsedTx.tag).toBe(TransactionType.SwapThroughPool);
+        expect(parsedTx.tag).toBe(TransactionType.SwapExactInput);
         expect(parsedTx.payload).toBeDefined();
 
         expect(parsedTx.payload).toEqual({
             srcTokenAddress: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+            dstTokenAddress: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
             srcAmount: '9352115257',
             minDstAmount: '3393566223084567185',
-            poolAddressess: [
-                '14474011154664524427946373126867554402161832605793805858616410165020352009792',
-            ],
         });
     });
 });

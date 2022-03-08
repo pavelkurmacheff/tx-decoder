@@ -9,7 +9,6 @@ import {
 import {createUnknownToken, Token} from '../../core/token';
 import {TransactionType} from '../../core/transaction-type';
 import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
-import {ChainTokenByNetwork} from '../../const/common.const';
 import {LimitOrderFillPayload} from '../../core/transaction-parsed/limit-order-fill-payload';
 import {ApproveTxPayload} from '../../core/transaction-parsed/approve-payload';
 import {ApproveRichTxPayload} from '../../core/transaction-rich/approve-rich-payload';
@@ -21,19 +20,17 @@ import {LimitOrderFillRich} from '../../core/transaction-rich/limit-order-fill';
 import {
     SwapExactInputPayload,
     SwapExactOutputPayload,
-    SwapThroughPoolPayload,
 } from '../../core/transaction-parsed/swap-payload';
-import PoolService from '../../helpers/pools/pool.service';
 import {ValueRichTxPayload} from '../../core/transaction-rich/value-rich-payload';
 import {ValueTxPayload} from '../../core/transaction-parsed/value-payload';
 import {TransferRichTxPayload} from '../../core/transaction-rich/transfer-rich-payload';
-import {TransferTxPayload} from 'src/core/transaction-parsed/transfer-payload';
+import {TransferTxPayload} from '../../core/transaction-parsed/transfer-payload';
+import { ChainTokenByNetwork } from '../../core/const/common.const';
+import { AddLiquidityPayload } from '../../core/transaction-parsed/add-liquidity-payload';
+import { AddLiquidityRichPayload } from '../../core/transaction-rich/add-liquidity-rich-payload';
 
 export class NormalizationService {
-    constructor(
-        private customTokenSvc: CustomTokensService,
-        private poolSvc: PoolService
-    ) {}
+    constructor(private customTokenSvc: CustomTokensService) {}
 
     async normalize(tx: TransactionParsed): Promise<TransactionRich> {
         switch (tx.tag) {
@@ -79,10 +76,14 @@ export class NormalizationService {
                     ...tx,
                     payload: await this.normalizeMulticall(tx.payload),
                 };
-            case TransactionType.SwapThroughPool:
+            case TransactionType.AddLiquidity:
                 return {
                     ...tx,
-                    payload: await this.normilizeSwapThroughPool(tx.payload),
+                    payload: await this.normalizeAddLiquidity(tx.payload),
+                };
+            case TransactionType.RemoveLiquidity:
+                return {
+                    ...tx,
                 };
         }
     }
@@ -159,12 +160,12 @@ export class NormalizationService {
     private async normalizeMulticall(
         p: MulticallPayload
     ): Promise<MulticallPayloadRich> {
-        const ps = p.map(async (i) => {
+        const ps = p.map((i) => {
             switch (i.tag) {
                 case 'Error':
-                    return i;
+                    return Promise.resolve(i);
                 default:
-                    return this.normalize(i);
+                    return this.normalize(i as TransactionParsed);
             }
         });
         const payload = await Promise.all(ps);
@@ -179,35 +180,6 @@ export class NormalizationService {
         } else {
             return this.customTokenSvc.getTokenByAddress(tokenAddr);
         }
-    }
-
-    private async normilizeSwapThroughPool(p: SwapThroughPoolPayload) {
-        let srcTokenAddress = '';
-        let dstTokenAddress = '';
-
-        if (p.srcTokenAddress) {
-            srcTokenAddress = p.srcTokenAddress;
-            dstTokenAddress = await this.poolSvc.getDestTokenAddress(
-                p.poolAddressess[p.poolAddressess.length - 1]
-            );
-        } else {
-            const tokenAddressList = await this.poolSvc.getBothTokenAddress(
-                p.poolAddressess
-            );
-            srcTokenAddress = tokenAddressList[0];
-            dstTokenAddress = tokenAddressList[1];
-        }
-
-        const [srcToken, dstToken] = await Promise.all([
-            this.getToket(srcTokenAddress),
-            this.getToket(dstTokenAddress),
-        ]);
-
-        return {
-            ...p,
-            srcToken: srcToken ? srcToken : createUnknownToken(srcTokenAddress),
-            dstToken: dstToken ? dstToken : createUnknownToken(dstTokenAddress),
-        };
     }
 
     private async normalizeValue(
@@ -229,6 +201,19 @@ export class NormalizationService {
         return {
             ...p,
             token: token ? token : createUnknownToken(p.tokenAddress),
+        };
+    }
+
+    private async normalizeAddLiquidity(
+        p: AddLiquidityPayload
+    ): Promise<AddLiquidityRichPayload> {
+        const tokens: (Token | null)[] = await Promise.all(p.tokenAmount.map(t => this.getToket(t.token)));
+        const notNullTokens: Token[] = tokens.map((t, i) => t ? t : createUnknownToken(p.tokenAmount[i].token));
+        const zipped = p.tokenAmount.map((t, i) => ({ ...t, token: notNullTokens[i] }));
+
+        return {
+            ...p,
+            tokenAmount: zipped,
         };
     }
 }

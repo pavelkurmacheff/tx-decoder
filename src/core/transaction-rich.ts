@@ -9,7 +9,8 @@ import {TransactionType} from './transaction-type';
 import {FunctionInfo} from './transaction-parsed';
 import {ValueRichTxPayload} from './transaction-rich/value-rich-payload';
 import {TransferRichTxPayload} from './transaction-rich/transfer-rich-payload';
-import { AddLiquidityRichPayload } from './transaction-rich/add-liquidity-rich-payload';
+import {AddLiquidityRichPayload} from './transaction-rich/add-liquidity-rich-payload';
+import {RemoveLiquidityRichPayload} from './transaction-rich/remove-liquidity-rich-payload';
 
 export type TransactionRich =
     | {
@@ -72,15 +73,15 @@ export type TransactionRich =
       }
     | {
           raw: TransactionRaw;
-          tag: TransactionType.SwapThroughPool;
           functionInfo: FunctionInfo;
-          payload: SwapExactInputRich;
+          tag: TransactionType.AddLiquidity;
+          payload: AddLiquidityRichPayload;
       }
     | {
           raw: TransactionRaw;
           functionInfo: FunctionInfo;
-          tag: TransactionType.AddLiquidity;
-          payload: AddLiquidityRichPayload;
+          tag: TransactionType.RemoveLiquidity;
+          payload: RemoveLiquidityRichPayload;
       };
 
 export type MulticallPayloadRich = (

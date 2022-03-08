@@ -4,14 +4,15 @@ import {Web3Service} from '../../helpers/web3/web3.service';
 import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
 import {NormalizationService} from './normalization.service';
 import {EstimationService} from './estimation.service';
-import PoolService from '../../helpers/pools/pool.service';
+import PoolService from '../../dex/1inch/pools/pool.service';
 import { TransactionRaw } from '../../core/transaction-raw';
 import { BigNumber } from 'ethers';
-import { ehtTransactionDecoder } from './eth-transaction-decoder';
+import { EhtTransactionDecoder } from './eth-transaction-decoder';
 
 describe('EstimationService test', () => {
     let normSvc: NormalizationService;
     let estSvc: EstimationService;
+    let decoder: EhtTransactionDecoder;
 
     beforeAll(async () => {
         const chain = ChainId.Ethereum;
@@ -22,6 +23,7 @@ describe('EstimationService test', () => {
         const poolSvc = new PoolService(web3Svc);
         normSvc = new NormalizationService(tokesSvc, poolSvc);
         estSvc = new EstimationService();
+        decoder = new EhtTransactionDecoder(nodeUrl);
     });
 
     it("Estimate 1inch swap return", async () => {
@@ -34,7 +36,7 @@ describe('EstimationService test', () => {
             value: '100000000000000000',
         };
 
-        const parseRes = ehtTransactionDecoder(rawTx);
+        const parseRes = await decoder.decode(rawTx);
         if (parseRes.tag !== 'Success') {
             throw 'Impossible';
         }

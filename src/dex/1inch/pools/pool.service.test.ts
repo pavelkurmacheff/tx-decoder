@@ -1,4 +1,4 @@
-import {Web3Service} from '../web3/web3.service';
+import {Web3Service} from '../../../helpers/web3/web3.service';
 import PoolService from './pool.service';
 
 const nodeUrl = 'https://web3-node-private.1inch.exchange/';

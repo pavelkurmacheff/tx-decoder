@@ -1,4 +1,3 @@
-/* eslint-disable max-lines-per-function */
 import { DecodeResult } from '../../core/decoder';
 import { TransactionType } from '../..//core/transaction-type';
 import { TransactionRaw } from '../..//core/transaction-raw';
