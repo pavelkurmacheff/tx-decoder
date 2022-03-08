@@ -1,12 +1,12 @@
 import { TransactionRaw } from "src/core/transaction-raw";
-import { TransactionRich } from "src/core/transaction-rich";
+import { TransactionRich } from "src/core/transaction-rich/transaction-rich";
 import { ChainId } from "../../core/chain-id";
 import { Token } from "../../core/token";
 import { CustomTokensService } from "../../helpers/tokens/custom-tokens.service";
 import { Web3Service } from "../../helpers/web3/web3.service";
 import { loadTokensMap } from "../../helpers/oinch/1inch.utils";
 import { EhtTransactionDecoder } from "./eth-transaction-decoder";
-import { NormalizationService } from "./normalization.service";
+import { NormalizationService } from "../../core/transaction-rich/normalization.service";
 
 export class EthTransactionParser {
     readonly decoder: EhtTransactionDecoder;

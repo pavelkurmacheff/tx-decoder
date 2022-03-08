@@ -2,7 +2,7 @@ import {loadTokensMap} from '../../helpers/oinch/1inch.utils';
 import {ChainId} from '../../core/chain-id';
 import {Web3Service} from '../../helpers/web3/web3.service';
 import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
-import {NormalizationService} from './normalization.service';
+import {NormalizationService} from '../../core/transaction-rich/normalization.service';
 import {EstimationService} from './estimation.service';
 import { TransactionRaw } from '../../core/transaction-raw';
 import { BigNumber } from 'ethers';

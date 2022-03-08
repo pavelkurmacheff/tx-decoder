@@ -1,6 +1,6 @@
 import {BigNumber} from 'ethers';
 import {ValueTxPayload} from 'src/core/transaction-parsed/value-payload';
-import {TransactionParsed} from '../../core/transaction-parsed';
+import {TransactionParsed} from '../../core/transaction-parsed/transaction-parsed';
 import {TransactionRaw} from '../../core/transaction-raw';
 import {TransactionType} from '../../core/transaction-type';
 import {decodeWrappedERC20Token} from './erc20-token-tx.decoder';

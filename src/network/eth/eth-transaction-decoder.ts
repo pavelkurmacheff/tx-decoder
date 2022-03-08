@@ -10,6 +10,7 @@ import {decodeUniV3} from '../../protocols/uniswap-v3/uniswap-v3-tx.decoder';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { Web3Service } from '../../helpers/web3/web3.service';
 import PoolService from '../../protocols/1inch/pools/pool.service';
+import { KnownEthProtocols as P } from './known-protocols';
 
 export class EhtTransactionDecoder {
     readonly decode: TxDecoder;
@@ -20,31 +21,12 @@ export class EhtTransactionDecoder {
         const poolService = new PoolService(web3Svc);
 
         this.decode = combineTxDecoders([
-            // Uniswap V2
-            // https://etherscan.io/address/0x7a250d5630b4cf539739df2c5dacb4c659f2488d
-            (tx) => decodeUniV2Like('0x7a250d5630b4cf539739df2c5dacb4c659f2488d', tx),
-            // Uniswap V3
-            // https://etherscan.io/address/0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45
-            (tx) => decodeUniV3('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', tx),
-            // 1inch limit order V2
-            // https://etherscan.io/address/0x119c71d3bbac22029622cbaec24854d3d32d2828,
-            (tx) =>
-                decode1InchLimitOrderV2(
-                    '0x119c71d3bbac22029622cbaec24854d3d32d2828',
-                    tx
-                ),
-            // 1inch swap V4
-            // https://etherscan.io/address/0x1111111254fb6c44bac0bed2854e76f90643097d
-            (tx) => decode1InchSwapV4(poolService, '0x1111111254fb6c44bac0bed2854e76f90643097d', tx),
-    
-            // WETH
-            // https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2 
-            (tx) => decodeWrappedERC20Token('0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', tx),
-    
-            // Curve swap 
-            // https://etherscan.io/address/0xfa9a30350048b2bf66865ee20363067c66f67e58
-            // https://curve.fi/ 
-            (tx) => decodeCurve('0xfA9a30350048B2BF66865ee20363067c66f67e58', tx),
+            (tx) => decodeUniV2Like(P.UniV2, tx),
+            (tx) => decodeUniV3(P.UniV3, tx),
+            (tx) => decode1InchLimitOrderV2(P.OInchLimit, tx),
+            (tx) => decode1InchSwapV4(poolService, P.OInchSwap, tx),
+            (tx) => decodeWrappedERC20Token(P.WETH, tx),
+            (tx) => decodeCurve(P.CurveSwap, tx),
     
             // Curve swap via specific pool
             // List of pools: https://curve.fi/pools
@@ -55,5 +37,4 @@ export class EhtTransactionDecoder {
             (tx) => decodeERC20Token(tx),
         ]);        
     }
-
 }

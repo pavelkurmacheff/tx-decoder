@@ -5,7 +5,7 @@ import ERC20ABI from '../../core/abi/ERC20ABI.json';
 import { abiDecoder, getParamDescriptor } from '../../helpers/abi/abi-decoder.helper';
 import { IAbiDecoderResult } from '../../helpers/abi/types';
 import { TransactionType } from '../../core/transaction-type';
-import { MulticallPayload } from '../../core/transaction-parsed';
+import { MulticallPayload } from '../../core/transaction-parsed/transaction-parsed';
 
 abiDecoder.addABI(UniswapRouterV2BI);
 abiDecoder.addABI(ERC20ABI);

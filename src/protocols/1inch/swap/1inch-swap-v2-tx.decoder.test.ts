@@ -2,7 +2,7 @@ import {BigNumber} from 'ethers';
 import {SwapExactInputPayload} from '../../../core/transaction-parsed/swap-payload';
 import PoolService from '../pools/pool.service';
 import { Web3Service } from '../../../helpers/web3/web3.service';
-import {TransactionParsed} from '../../../core/transaction-parsed';
+import {TransactionParsed} from '../../../core/transaction-parsed/transaction-parsed';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';
 import {decode1InchSwapV4} from './1inch-swap-v2-tx.decoder';

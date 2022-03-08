@@ -5,7 +5,7 @@ import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
 import {NormalizationService} from './normalization.service';
 import {BigNumber} from 'ethers';
 import {TransactionRaw} from '../../core/transaction-raw';
-import {EhtTransactionDecoder} from './eth-transaction-decoder';
+import {EhtTransactionDecoder} from '../../network/eth/eth-transaction-decoder';
 import {TransactionType} from '../../core/transaction-type';
 
 describe('NormalizationService test', () => {

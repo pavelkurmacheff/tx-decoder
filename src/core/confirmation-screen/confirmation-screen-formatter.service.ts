@@ -1,12 +1,12 @@
-import { TransactionRich } from "../core/transaction-rich";
-import { TransactionType } from "../core/transaction-type";
+import { TransactionRich } from "../transaction-rich/transaction-rich";
+import { TransactionType } from "../transaction-type";
 import { Item } from "./item";
 import { approveTxConfirmTemplate } from "./transactions/approve-tx-confirm.template";
 import { limitOrderFillTemplate } from "./transactions/limit-order-fill.template";
 import { swapTxConfirmTemplate as swapExactInTxConfirmTemplate } from "./transactions/swap-exact-input.template";
 import { swapExactOutTxConfirmTemplate } from "./transactions/swap-exact-output.template";
 
-export class TransactionFormatterService {
+export class ConfirmationScreenFormatterService {
     format(tx: TransactionRich): Item[] {
         switch(tx.tag) {
             case TransactionType.Approve:

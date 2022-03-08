@@ -1,4 +1,4 @@
-import { TransactionRich } from "../../core/transaction-rich";
+import { TransactionRich } from "../../core/transaction-rich/transaction-rich";
 import { TransactionType } from "../../core/transaction-type";
 import { runTransaction } from "../../helpers/oinch/1inch-web3-rpc.utils";
 

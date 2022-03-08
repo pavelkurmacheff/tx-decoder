@@ -1,4 +1,4 @@
-import {TransactionParsed} from 'src/core/transaction-parsed';
+import {TransactionParsed} from 'src/core/transaction-parsed/transaction-parsed';
 import {TransactionRaw} from 'src/core/transaction-raw';
 
 export type DecodeResult<Tx = TransactionParsed> =

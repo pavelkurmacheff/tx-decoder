@@ -1,16 +1,16 @@
-import {TransactionRaw} from './transaction-raw';
-import {ApproveRichTxPayload} from './transaction-rich/approve-rich-payload';
-import {LimitOrderFillRich} from '././transaction-rich/limit-order-fill';
+import {TransactionRaw} from '../transaction-raw';
+import {ApproveRichTxPayload} from './approve-rich-payload';
+import {LimitOrderFillRich} from './limit-order-fill';
 import {
     SwapExactInputRich,
     SwapExactOutputRich,
-} from './transaction-rich/swap-payload';
-import {TransactionType} from './transaction-type';
-import {FunctionInfo} from './transaction-parsed';
-import {ValueRichTxPayload} from './transaction-rich/value-rich-payload';
-import {TransferRichTxPayload} from './transaction-rich/transfer-rich-payload';
-import {AddLiquidityRichPayload} from './transaction-rich/add-liquidity-rich-payload';
-import {RemoveLiquidityRichPayload} from './transaction-rich/remove-liquidity-rich-payload';
+} from './swap-payload';
+import {TransactionType} from '../transaction-type';
+import {FunctionInfo} from '../transaction-parsed/transaction-parsed';
+import {ValueRichTxPayload} from './value-rich-payload';
+import {TransferRichTxPayload} from './transfer-rich-payload';
+import {AddLiquidityRichPayload} from './add-liquidity-rich-payload';
+import {RemoveLiquidityRichPayload} from './remove-liquidity-rich-payload';
 
 export type TransactionRich =
     | {

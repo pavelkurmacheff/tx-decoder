@@ -2,7 +2,7 @@ import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract
 import { BigNumber } from 'ethers';
 import { hexValue, Interface } from 'ethers/lib/utils';
 import fetch from 'isomorphic-unfetch';
-import { TransactionRaw } from '../core/transaction-raw';
+import { TransactionRaw } from '../../core/transaction-raw';
 import { JsonRpcProvider } from '@ethersproject/providers';
 import { JsonFragment, Fragment } from "@ethersproject/abi";
 

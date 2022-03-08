@@ -1,5 +1,5 @@
 import {BigNumber} from 'ethers';
-import {TransactionParsed} from '../../../core/transaction-parsed';
+import {TransactionParsed} from '../../../core/transaction-parsed/transaction-parsed';
 import {LimitOrderFillPayload} from '../../../core/transaction-parsed/limit-order-fill-payload';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';

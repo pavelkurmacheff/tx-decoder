@@ -1,33 +1,33 @@
 import {
     MulticallPayload,
     TransactionParsed,
-} from '../../core/transaction-parsed';
+} from '../transaction-parsed/transaction-parsed';
 import {
     MulticallPayloadRich,
     TransactionRich,
-} from '../../core/transaction-rich';
-import {createUnknownToken, Token} from '../../core/token';
-import {TransactionType} from '../../core/transaction-type';
+} from './transaction-rich';
+import {createUnknownToken, Token} from '../token';
+import {TransactionType} from '../transaction-type';
 import {CustomTokensService} from '../../helpers/tokens/custom-tokens.service';
-import {LimitOrderFillPayload} from '../../core/transaction-parsed/limit-order-fill-payload';
-import {ApproveTxPayload} from '../../core/transaction-parsed/approve-payload';
-import {ApproveRichTxPayload} from '../../core/transaction-rich/approve-rich-payload';
+import {LimitOrderFillPayload} from '../transaction-parsed/limit-order-fill-payload';
+import {ApproveTxPayload} from '../transaction-parsed/approve-payload';
+import {ApproveRichTxPayload} from './approve-rich-payload';
 import {
     SwapExactInputRich,
     SwapExactOutputRich,
-} from '../../core/transaction-rich/swap-payload';
-import {LimitOrderFillRich} from '../../core/transaction-rich/limit-order-fill';
+} from './swap-payload';
+import {LimitOrderFillRich} from './limit-order-fill';
 import {
     SwapExactInputPayload,
     SwapExactOutputPayload,
-} from '../../core/transaction-parsed/swap-payload';
-import {ValueRichTxPayload} from '../../core/transaction-rich/value-rich-payload';
-import {ValueTxPayload} from '../../core/transaction-parsed/value-payload';
-import {TransferRichTxPayload} from '../../core/transaction-rich/transfer-rich-payload';
-import {TransferTxPayload} from '../../core/transaction-parsed/transfer-payload';
-import { ChainTokenByNetwork } from '../../core/const/common.const';
-import { AddLiquidityPayload } from '../../core/transaction-parsed/add-liquidity-payload';
-import { AddLiquidityRichPayload } from '../../core/transaction-rich/add-liquidity-rich-payload';
+} from '../transaction-parsed/swap-payload';
+import {ValueRichTxPayload} from './value-rich-payload';
+import {ValueTxPayload} from '../transaction-parsed/value-payload';
+import {TransferRichTxPayload} from './transfer-rich-payload';
+import {TransferTxPayload} from '../transaction-parsed/transfer-payload';
+import { ChainTokenByNetwork } from '../const/common.const';
+import { AddLiquidityPayload } from '../transaction-parsed/add-liquidity-payload';
+import { AddLiquidityRichPayload } from './add-liquidity-rich-payload';
 
 export class NormalizationService {
     constructor(private customTokenSvc: CustomTokensService) {}

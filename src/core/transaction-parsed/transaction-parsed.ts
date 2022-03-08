@@ -1,17 +1,17 @@
 import {BigNumber} from 'ethers';
 import { JsonFragment, Fragment } from "@ethersproject/abi";
-import {AddLiquidityPayload} from './transaction-parsed/add-liquidity-payload';
-import {ApproveTxPayload} from './transaction-parsed/approve-payload';
-import {LimitOrderFillPayload} from './transaction-parsed/limit-order-fill-payload';
-import {RemoveLiquidityPayload} from './transaction-parsed/remove-liquidity-payload';
+import {AddLiquidityPayload} from './add-liquidity-payload';
+import {ApproveTxPayload} from './approve-payload';
+import {LimitOrderFillPayload} from './limit-order-fill-payload';
+import {RemoveLiquidityPayload} from './remove-liquidity-payload';
 import {
     SwapExactInputPayload,
     SwapExactOutputPayload,
-} from './transaction-parsed/swap-payload';
-import {TransferTxPayload} from './transaction-parsed/transfer-payload';
-import {ValueTxPayload} from './transaction-parsed/value-payload';
-import {TransactionRaw} from './transaction-raw';
-import {TransactionType} from './transaction-type';
+} from './swap-payload';
+import {TransferTxPayload} from './transfer-payload';
+import {ValueTxPayload} from './value-payload';
+import {TransactionRaw} from '../transaction-raw';
+import {TransactionType} from '../transaction-type';
 
 export interface EstimationResp {
     returnAmount: BigNumber;

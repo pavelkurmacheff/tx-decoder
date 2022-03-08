@@ -3,7 +3,7 @@ import { TransactionRaw } from '../../core/transaction-raw';
 import { DecodeResult } from '../../core/decoder';
 import { decodeUniV3 } from './uniswap-v3-tx.decoder';
 import { TransactionType } from '../../core/transaction-type';
-import { MulticallPayload } from '../../core/transaction-parsed';
+import { MulticallPayload } from '../../core/transaction-parsed/transaction-parsed';
 
 function decodeUniswapV3(tx: TransactionRaw): DecodeResult {
     return decodeUniV3('0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45', tx);
