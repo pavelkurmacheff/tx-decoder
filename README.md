@@ -16,6 +16,9 @@
 -   [x] Uniswap V3
 -   [ ] Curve v2
 -   [ ] Balancer V2
+-   [ ] Kyber Network
+-   [ ] Dodo V2
+
 
 ### Deposit / Withdraw
 

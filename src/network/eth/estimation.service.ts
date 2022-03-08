@@ -27,17 +27,6 @@ export class EstimationService {
                     }
                 }
             }
-            case TransactionType.SwapThroughPool: {
-                const res = await runTransaction(tx.raw, tx.functionInfo.abi);
-                const estimated = tx.functionInfo.responseParser ? tx.functionInfo.responseParser(res) : undefined;
-                return {
-                    ...tx,
-                    payload: {
-                        ...(tx.payload),
-                        dstAmountEstimated: estimated?.returnAmount.toHexString()
-                    }
-                }
-            }
             default:
                 return tx;
         }

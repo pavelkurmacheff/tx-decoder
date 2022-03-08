@@ -12,16 +12,16 @@ export class EthTransactionParser {
     readonly decoder: EhtTransactionDecoder;
     readonly normSvc: NormalizationService;
 
-    private constructor(result: Map<string, Token>, nodeUrl = 'https://web3-node-private.1inch.exchange/') {
+    private constructor(result: Map<string, Token>, nodeUrl: string) {
         const web3Svc = new Web3Service(nodeUrl);
         const tokesSvc = new CustomTokensService(result, web3Svc, ChainId.Ethereum);
         this.decoder = new EhtTransactionDecoder(nodeUrl);
         this.normSvc = new NormalizationService(tokesSvc);
     }
 
-    async create(): Promise<EthTransactionParser> {
+    static async create(nodeUrl = 'https://web3-node-private.1inch.exchange/'): Promise<EthTransactionParser> {
         const result = await loadTokensMap(ChainId.Ethereum);
-        return new EthTransactionParser(result);
+        return new EthTransactionParser(result, nodeUrl);
     }
 
     async parse(tx: TransactionRaw): Promise<TransactionRich> {
