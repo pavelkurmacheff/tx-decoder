@@ -11,6 +11,7 @@ import { JsonRpcProvider } from '@ethersproject/providers';
 import { Web3Service } from '../../helpers/web3/web3.service';
 import PoolService from '../../protocols/1inch/pools/pool.service';
 import { KnownEthProtocols as P } from './known-protocols';
+import { decodeBalancer } from '../../protocols/balancer/swap/balancer.decoder';
 
 export class EhtTransactionDecoder {
     readonly decode: TxDecoder;
@@ -27,6 +28,7 @@ export class EhtTransactionDecoder {
             (tx) => decode1InchSwapV4(poolService, P.OInchSwap, tx),
             (tx) => decodeWrappedERC20Token(P.WETH, tx),
             (tx) => decodeCurve(P.CurveSwap, tx),
+            (tx) => decodeBalancer(P.BalancerSwap, tx),
     
             // Curve swap via specific pool
             // List of pools: https://curve.fi/pools

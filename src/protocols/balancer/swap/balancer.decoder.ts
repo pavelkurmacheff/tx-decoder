@@ -4,11 +4,11 @@ import { TransactionType } from '../../../core/transaction-type';
 import { TransactionRaw } from '../../../core/transaction-raw';
 import { abiDecoder, getParam } from '../../../helpers/abi/abi-decoder.helper';
 import { IAbiDecoderResult } from '../../../helpers/abi/types';
-import Curve from './CURVE.json';
+import Balancer from './BALANCER.json';
 
-abiDecoder.addABI(Curve as ReadonlyArray<Fragment | JsonFragment | string>);
+abiDecoder.addABI(Balancer as ReadonlyArray<Fragment | JsonFragment | string>);
 
-export function decodeCurve(contractAddr: string, tx: TransactionRaw): DecodeResult {
+export function decodeBalancer(contractAddr: string, tx: TransactionRaw): DecodeResult {
     if (contractAddr.toUpperCase() != tx.to.toUpperCase()) {
         return { tag: 'AnotherContract' };
     }
@@ -18,14 +18,22 @@ export function decodeCurve(contractAddr: string, tx: TransactionRaw): DecodeRes
         name: rootFunc.name,
         hash: tx.data.slice(0, 10).toLowerCase(),
         params: rootFunc.params,
-        abi: Curve  as ReadonlyArray<Fragment | JsonFragment | string>,
+        abi: Balancer as ReadonlyArray<Fragment | JsonFragment | string>,
     };
 
     switch(rootFunc.name) {
-        case 'exchange': {
-            const path = getParam(rootFunc, '_route') as string[];
-            const dst = path[path.length - 1];
-            const minAmount = getParam(rootFunc, '_min_received') as string;
+        case 'swap': {
+            const singleSwap = getParam(rootFunc, 'singleSwap') as string[];
+            // const funds = getParam(rootFunc, 'funds') as string[];
+            // const limit = getParam(rootFunc, 'limit') as string;
+            // const deadline = getParam(rootFunc, 'deadline') as string;
+
+            // const poolId = singleSwap[0];
+            // const kind = singleSwap[1];
+            const assetIn = singleSwap[2];
+            const assetOut = singleSwap[3];
+            // const amount = singleSwap[4];
+            // const userData = singleSwap[5];
 
             return { 
                 tag: 'Success',
@@ -34,10 +42,10 @@ export function decodeCurve(contractAddr: string, tx: TransactionRaw): DecodeRes
                     functionInfo,
                     raw: tx,
                     payload: {
-                        srcTokenAddress: 'native',
-                        dstTokenAddress: dst,
+                        srcTokenAddress: assetIn,
+                        dstTokenAddress: assetOut,
                         srcAmount: tx.value,
-                        minDstAmount: minAmount,
+                        // minDstAmount: minAmount,
                     }
                 }
             };

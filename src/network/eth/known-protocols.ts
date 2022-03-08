@@ -17,4 +17,6 @@ export class KnownEthProtocols {
     // https://etherscan.io/address/0xfa9a30350048b2bf66865ee20363067c66f67e58
     static readonly CurveSwap = '0xfa9a30350048b2bf66865ee20363067c66f67e58';
 
+    // https://etherscan.io/address/0xba12222222228d8ba445958a75a0704d566bf2c8
+    static readonly BalancerSwap = '0xBA12222222228d8Ba445958a75a0704d566BF2C8';
 }
