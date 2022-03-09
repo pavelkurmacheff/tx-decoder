@@ -1,10 +1,10 @@
 import {BigNumber} from 'ethers';
-import {ApproveTxPayload} from 'src/core/transaction-parsed/approve-payload';
-import {TransferTxPayload} from 'src/core/transaction-parsed/transfer-payload';
 import {TransactionParsed} from '../../core/transaction-parsed/transaction-parsed';
 import {TransactionRaw} from '../../core/transaction-raw';
 import {TransactionType} from '../../core/transaction-type';
 import {decodeERC20Token} from './erc20-token-tx.decoder';
+import {TransferTxPayload} from '../../core/transaction-parsed/payloads/transfer-payload'
+import {ApproveTxPayload} from '../../core/transaction-parsed/payloads/approve-payload'
 
 describe('decodeERC20Token', () => {
     // https://etherscan.io/tx/0xee2965756d15a22c6890e9d88ea9858b679cb0cd59d7e44285fddb3a6de94e51

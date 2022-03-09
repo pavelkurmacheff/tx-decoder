@@ -1,16 +1,16 @@
 import {TransactionRaw} from '../transaction-raw';
-import {ApproveRichTxPayload} from './approve-rich-payload';
-import {LimitOrderFillRich} from './limit-order-fill';
+import {ApproveRichTxPayload} from './payloads/approve-rich-payload';
+import {LimitOrderFillRichPayload} from './payloads/limit-order-fill-rich-payload';
 import {
-    SwapExactInputRich,
-    SwapExactOutputRich,
-} from './swap-payload';
+    SwapExactInputRichPayload,
+    SwapExactOutputRichPayload,
+} from './payloads/swap-payload';
 import {TransactionType} from '../transaction-type';
 import {FunctionInfo} from '../transaction-parsed/transaction-parsed';
-import {ValueRichTxPayload} from './value-rich-payload';
-import {TransferRichTxPayload} from './transfer-rich-payload';
-import {AddLiquidityRichPayload} from './add-liquidity-rich-payload';
-import {RemoveLiquidityRichPayload} from './remove-liquidity-rich-payload';
+import {ValueRichTxPayload} from './payloads/value-rich-payload';
+import {TransferRichTxPayload} from './payloads/transfer-rich-payload';
+import {AddLiquidityRichPayload} from './payloads/add-liquidity-rich-payload';
+import {RemoveLiquidityRichPayload} from './payloads/remove-liquidity-rich-payload';
 
 export type TransactionRich =
     | {
@@ -21,13 +21,13 @@ export type TransactionRich =
       }
     | {
           raw: TransactionRaw;
-          tag: TransactionType.Deposit;
+          tag: TransactionType.Wrap;
           functionInfo: FunctionInfo;
           payload?: ValueRichTxPayload;
       }
     | {
           raw: TransactionRaw;
-          tag: TransactionType.Withdraw;
+          tag: TransactionType.Unwrap;
           functionInfo: FunctionInfo;
           payload?: ValueRichTxPayload;
       }
@@ -46,19 +46,19 @@ export type TransactionRich =
           raw: TransactionRaw;
           tag: TransactionType.SwapExactInput;
           functionInfo: FunctionInfo;
-          payload: SwapExactInputRich;
+          payload: SwapExactInputRichPayload;
       }
     | {
           raw: TransactionRaw;
           tag: TransactionType.SwapExactOutput;
           functionInfo: FunctionInfo;
-          payload: SwapExactOutputRich;
+          payload: SwapExactOutputRichPayload;
       }
     | {
           raw: TransactionRaw;
           tag: TransactionType.LimitOrderFill;
           functionInfo: FunctionInfo;
-          payload: LimitOrderFillRich;
+          payload: LimitOrderFillRichPayload;
       }
     | {
           raw: TransactionRaw;

@@ -3,11 +3,9 @@ import { TransactionType } from '../../core/transaction-type';
 import { TransactionRaw } from '../../core/transaction-raw';
 import { abiDecoder, getParam } from '../../helpers/abi/abi-decoder.helper';
 import { IAbiDecoderResult } from '../../helpers/abi/types';
-import ERC20ABI from '../../core/abi/ERC20ABI.json';
 import UniswapRouterV2BI from './UNI2_ROUTER_V2.json';
 
 abiDecoder.addABI(UniswapRouterV2BI);
-abiDecoder.addABI(ERC20ABI);
 
 export function decodeUniV2Like(contractAddr: string, tx: TransactionRaw): DecodeResult {
     if (contractAddr.toUpperCase() != tx.to.toUpperCase()) {

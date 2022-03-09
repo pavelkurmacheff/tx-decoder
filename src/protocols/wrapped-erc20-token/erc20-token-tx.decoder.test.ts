@@ -1,9 +1,9 @@
 import {BigNumber} from 'ethers';
-import {ValueTxPayload} from 'src/core/transaction-parsed/value-payload';
 import {TransactionParsed} from '../../core/transaction-parsed/transaction-parsed';
 import {TransactionRaw} from '../../core/transaction-raw';
 import {TransactionType} from '../../core/transaction-type';
 import {decodeWrappedERC20Token} from './erc20-token-tx.decoder';
+import {ValueTxPayload} from '../../core/transaction-parsed/payloads/value-payload'
 
 describe('decodeERC20Token', () => {
     // https://etherscan.io/tx/0xee2965756d15a22c6890e9d88ea9858b679cb0cd59d7e44285fddb3a6de94e51
@@ -25,11 +25,11 @@ describe('decodeERC20Token', () => {
         expect(result.tag).toBe('Success');
 
         const parsedTx = result.tx as {
-            tag: TransactionType.Deposit;
+            tag: TransactionType.Wrap;
             payload: ValueTxPayload;
         };
 
-        expect(parsedTx.tag).toBe(TransactionType.Deposit);
+        expect(parsedTx.tag).toBe(TransactionType.Wrap);
         expect(parsedTx.payload).toBeDefined();
 
         expect(parsedTx.payload).toEqual({
@@ -57,11 +57,11 @@ describe('decodeERC20Token', () => {
         expect(result.tag).toBe('Success');
 
         const parsedTx = result.tx as {
-            tag: TransactionType.Withdraw;
+            tag: TransactionType.Unwrap;
             payload: ValueTxPayload;
         };
 
-        expect(parsedTx.tag).toBe(TransactionType.Withdraw);
+        expect(parsedTx.tag).toBe(TransactionType.Unwrap);
         expect(parsedTx.payload).toBeDefined();
 
         expect(parsedTx.payload).toEqual({

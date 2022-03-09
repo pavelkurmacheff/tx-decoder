@@ -1,6 +1,6 @@
-import {Token} from '../token';
+import {Token} from '../../token';
 
-export interface SwapExactInputRich {
+export interface SwapExactInputRichPayload {
     srcToken: Token;
     dstToken: Token;
     srcAmount: string;
@@ -8,7 +8,7 @@ export interface SwapExactInputRich {
     dstAmountEstimated?: string;
 }
 
-export interface SwapExactOutputRich {
+export interface SwapExactOutputRichPayload {
     srcToken: Token;
     dstToken: Token;
     dstAmount: string;

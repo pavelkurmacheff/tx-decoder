@@ -1,12 +1,8 @@
 export enum TransactionType {
     Approve,
-
-    // TODO: Rename to wrap/unwrap
-    Deposit,
-    Withdraw,
-
-    Transfer,
+    Wrap,
     Unwrap,
+    Transfer,
     SwapExactInput,
     SwapExactOutput,
     LimitOrderFill,

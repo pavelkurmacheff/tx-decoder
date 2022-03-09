@@ -3,7 +3,7 @@ import PoolService from './pool.service';
 
 const nodeUrl = 'https://web3-node-private.1inch.exchange/';
 
-describe('CustomTokensService test', () => {
+describe('PoolService', () => {
     let poolService: PoolService;
 
     beforeAll(() => {

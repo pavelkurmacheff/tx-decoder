@@ -4,8 +4,8 @@ import {TransactionRaw} from '../../../core/transaction-raw';
 import {abiDecoder, getParam} from '../../../helpers/abi/abi-decoder.helper';
 import oneInchRouterV4Abi from './ONEINCH_ROUTER_V4.json';
 import {IAbiDecoderResult} from '../../../helpers/abi/types';
-import {SwapExactInputPayload} from '../../../core/transaction-parsed/swap-payload';
-import PoolService from 'src/protocols/1inch/pools/pool.service';
+import {SwapExactInputPayload} from '../../../core/transaction-parsed/payloads/swap-payload';
+import PoolService from './pool.service';
 
 abiDecoder.addABI(oneInchRouterV4Abi);
 
@@ -57,7 +57,6 @@ function parseClipperSwap(
     return {
         tag: 'Success',
         tx: {
-            
             tag: TransactionType.SwapExactInput,
             functionInfo: {
                 name: data.name,
@@ -82,7 +81,9 @@ async function parseUnoswap(
     const minDstAmount = getParam(data, 'minReturn') as string;
     const pools = getParam(data, 'pools') as string[];
 
-    const dstTokenAddress = await poolSvc.getDestTokenAddress(pools[pools.length - 1])
+    const dstTokenAddress = await poolSvc.getDestTokenAddress(
+        pools[pools.length - 1]
+    );
 
     const payload: SwapExactInputPayload = {
         srcTokenAddress,
@@ -147,9 +148,8 @@ async function parseUniswapV3Swap(
     const minDstAmount = getParam(data, 'minReturn') as string;
     const poolAddressess = getParam(data, 'pools') as string[];
 
-    const [srcTokenAddress, dstTokenAddress] = await poolSvc.getBothTokenAddress(
-        poolAddressess
-    );
+    const [srcTokenAddress, dstTokenAddress] =
+        await poolSvc.getBothTokenAddress(poolAddressess);
 
     const payload: SwapExactInputPayload = {
         srcTokenAddress,
@@ -167,7 +167,7 @@ async function parseUniswapV3Swap(
                 hash: rawTx.data.slice(0, 10).toLowerCase(),
                 params: data.params,
                 abi: oneInchRouterV4Abi,
-                responseParser: (r: any) => r.returnAmount,  
+                responseParser: (r: any) => r.returnAmount,
             },
             raw: rawTx,
             payload,

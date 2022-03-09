@@ -2,9 +2,9 @@ import { BigNumber } from "ethers";
 import { oinctRpcProvider } from "../../../helpers/oinch/1inch-web3-rpc.utils";
 import { TransactionRaw } from "../../../core/transaction-raw";
 import { decodeCurveLiquidity } from "./curve-pool.decoder";
-import { RemoveLiquidityPayload } from "../../../core/transaction-parsed/remove-liquidity-payload";
 import { TransactionType } from "../../../core/transaction-type";
 import { TransactionParsed } from "../../../core/transaction-parsed/transaction-parsed";
+import {RemoveLiquidityPayload} from '../../../core/transaction-parsed/payloads/remove-liquidity-payload'
 
 describe('Curve pool test', () => {
     it('swap via pool (3 coins)', async () => {

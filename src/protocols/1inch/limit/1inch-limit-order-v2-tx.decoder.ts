@@ -1,10 +1,10 @@
 import {DecodeResult} from '../../../core/decoder';
-import { LimitOrderFillPayload } from '../../../core/transaction-parsed/limit-order-fill-payload';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';
 import {abiDecoder, getParam} from '../../../helpers/abi/abi-decoder.helper';
 import {IAbiDecoderResult} from '../../../helpers/abi/types';
 import oneInchLimitV2Abi from './1INCH_LIMIT_V2.json';
+import {LimitOrderFillPayload} from '../../../core/transaction-parsed/payloads/limit-order-fill-payload'
 
 abiDecoder.addABI(oneInchLimitV2Abi);
 

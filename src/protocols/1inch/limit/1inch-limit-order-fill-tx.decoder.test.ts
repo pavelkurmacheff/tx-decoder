@@ -1,9 +1,9 @@
 import {BigNumber} from 'ethers';
 import {TransactionParsed} from '../../../core/transaction-parsed/transaction-parsed';
-import {LimitOrderFillPayload} from '../../../core/transaction-parsed/limit-order-fill-payload';
 import {TransactionRaw} from '../../../core/transaction-raw';
 import {TransactionType} from '../../../core/transaction-type';
 import {decode1InchLimitOrderV2} from './1inch-limit-order-v2-tx.decoder';
+import {LimitOrderFillPayload} from '../../../core/transaction-parsed/payloads/limit-order-fill-payload'
 
 describe('decode1InchLimitOrderV2', () => {
     // https://etherscan.io/tx/0xaf0d92ef658aa18343df7cf43cc5b8570f5cb6bf9c047c00bfc626bf9aaf9f15

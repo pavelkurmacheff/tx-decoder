@@ -4,8 +4,9 @@ import {TransactionType} from '../../core/transaction-type';
 import {abiDecoder, getParam} from '../../helpers/abi/abi-decoder.helper';
 import {IAbiDecoderResult} from '../../helpers/abi/types';
 import ERC20ABI from './ERC20_TOKEN.json';
-import {ApproveTxPayload} from '../../core/transaction-parsed/approve-payload';
-import {TransferTxPayload} from 'src/core/transaction-parsed/transfer-payload';
+import {ApproveTxPayload} from '../../core/transaction-parsed/payloads/approve-payload'
+import {TransferTxPayload} from '../../core/transaction-parsed/payloads/transfer-payload'
+
 
 abiDecoder.addABI(ERC20ABI);
 

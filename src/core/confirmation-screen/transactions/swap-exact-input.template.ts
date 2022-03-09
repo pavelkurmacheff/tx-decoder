@@ -1,10 +1,14 @@
 import {formatUnits} from '@ethersproject/units';
-import { SwapExactInputTxEstimated } from 'src/core/transaction-esimated/swap-payload.estimated';
-import { TransactionRaw } from 'src/core/transaction-raw';
-import { Item } from '../item';
+import {TransactionRaw} from 'src/core/transaction-raw';
+import {Item} from '../item';
+import {SwapExactInputRichPayload} from '../../transaction-rich/payloads/swap-payload';
 
-export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapExactInputTxEstimated): Item[] {
-    const {srcAmount, srcToken, dstToken, minDstAmount, dstAmountEstimated} = decoded;
+export function swapTxConfirmTemplate(
+    tx: TransactionRaw,
+    decoded: SwapExactInputRichPayload
+): Item[] {
+    const {srcAmount, srcToken, dstToken, minDstAmount, dstAmountEstimated} =
+        decoded;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -20,17 +24,17 @@ export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapExactInpu
                 type: 'token',
                 value: {
                     type: 'from',
-                    token: srcToken
-                }
+                    token: srcToken,
+                },
             },
             value: {
                 type: 'amount',
                 value: {
                     token: srcToken,
-                    value: srcAmount? srcAmount.toString(): '0',
-                    sign: '-'
-                }
-            }
+                    value: srcAmount ? srcAmount.toString() : '0',
+                    sign: '-',
+                },
+            },
         },
         // ******** To token
         {
@@ -38,17 +42,19 @@ export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapExactInpu
                 type: 'token',
                 value: {
                     type: 'to',
-                    token: dstToken
-                }
+                    token: dstToken,
+                },
             },
             value: {
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: dstAmountEstimated ? dstAmountEstimated.toString(): '0',
-                    sign: '+'
-                }
-            }
+                    value: dstAmountEstimated
+                        ? dstAmountEstimated.toString()
+                        : '0',
+                    sign: '+',
+                },
+            },
         },
         // ******** Your wallet
         {
@@ -56,35 +62,35 @@ export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapExactInpu
                 type: 'wallet',
                 value: {
                     type: 'own',
-                }
+                },
             },
             value: {
                 type: 'text',
                 value: {
                     type: 'address',
-                    text: tx.from.toLowerCase()
-                }
-            }
+                    text: tx.from.toLowerCase(),
+                },
+            },
         },
         // ******** Gas fee
         {
             key: {
-                type: 'placeholder'
+                type: 'placeholder',
             },
             value: {
                 type: 'placeholder',
                 value: {
-                    type: 'fee'
-                }
-            }
+                    type: 'fee',
+                },
+            },
         },
         // ******** Sell price
         {
             key: {
                 type: 'title',
                 value: {
-                    title: 'Sell price'
-                }
+                    title: 'Sell price',
+                },
             },
             value: {
                 type: 'rate',
@@ -92,17 +98,17 @@ export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapExactInpu
                     sourceToken: srcToken,
                     sourceAmount: '1',
                     destinationToken: dstToken,
-                    destinationAmount: ((+dstUnits) / (+srcUnits)).toString()
-                }
-            }
+                    destinationAmount: (+dstUnits / +srcUnits).toString(),
+                },
+            },
         },
         // ******** Buy price
         {
             key: {
                 type: 'title',
                 value: {
-                    title: 'Buy price'
-                }
+                    title: 'Buy price',
+                },
             },
             value: {
                 type: 'rate',
@@ -110,26 +116,26 @@ export function swapTxConfirmTemplate(tx: TransactionRaw, decoded: SwapExactInpu
                     sourceToken: dstToken,
                     sourceAmount: '1',
                     destinationToken: srcToken,
-                    destinationAmount: ((+srcUnits) / (+dstUnits)).toString()
-                }
-            }
+                    destinationAmount: (+srcUnits / +dstUnits).toString(),
+                },
+            },
         },
         // ******** Minimum Received
         {
             key: {
                 type: 'title',
                 value: {
-                    title: 'Minimum Received'
-                }
+                    title: 'Minimum Received',
+                },
             },
             value: {
                 type: 'amount',
                 value: {
                     token: dstToken,
-                    value: minDstAmount? minDstAmount.toString(): '0',
-                    sign: '0'
-                }
-            }
+                    value: minDstAmount ? minDstAmount.toString() : '0',
+                    sign: '0',
+                },
+            },
         },
     ];
 }

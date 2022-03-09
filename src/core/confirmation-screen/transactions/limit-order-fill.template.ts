@@ -1,10 +1,13 @@
-import { TransactionRaw } from 'src/core/transaction-raw';
-import { LimitOrderFillRich } from '../../transaction-rich/limit-order-fill';
-import { Item } from '../item';
+import {TransactionRaw} from 'src/core/transaction-raw';
+import {LimitOrderFillRichPayload} from '../../transaction-rich/payloads/limit-order-fill-rich-payload';
+import {Item} from '../item';
 
-export function limitOrderFillTemplate(tx: TransactionRaw, decoded: LimitOrderFillRich): Item[] {
+export function limitOrderFillTemplate(
+    tx: TransactionRaw,
+    decoded: LimitOrderFillRichPayload
+): Item[] {
     console.log(tx, decoded);
-    
+
     return [
         // ******** Info
         // TODO

@@ -4,8 +4,8 @@ import {TransactionType} from '../../core/transaction-type';
 import {abiDecoder, getParam} from '../../helpers/abi/abi-decoder.helper';
 import {IAbiDecoderResult} from '../../helpers/abi/types';
 import ERC20ABI from './ERC20_TOKEN.json';
-import {ValueTxPayload} from '../../core/transaction-parsed/value-payload';
-import { decodeERC20Token } from '../erc20-token/erc20-token-tx.decoder';
+import {decodeERC20Token} from '../erc20-token/erc20-token-tx.decoder';
+import {ValueTxPayload} from '../../core/transaction-parsed/payloads/value-payload';
 
 abiDecoder.addABI(ERC20ABI);
 
@@ -20,19 +20,17 @@ export function decodeWrappedERC20Token(
 
     switch (methodData.name) {
         case 'deposit': {
-            return parseDeposit(rawTx, methodData);
+            return parseWrap(rawTx, methodData);
         }
         case 'withdraw': {
-            return parseWithdraw(rawTx, methodData);
+            return parseUnwrap(rawTx, methodData);
         }
-        
         default:
-            
             return decodeERC20Token(rawTx, contractAddr);
     }
 }
 
-function parseDeposit(
+function parseWrap(
     rawTx: TransactionRaw,
     data: IAbiDecoderResult
 ): DecodeResult {
@@ -44,7 +42,7 @@ function parseDeposit(
     return {
         tag: 'Success',
         tx: {
-            tag: TransactionType.Deposit,
+            tag: TransactionType.Wrap,
             functionInfo: {
                 name: data.name,
                 hash: rawTx.data.slice(0, 10).toLowerCase(),
@@ -57,7 +55,7 @@ function parseDeposit(
     };
 }
 
-function parseWithdraw(
+function parseUnwrap(
     rawTx: TransactionRaw,
     data: IAbiDecoderResult
 ): DecodeResult {
@@ -68,7 +66,7 @@ function parseWithdraw(
     return {
         tag: 'Success',
         tx: {
-            tag: TransactionType.Withdraw,
+            tag: TransactionType.Unwrap,
             functionInfo: {
                 name: data.name,
                 hash: rawTx.data.slice(0, 10).toLowerCase(),

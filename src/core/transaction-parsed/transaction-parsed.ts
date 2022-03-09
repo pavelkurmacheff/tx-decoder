@@ -1,17 +1,17 @@
 import {BigNumber} from 'ethers';
-import { JsonFragment, Fragment } from "@ethersproject/abi";
-import {AddLiquidityPayload} from './add-liquidity-payload';
-import {ApproveTxPayload} from './approve-payload';
-import {LimitOrderFillPayload} from './limit-order-fill-payload';
-import {RemoveLiquidityPayload} from './remove-liquidity-payload';
+import {JsonFragment, Fragment} from '@ethersproject/abi';
+import {AddLiquidityPayload} from './payloads/add-liquidity-payload';
+import {TransactionRaw} from '../transaction-raw';
+import {TransactionType} from '../transaction-type';
+import {ApproveTxPayload} from './payloads/approve-payload';
+import {LimitOrderFillPayload} from './payloads/limit-order-fill-payload';
+import {RemoveLiquidityPayload} from './payloads/remove-liquidity-payload';
 import {
     SwapExactInputPayload,
     SwapExactOutputPayload,
-} from './swap-payload';
-import {TransferTxPayload} from './transfer-payload';
-import {ValueTxPayload} from './value-payload';
-import {TransactionRaw} from '../transaction-raw';
-import {TransactionType} from '../transaction-type';
+} from './payloads/swap-payload';
+import {TransferTxPayload} from './payloads/transfer-payload';
+import {ValueTxPayload} from './payloads/value-payload';
 
 export interface EstimationResp {
     returnAmount: BigNumber;
@@ -34,13 +34,13 @@ export type TransactionParsed =
       }
     | {
           raw: TransactionRaw;
-          tag: TransactionType.Deposit;
+          tag: TransactionType.Wrap;
           functionInfo: FunctionInfo;
           payload: ValueTxPayload;
       }
     | {
           raw: TransactionRaw;
-          tag: TransactionType.Withdraw;
+          tag: TransactionType.Unwrap;
           functionInfo: FunctionInfo;
           payload: ValueTxPayload;
       }
@@ -49,11 +49,6 @@ export type TransactionParsed =
           tag: TransactionType.Transfer;
           functionInfo: FunctionInfo;
           payload: TransferTxPayload;
-      }
-    | {
-          raw: TransactionRaw;
-          functionInfo: FunctionInfo;
-          tag: TransactionType.Unwrap;
       }
     | {
           raw: TransactionRaw;

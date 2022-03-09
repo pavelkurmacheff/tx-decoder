@@ -1,6 +1,6 @@
-import {Token} from '../token';
+import {Token} from '../../token';
 
-export interface LimitOrderFillRich {
+export interface LimitOrderFillRichPayload {
     srcToken: Token;
     srcAmount?: string;
     dstToken: Token;
